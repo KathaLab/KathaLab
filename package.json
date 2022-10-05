@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx . && stylelint ./**/*.scss"
   },
   "keywords": [],
   "author": {
@@ -81,6 +81,9 @@
     "fork-ts-checker-webpack-plugin": "^7.2.1",
     "node-loader": "^2.0.0",
     "style-loader": "^3.3.1",
+    "stylelint": "^14.13.0",
+    "stylelint-config-standard": "^28.0.0",
+    "stylelint-config-standard-scss": "^5.0.0",
     "ts-loader": "^9.2.2",
     "typescript": "~4.5.4"
   },
