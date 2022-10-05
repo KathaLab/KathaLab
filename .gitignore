@@ -87,4 +87,7 @@ typings/
 
 # Electron-Forge
 out/
+
+# package manager
 /yarn.lock
+/package-lock.json
