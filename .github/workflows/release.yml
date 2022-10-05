@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
     # Sequence of patterns matched against refs/tags
-    branches:
-     - "master"
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
@@ -25,6 +23,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+    
+      - name: Exit if not on master branch
+        if: endsWith(github.ref, 'master') == false
+        run: exit -1
     
       - name: Linter
         run: |
