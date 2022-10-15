@@ -1,32 +1,36 @@
 import * as React from "react";
 import {useState} from "react";
 
-import {Gallery} from "./pages/Gallery/Gallery";
-import {Playground} from "./pages/Playground/Playground";
+// importing the two pages
+import {Gallery, Playground} from "./pages"
 
+// importing stuff related to the localization
 import localizationContext from "./context/LocalizationContext";
 import {Language, LanguageToLocalization} from "./localization";
 import {createRoot} from "react-dom/client";
 
+// importing styles
+import themes from "./theme/_theme.scss"
+
+export type themeNames = keyof typeof themes
 export enum Pages {
     Gallery,
     Playground
 }
 
 const App = () => {
-
     const [page, setPage] = useState<Pages>(Pages.Gallery)
-    const [localization, setLocalization] = useState<Language>(Language.FR)
+    const [localization, setLocalization] = useState<Language>(Language.EN)
+    const [theme] = useState<themeNames>("theme-dark")
 
-    return <localizationContext.Provider value={{language: localization, languageDico: LanguageToLocalization[localization] , updateContext: setLocalization}}>
+    return <main className={themes[theme]}>
+        <localizationContext.Provider value={{language: localization, languageDico: LanguageToLocalization[localization] , updateContext: setLocalization}}>
         {
             page == Pages.Gallery ? <Gallery switchPage={setPage}/>
-                : page == Pages.Playground ? <Playground switchPage={setPage}/> : null
+            : page == Pages.Playground ? <Playground switchPage={setPage}/> : null
         }
-    </localizationContext.Provider>
-
-
-
+        </localizationContext.Provider>
+    </main>
 }
 
 createRoot(document.querySelector('#root')).render(<App />, );
