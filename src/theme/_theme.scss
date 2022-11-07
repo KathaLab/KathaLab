@@ -1,0 +1,18 @@
+$themes: (
+  light: (
+    accent: #555,
+    background: white,
+  ),
+  dark: (
+    accent: white,
+    background: #555,
+  )
+);
+
+@each $key, $map in $themes {
+  .theme-#{$key} {
+    @each $prop, $color in $map {
+      --#{$prop}: #{$color};
+    }
+  }
+}
