@@ -1,27 +1,26 @@
-import React, {useContext} from "react"
-import {Pages} from "../../app";
-import {Language, LocalizationName} from "../../localization";
-import LocalizationContext from "../../context/LocalizationContext";
-import styles from "./Playground.module.scss"
+import React from "react";
+import { Pages } from "../../app";
+import { DeviceCard } from "./components/DeviceCard/DeviceCard";
+import { Header } from "./components/Header/Header";
 type componentType = {
-    switchPage: (page: Pages) => void
-}
+  switchPage: (page: Pages) => void;
+};
 
-export const Playground = ({switchPage}: componentType) => {
+export const Playground = ({ switchPage }: componentType) => {
+  const devices = [{ name: "a" }, { name: "b" }, { name: "c" }, { name: "d" }];
 
-    const {updateContext, languageDico} = useContext(LocalizationContext);
-
-    const handleLocalization = () => {
-        updateContext(old => old == Language.FR ? Language.EN : Language.FR)
-    }
-
-    const handlePage = () => {
-        switchPage(Pages.Gallery)
-    }
-
-    return <>
-        <h1 className={styles.titre} >{languageDico[LocalizationName.titlePlayground]}</h1>
-        <button onClick={handlePage}>{languageDico[LocalizationName.titleGallery]}</button>
-        <button onClick={handleLocalization}>switch</button>
+  return (
+    <>
+      <Header></Header>
+      <ul>
+        {devices.map(({ name }) => (
+          <li key={name}>
+            <DeviceCard></DeviceCard>
+          </li>
+        ))}
+      </ul>
+      <canvas></canvas>
+      <aside></aside>
     </>
-}
+  );
+};
