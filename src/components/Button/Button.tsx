@@ -1,6 +1,11 @@
 import React from "react";
 
-export const Button = ({ type }) => {
-  console.log(type);
-  return <input type="button" />;
+type ButtonType = {
+  type?: "icon" | "text",
+  value?: string,
+  onclick?: () => void
+}
+
+export const Button = ({ type, onclick, value }: ButtonType) => {
+  return <button onClick={onclick}><span className={type === 'icon' ? "material-icons material-icons-outlined" : ""}>{value}</span></button>;
 };
