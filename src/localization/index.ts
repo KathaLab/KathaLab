@@ -1,6 +1,8 @@
 export enum LocalizationName {
+    galleryExplication,
     titleGallery,
     titlePlayground,
+    titleHeader,
 }
 
 // import is after because language files need localizationName

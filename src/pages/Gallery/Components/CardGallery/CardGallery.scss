@@ -1,0 +1,16 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100px;
+    margin: 10px;
+}
+
+.cardTitle {
+    background-color: gray;
+    font-size: 15px;
+}
+
+.img {
+    width: 100%;
+}
