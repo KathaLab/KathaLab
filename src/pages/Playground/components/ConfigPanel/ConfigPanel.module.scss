@@ -1,0 +1,16 @@
+.panel {
+    position: relative;
+    min-width: 25rem;
+    background-color: var(--clr-main-lightgrey);
+    transition: all 0.2s ease-in-out;
+}
+
+.toggleExpand {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+[data-expanded=false] {
+    min-width: 4.5rem;
+}

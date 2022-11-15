@@ -1,3 +1,8 @@
 .deviceCard {
-  background-color: red;
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+  width: 6rem;
+  aspect-ratio: 1;
+  border-radius: .5rem;
 }

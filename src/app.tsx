@@ -19,9 +19,9 @@ export enum Pages {
 }
 
 const App = () => {
-    const [page, setPage] = useState<Pages>(Pages.Gallery)
+    const [page, setPage] = useState<Pages>(Pages.Playground)
     const [localization, setLocalization] = useState<Language>(Language.EN)
-    const [theme] = useState<themeNames>("theme-dark")
+    const [theme] = useState<themeNames>("theme-light")
 
     return <main className={themes[theme]}>
         <localizationContext.Provider value={{language: localization, languageDico: LanguageToLocalization[localization] , updateContext: setLocalization}}>

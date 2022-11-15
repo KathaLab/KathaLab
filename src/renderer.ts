@@ -16,3 +16,4 @@
  */
 
 import './app';
+import './global.scss';

@@ -2,3 +2,25 @@
   color: var(--accent);
   background: var(--background);
 }
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--clr-main-grey);
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  ul {
+    background-color: var(--clr-main-lightgrey);
+    flex-direction: column;
+    display: flex;
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
