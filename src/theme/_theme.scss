@@ -1,11 +1,19 @@
 $themes: (
   light: (
-    accent: #555,
-    background: white,
+    clr-main-primary: #5A587C,
+    clr-main-white: #ffffff,
+    clr-main-grey: #ebebeb,
+    clr-main-secondary: #6c7087,    
+    clr-main-lightgrey: #c4c6d1,    
+    clr-main-black: #000
   ),
   dark: (
-    accent: white,
-    background: #555,
+    clr-main-primary: #dd733c,
+    clr-main-white: #000,
+    clr-main-grey: #222222,
+    clr-main-secondary: #424242,    
+    clr-main-lightgrey: #525252,    
+    clr-main-black: #fff
   )
 );
 
