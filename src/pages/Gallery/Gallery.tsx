@@ -13,17 +13,23 @@ type componentType = {
 export const Gallery = ({switchPage}: componentType) => {
 
   const { languageDico } = useContext(LocalizationContext);
+  
+
+  
 
   return <>
     <HeaderGallery></HeaderGallery>
-    
     <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
-    <h1>{languageDico[LocalizationName.titleGallery]}</h1>
-    <button onClick={() => switchPage(Pages.Playground)}>{languageDico[LocalizationName.titlePlayground]}</button>
-    <div className={style.cardList}>
-      <CardGallery></CardGallery>
-      <CardGallery></CardGallery>
-      <CardGallery></CardGallery>
+    {/*<button onClick={() => switchPage(Pages.Playground)}>{languageDico[LocalizationName.titlePlayground]}</button>*/}
+    <div className={style.cardList}> 
+    { function() {
+      const nbrGallery = 10;
+      const cards = [];
+      for (let i = 0; i < nbrGallery; i++){
+          cards.push(<div onClick={() => switchPage(Pages.Playground)}><CardGallery ></CardGallery></div>) ;
+      }
+      return cards;
+    }()}
     </div>
     
   </>
