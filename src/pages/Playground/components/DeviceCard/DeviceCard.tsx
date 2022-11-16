@@ -1,10 +1,16 @@
 import React from "react";
+import { Device } from "../../../../model/Device";
 import style from "./DeviceCard.scss";
 
-export const DeviceCard = () => {
+type ComponentType = {
+  onClick: () => void;
+  device: Device;
+};
+
+export const DeviceCard = ({onClick, device}: ComponentType) => {
   return (
-    <div className={style.deviceCard}>
-      <img src="https://i.pravatar.cc/150?img=3" alt="img-device" />
+    <div className={style.deviceCard} onClick={onClick}>
+      <img src={device.imageUrl} alt="img-device" />
     </div>
   );
 };

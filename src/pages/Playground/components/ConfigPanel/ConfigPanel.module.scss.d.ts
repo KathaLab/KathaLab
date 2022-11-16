@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'panel': string;
+  'title': string;
   'toggleExpand': string;
 }
 export const cssExports: CssExports;
