@@ -15,20 +15,19 @@ export const Gallery = ({switchPage}: componentType) => {
 
   const { languageDico } = useContext(LocalizationContext);
 
+  function handleClick() {
+    nbrGallery++;
+    switchPage(Pages.Playground)
+  }
 
-  return <>
+  return <div className={style.container}>
     <HeaderGallery></HeaderGallery>
     <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
     <div className={style.cardList}>
       {
         Array.from(Array(nbrGallery), (_, i) => <CardGallery key={i} onClick={() => switchPage(Pages.Playground)}></CardGallery>)
       }
-      <button className={style.btn_createTopology}
-          onClick={() =>{
-            nbrGallery++;
-            switchPage(Pages.Playground)
-          }}
-      >+</button>
+      <button className={style.btnCreateTopology}onClick={()=>{handleClick()}}>+</button>
     </div>
-  </>
+  </div>
 }
