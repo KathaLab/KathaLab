@@ -14,5 +14,6 @@ export const Gallery = ({switchPage}: componentType) => {
   return <>
     <h1>{languageDico[LocalizationName.titleGallery]}</h1>
     <button onClick={() => switchPage(Pages.Playground)}>{languageDico[LocalizationName.titlePlayground]}</button>
+    <button onClick={() => switchPage(Pages.Settings)}>Settings</button>
   </>
 }

@@ -1,0 +1,46 @@
+.page{
+  height: 100vh;
+  background-color: var(--clr-main-lightgrey);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: var(--clr-main-primary);
+  height: 3rem;
+}
+
+.headerTitle {
+  font-size: 2rem;
+  margin-left: 2rem;
+  color: var(--clr-main-white);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0 1rem 1rem;
+}
+
+.ParameterContainer{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.label {
+  color: var(--clr-main-black);
+}
+
+.select {
+  background-color: var(--clr-main-primary);
+  color: var(--clr-main-black);
+}
+
+.storagePlaceInput {
+  background-color: var(--clr-main-primary);
+  color: var(--clr-main-black);
+}
+
+
