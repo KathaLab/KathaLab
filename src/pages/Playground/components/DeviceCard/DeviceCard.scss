@@ -2,7 +2,11 @@
   cursor: pointer;
   display: block;
   overflow: hidden;
-  width: 6rem;
+  min-width: 4rem;
   aspect-ratio: 1;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
+
+  img {
+    width: 4rem;
+  }
 }

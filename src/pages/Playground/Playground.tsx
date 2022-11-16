@@ -4,27 +4,32 @@ import { Header } from "./components/Header/Header";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
 import style from "./Playground.module.scss";
-import { Pages } from "../../app"
+import { Pages } from "../../app";
 import { Device, devices } from "../../model/Device";
 
-
 type componentType = {
-  switchPage: (page: Pages) => void
-}
+  switchPage: (page: Pages) => void;
+};
 
 export const Playground = ({ switchPage }: componentType) => {
-
   const [json, setJson] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
-  
+
   const handleDeviceClick = (device: Device) => {
-    setJson([...json, {...device, name: `${device.type}_${json.filter(d => d.type === device.type).length}`}]);
-  }
+    setJson([
+      ...json,
+      {
+        ...device,
+        name: `${device.type}-${
+          json.filter((d) => d.type === device.type).length
+        }`,
+      },
+    ]);
+  };
 
   useEffect(() => {
     console.log(json, selectedDevice);
-  }, [json, selectedDevice])
-  
+  }, [json, selectedDevice]);
 
   return (
     <div className={style.page}>
@@ -33,11 +38,18 @@ export const Playground = ({ switchPage }: componentType) => {
         <ul>
           {devices.map((device, i) => (
             <li key={i}>
-              <DeviceCard device={device} onClick={() => handleDeviceClick(device)}></DeviceCard>
+              <DeviceCard
+                device={device}
+                onClick={() => handleDeviceClick(device)}
+              ></DeviceCard>
             </li>
           ))}
         </ul>
-        <Canvas topoJson={json} setJson={(json: Device[]) => setJson(json)} setSelectedDevice={(name: string) => setSelectedDevice(name)}></Canvas>
+        <Canvas
+          topoJson={json}
+          setJson={(json: Device[]) => setJson(json)}
+          setSelectedDevice={(name: string) => setSelectedDevice(name)}
+        ></Canvas>
         <ConfigPanel device={selectedDevice}></ConfigPanel>
       </div>
     </div>
