@@ -2,24 +2,31 @@ export type Device = {
     name: string;
     interfaces: Interface[];
     imageUrl: string;
+    position?: Position;
+    type: DeviceType;
+}
+
+export enum DeviceType {
+    Device = "Device",
+    Router = "Router",
 }
 
 export type Interface = string;
+export type Position = { x: number, y: number };
+
+export const deviceSize = { width: 100, height: 100 };
 
 export const devices: Device[] = [
     {
-        name: "R0",
+        name: "",
         interfaces: [],
-        imageUrl: "https://i.pravatar.cc/150?img=1"
+        imageUrl: "static/img/device.png",
+        type: DeviceType.Device
     },
     {
-        name: "R1",
+        name: "",
         interfaces: [],
-        imageUrl: "https://i.pravatar.cc/150?img=2"
-    },
-    {
-        name: "R2",
-        interfaces: [],
-        imageUrl: "https://i.pravatar.cc/150?img=3"
+        imageUrl: "static/img/device.png",
+        type: DeviceType.Router
     },
 ]

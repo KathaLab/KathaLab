@@ -12,7 +12,7 @@ export const ConfigPanel = ({device}: ComponentType) => {
     const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className={style.panel} data-expanded={expanded}>
+    device && <div className={style.panel} data-expanded={expanded}>
         <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
 
         <span className={style.title}>Configuration - {device}</span>
