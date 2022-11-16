@@ -9,28 +9,26 @@ import {CardGallery} from './Components/CardGallery/CardGallery'
 type componentType = {
   switchPage: (page: Pages) => void
 }
+let nbrGallery = 12;
 
 export const Gallery = ({switchPage}: componentType) => {
 
   const { languageDico } = useContext(LocalizationContext);
-  
 
-  
 
   return <>
     <HeaderGallery></HeaderGallery>
     <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
-    {/*<button onClick={() => switchPage(Pages.Playground)}>{languageDico[LocalizationName.titlePlayground]}</button>*/}
-    <div className={style.cardList}> 
-    { function() {
-      const nbrGallery = 10;
-      const cards = [];
-      for (let i = 0; i < nbrGallery; i++){
-          cards.push(<div onClick={() => switchPage(Pages.Playground)}><CardGallery ></CardGallery></div>) ;
+    <div className={style.cardList}>
+      {
+        Array.from(Array(nbrGallery), (_, i) => <CardGallery key={i} onClick={() => switchPage(Pages.Playground)}></CardGallery>)
       }
-      return cards;
-    }()}
+      <button className={style.btn_createTopology}
+          onClick={() =>{
+            nbrGallery++;
+            switchPage(Pages.Playground)
+          }}
+      >+</button>
     </div>
-    
   </>
 }
