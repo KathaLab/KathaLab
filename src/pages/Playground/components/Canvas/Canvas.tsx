@@ -34,17 +34,22 @@ export const Canvas = ({ topoJson, setSelectedDevice }: ComponentType) => {
         deviceSize.height
       );
 
-      roundRect(
-        ctx,
-        device?.position.x,
-        device?.position.y,
-        deviceSize.width,
-        deviceSize.height,
-        10,
-        "#000000"
+      ctx.textAlign = "center";
+      ctx.fillText(
+        device.name,
+        device?.position.x + deviceSize.width / 2,
+        device?.position.y + deviceSize.height + 20
       );
 
-      ctx.fillRect;
+      // roundRect(
+      //   ctx,
+      //   device?.position.x,
+      //   device?.position.y + deviceSize.height + 20,
+      //   device?.position.x + deviceSize.width,
+      //   device?.position.y + deviceSize.height + 20 + 20,
+      //   10,
+      //   "#000000"
+      // );
     });
   };
 
