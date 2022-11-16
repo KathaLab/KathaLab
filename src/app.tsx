@@ -11,7 +11,7 @@ import {createRoot} from "react-dom/client";
 
 // importing styles
 import themes from "./theme/_theme.scss"
-
+import themeContext from "./context/ThemeContext";
 
 export type themeNames = keyof typeof themes
 export enum Pages {
@@ -21,18 +21,20 @@ export enum Pages {
 }
 
 const App = () => {
-    const [page, setPage] = useState<Pages>(Pages.Settings)
+    const [page, setPage] = useState<Pages>(Pages.Gallery)
     const [localization, setLocalization] = useState<Language>(Language.EN)
-    const [theme] = useState<themeNames>("theme-dark")
+    const [theme, setTheme] = useState<themeNames>("theme-light")
 
     return <main className={themes[theme]}>
         <localizationContext.Provider value={{language: localization, languageDico: LanguageToLocalization[localization] , updateContext: setLocalization}}>
+        <themeContext.Provider value={{theme, updateContext: setTheme}}>
         {
             page == Pages.Gallery ? <Gallery switchPage={setPage}/>
             : page == Pages.Playground ? <Playground switchPage={setPage}/>
-                    : page == Pages.Settings ? <Settings switchPage={setPage}/> : null
+            : page == Pages.Settings ? <Settings switchPage={setPage}/> : null
 
         }
+        </themeContext.Provider>
         </localizationContext.Provider>
     </main>
 }

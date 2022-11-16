@@ -18,15 +18,17 @@
 
 .container {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem 0 1rem 1rem;
+  flex-direction: row;
+  margin-top: 2rem;
 }
 
 .ParameterContainer{
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin: 1rem 3rem;
   gap: 1rem;
+  font-size: 1.2rem;
 }
 
 .label {
@@ -34,13 +36,36 @@
 }
 
 .select {
-  background-color: var(--clr-main-primary);
+  border: none;
+  border-color: var(--clr-main-secondary);
+  border-width: 2px;
+  border-style: solid;
+  width: 10rem;
+  font-size: 1rem;
+  padding: 0.1rem;
+  border-radius: 0.2rem;
+  background-color: var(--clr-main-lightgrey);
   color: var(--clr-main-black);
 }
 
 .storagePlaceInput {
-  background-color: var(--clr-main-primary);
+  border: none;
+  border-color: var(--clr-main-secondary);
+  border-width: 2px;
+  border-style: solid;
+  border: 1px solid var(clr-main-grey);
+  width: 20rem;
+  font-size: 1rem;
+  padding: 0.1rem;
+  border-radius: 0.2rem;
+  background-color: var(--clr-main-lightgrey);
   color: var(--clr-main-black);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+   box-shadow: none;
 }
+
+
+
 
 
