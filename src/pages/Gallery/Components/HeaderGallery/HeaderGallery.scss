@@ -1,6 +1,6 @@
 .header {
     display: flex;
-    background-color: var(--clr-main-lightgrey);
+    background-color: var(--clr-main-secondary);
     width: 100%;
     align-items: center;
     height: 3rem;
@@ -9,5 +9,5 @@
 .title {
     margin-left: 2rem;
     font-size: 2rem;
-	color: var(--clr-main-black);
+	color: var(--clr-main-white);
 }

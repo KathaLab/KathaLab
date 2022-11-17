@@ -4,12 +4,10 @@
 }
 
 .cardList {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    grid-template-columns: repeat(auto-fill, 11rem);
-	grid-template-rows: repeat(auto-fill, 9rem);
-    grid-gap: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
 }
 
 .galleryExplication{
@@ -17,21 +15,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 8rem;
+	min-height: 8;
+	line-height: 8rem;
+	font-size: 3rem;
+	font-weight: 700 ;
     color: var(--clr-main-primary);
 	background-color: var(--clr-main-white);
 }
 
 .btnCreateTopology {
-	width: 10rem;
-	height: 8.5rem;
+	width: 20vw;
+	aspect-ratio: 1;
 	border: none;
 	font-size: xxx-large;
 	color: var(--clr-main-primary);
 	border-radius: 0.2rem;
 	background-color: var(--clr-main-white);
-}
-
-.btnCreateTopology:hover {
-	border: solid 2.5px var(--clr-main-primary);
 }
