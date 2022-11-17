@@ -5,13 +5,20 @@ import style from "./Canvas.module.scss";
 
 type ComponentType = {
   topoJson: Device[];
+  selectedDevice: string
   setJson: (json: Device[]) => void;
   setSelectedDevice: (name: string) => void;
 };
 
-export const Canvas = ({ topoJson, setSelectedDevice }: ComponentType) => {
+export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: ComponentType) => {
   const canvasRef = useRef(null);
   const currentDevice = useRef(null);
+  const deviceRef = useRef(selectedDevice);
+
+
+  useEffect(() => {
+    deviceRef.current = selectedDevice;
+  }, [selectedDevice]);
 
   const drawJson = (json: Device[]) => {
     const canvas = canvasRef.current;
@@ -22,8 +29,8 @@ export const Canvas = ({ topoJson, setSelectedDevice }: ComponentType) => {
     json.forEach((device, i) => {
       if (!device.position)
         topoJson[i].position = device?.position || {
-          x: 0,
-          y: i * deviceSize.height,
+          x: 10,
+          y: 10, 
         };
 
       ctx.drawImage(
@@ -35,21 +42,12 @@ export const Canvas = ({ topoJson, setSelectedDevice }: ComponentType) => {
       );
 
       ctx.textAlign = "center";
+      ctx.font = "16px 'Be Vietnam Pro'";
       ctx.fillText(
         device.name,
         device?.position.x + deviceSize.width / 2,
         device?.position.y + deviceSize.height + 20
       );
-
-      // roundRect(
-      //   ctx,
-      //   device?.position.x,
-      //   device?.position.y + deviceSize.height + 20,
-      //   device?.position.x + deviceSize.width,
-      //   device?.position.y + deviceSize.height + 20 + 20,
-      //   10,
-      //   "#000000"
-      // );
     });
   };
 
@@ -76,6 +74,23 @@ export const Canvas = ({ topoJson, setSelectedDevice }: ComponentType) => {
 
     canvasRef.current.onmousedown = (evt: MouseEvent) => {
       currentDevice.current = getDeviceByPosition(evt.offsetX, evt.offsetY);
+      canvasRef.current.focus()
+
+    };
+
+    canvasRef.current.onkeydown = (evt: KeyboardEvent) => {
+
+      if (evt.key === "Delete") {
+        const index =  topoJson.findIndex(
+          (device) => {
+            return device.name === deviceRef.current;
+          }
+          );
+          
+        index !== -1 && topoJson.splice(index, 1);
+        setSelectedDevice(null);
+        drawJson(topoJson);
+      }
     };
 
     canvasRef.current.onmousemove = (evt: MouseEvent) => {
@@ -89,8 +104,10 @@ export const Canvas = ({ topoJson, setSelectedDevice }: ComponentType) => {
       }
     };
 
+    console.dir(canvasRef.current);
+
     drawJson(topoJson);
   }, [topoJson]);
 
-  return <canvas ref={canvasRef} className={`${style.canvas}`}></canvas>;
+  return <canvas tabIndex={0} ref={canvasRef} className={`${style.canvas}`}></canvas>;
 };

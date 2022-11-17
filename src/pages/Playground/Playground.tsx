@@ -6,6 +6,7 @@ import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
 import style from "./Playground.module.scss";
 import { Pages } from "../../app";
 import { Device, devices } from "../../model/Device";
+import { useId } from "../../hooks/useId";
 
 type componentType = {
   switchPage: (page: Pages) => void;
@@ -20,16 +21,10 @@ export const Playground = ({ switchPage }: componentType) => {
       ...json,
       {
         ...device,
-        name: `${device.type}-${
-          json.filter((d) => d.type === device.type).length
-        }`,
+        name: `${device.type}${useId(device.type)}`,
       },
     ]);
   };
-
-  useEffect(() => {
-    console.log(json, selectedDevice);
-  }, [json, selectedDevice]);
 
   return (
     <div className={style.page}>
@@ -49,6 +44,7 @@ export const Playground = ({ switchPage }: componentType) => {
           topoJson={json}
           setJson={(json: Device[]) => setJson(json)}
           setSelectedDevice={(name: string) => setSelectedDevice(name)}
+          selectedDevice={selectedDevice}
         ></Canvas>
         <ConfigPanel device={selectedDevice}></ConfigPanel>
       </div>

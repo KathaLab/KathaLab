@@ -4,19 +4,19 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 1rem 0;
+    height: 5.5rem;
+    box-sizing: border-box;
+    padding: 0 1rem
 }   
 
 .left {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0 1rem;
 }
 
 .right {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0 1rem;
 }

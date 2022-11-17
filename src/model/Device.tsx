@@ -6,9 +6,8 @@ export type Device = {
 };
 
 export enum DeviceType {
-  Laptop = "Laptop",
-  Router = "Router",
-  Storage = "Storage",
+  PC = "PC",
+  Router = "R",
 }
 
 export type Interface = string;
@@ -23,25 +22,19 @@ const getImageOfDevice = (url: string) => {
 };
 
 export const deviceToImage: Record<DeviceType, HTMLImageElement> = {
-  [DeviceType.Laptop]: getImageOfDevice("assets/laptop.svg"),
+  [DeviceType.PC]: getImageOfDevice("assets/laptop.svg"),
   [DeviceType.Router]: getImageOfDevice("assets/router.svg"),
-  [DeviceType.Storage]: getImageOfDevice("assets/storage.svg"),
 };
 
 export const devices: Device[] = [
   {
     name: "",
     interfaces: [],
-    type: DeviceType.Laptop,
+    type: DeviceType.PC,
   },
   {
     name: "",
     interfaces: [],
     type: DeviceType.Router,
-  },
-  {
-    name: "",
-    interfaces: [],
-    type: DeviceType.Storage,
-  },
+  }
 ];

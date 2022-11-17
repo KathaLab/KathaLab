@@ -6,6 +6,7 @@ interface CssExports {
   'header': string;
   'headerTitle': string;
   'label': string;
+  'left': string;
   'page': string;
   'select': string;
   'storagePlaceInput': string;

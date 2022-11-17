@@ -9,7 +9,7 @@ import {CardGallery} from './Components/CardGallery/CardGallery'
 type componentType = {
   switchPage: (page: Pages) => void
 }
-let nbrGallery = 12;
+let nbrGallery = 1;
 
 export const Gallery = ({switchPage}: componentType) => {
 
@@ -21,13 +21,13 @@ export const Gallery = ({switchPage}: componentType) => {
   }
 
   return <div className={style.container}>
-    <HeaderGallery></HeaderGallery>
+    <HeaderGallery switchPage={switchPage}></HeaderGallery>
     <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
     <div className={style.cardList}>
       {
         Array.from(Array(nbrGallery), (_, i) => <CardGallery key={i} onClick={() => switchPage(Pages.Playground)}></CardGallery>)
       }
-      <button className={style.btnCreateTopology}onClick={()=>{handleClick()}}>+</button>
+      <button className={style.btnCreateTopology} onClick={()=>{handleClick()}}>+</button>
     </div>
   </div>
 }
