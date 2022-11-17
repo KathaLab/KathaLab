@@ -4,7 +4,7 @@ import {Language, LanguageToLocalization, LocalizationName} from "../localizatio
 type contextType = {
     language: Language,
     languageDico: Record<LocalizationName, string>
-    updateContext: Dispatch<SetStateAction<Language>>
+    updateContext: Dispatch<SetStateAction<Language | string>>
 }
 
 export default createContext<contextType>({

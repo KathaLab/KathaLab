@@ -1,8 +1,16 @@
 export enum LocalizationName {
     galleryExplication,
+    titleHeader,
+    languageEnglish,
+    languageFrench,
+    languageParameterLabel,
+    storagePlaceLabel,
+    themeParameterLabel,
+    themeLight,
+    themeDark,
     titleGallery,
     titlePlayground,
-    titleHeader,
+    titleSettings,
 }
 
 // import is after because language files need localizationName

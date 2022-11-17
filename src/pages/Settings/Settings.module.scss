@@ -1,0 +1,71 @@
+.page{
+  height: 100vh;
+  background-color: var(--clr-main-lightgrey);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: var(--clr-main-primary);
+  height: 3rem;
+}
+
+.headerTitle {
+  font-size: 2rem;
+  margin-left: 2rem;
+  color: var(--clr-main-white);
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2rem;
+}
+
+.ParameterContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 1rem 3rem;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.label {
+  color: var(--clr-main-black);
+}
+
+.select {
+  border: none;
+  border-color: var(--clr-main-secondary);
+  border-width: 2px;
+  border-style: solid;
+  width: 10rem;
+  font-size: 1rem;
+  padding: 0.1rem;
+  border-radius: 0.2rem;
+  background-color: var(--clr-main-lightgrey);
+  color: var(--clr-main-black);
+}
+
+.storagePlaceInput {
+  border: none;
+  border-color: var(--clr-main-secondary);
+  border-width: 2px;
+  border-style: solid;
+  border: 1px solid var(clr-main-grey);
+  width: 20rem;
+  font-size: 1rem;
+  padding: 0.1rem;
+  border-radius: 0.2rem;
+  background-color: var(--clr-main-lightgrey);
+  color: var(--clr-main-black);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+   box-shadow: none;
+}
+
+
+
+
+
