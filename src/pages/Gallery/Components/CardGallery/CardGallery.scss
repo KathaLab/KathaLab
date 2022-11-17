@@ -1,0 +1,32 @@
+.card {
+    width: 18rem;
+    height: 18rem;
+    border-radius:.5rem;
+    background-color: white;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s;
+
+    &:hover{
+        transform: scale(1.025);
+    }
+}
+
+.cardTitle {
+    position: absolute;
+    bottom: 0;
+
+    width: 100%;
+    background-color: var(--clr-main-secondary);
+    color: var(--clr-main-white);
+    height: 4rem;
+    line-height: 4rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.img {
+    position: absolute;
+    margin: 10%;
+    width: 80%;
+}

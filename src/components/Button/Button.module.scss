@@ -1,0 +1,34 @@
+.iconButton {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--clr-main-grey);
+    text-align: center;
+    aspect-ratio: 1;
+    transition: .2s;
+    border-radius: .5rem;
+
+    span {
+        font-size: 2rem;
+        margin: 0;padding: 0;   
+    }
+
+    &:hover {
+        background-color: var(--clr-main-primary);
+    }
+}
+
+.textButton {
+    cursor: pointer;
+
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 1.25rem;
+    background-color: var(--clr-main-primary);
+    color: var(--clr-main-white);
+    border: none;
+    padding: 0 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: .5rem;
+}

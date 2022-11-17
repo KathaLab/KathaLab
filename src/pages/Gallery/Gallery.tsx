@@ -2,17 +2,32 @@ import React, {useContext} from "react"
 import { Pages } from "../../app"
 import {LocalizationName} from "../../localization";
 import LocalizationContext from "../../context/LocalizationContext";
+import style from "./Gallery.scss"
+import {HeaderGallery} from './Components/HeaderGallery/HeaderGallery'
+import {CardGallery} from './Components/CardGallery/CardGallery'
 
 type componentType = {
   switchPage: (page: Pages) => void
 }
+let nbrGallery = 1;
 
 export const Gallery = ({switchPage}: componentType) => {
 
   const { languageDico } = useContext(LocalizationContext);
 
-  return <>
-    <h1>{languageDico[LocalizationName.titleGallery]}</h1>
-    <button onClick={() => switchPage(Pages.Playground)}>{languageDico[LocalizationName.titlePlayground]}</button>
-  </>
+  function handleClick() {
+    nbrGallery++;
+    switchPage(Pages.Playground)
+  }
+
+  return <div className={style.container}>
+    <HeaderGallery switchPage={switchPage}></HeaderGallery>
+    <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
+    <div className={style.cardList}>
+      {
+        Array.from(Array(nbrGallery), (_, i) => <CardGallery key={i} onClick={() => switchPage(Pages.Playground)}></CardGallery>)
+      }
+      <button className={style.btnCreateTopology} onClick={()=>{handleClick()}}>+</button>
+    </div>
+  </div>
 }

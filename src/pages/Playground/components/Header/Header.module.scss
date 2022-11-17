@@ -1,0 +1,22 @@
+.header {
+    background-color: var(--clr-main-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 5.5rem;
+    box-sizing: border-box;
+    padding: 0 1rem
+}   
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}

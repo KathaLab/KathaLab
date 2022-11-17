@@ -1,0 +1,14 @@
+.deviceCard {
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+  min-width: 4rem;
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: var(--clr-main-grey);
+
+  img {
+    width: 4rem;
+  }
+}

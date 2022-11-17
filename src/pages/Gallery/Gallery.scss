@@ -1,0 +1,43 @@
+.container {
+	background-color: var(--clr-main-lightgrey);
+	min-height: 100vh;
+}
+
+.cardList {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+	justify-items: center;
+	padding: 2rem;
+	gap: 2rem;
+	grid-auto-flow: row;
+}
+
+.galleryExplication{
+	text-align: center;
+	padding: 3rem 0;
+	line-height: 8rem;
+	font-size: 3rem;
+	font-weight: 700 ;
+    color: var(--clr-main-primary);
+	background-color: var(--clr-main-grey);
+}
+
+.btnCreateTopology {
+	width: 18rem;
+	aspect-ratio: 1;
+	border: none;
+	font-size: 11rem;
+	font-weight: 200;
+	color: var(--clr-main-primary);
+	border-radius: 0.5rem;
+	background-color: var(--clr-main-white);
+	transition: .2s;
+
+	&:hover{
+		transform: scale(1.025);
+	}
+}
+
+.btnCreateTopology:active, .btnCreateTopology:focus {
+	outline: none;
+}

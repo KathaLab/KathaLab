@@ -1,0 +1,7 @@
+.canvas {
+    flex-grow: 1;
+    
+    &:focus, &:active {
+        outline: none;
+    }
+}
