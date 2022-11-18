@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
+import { useCssVar } from "../../../../hooks/useCssVar";
+import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { Device, deviceSize, deviceToImage } from "../../../../model/Device";
-import { roundRect } from "./canvaHelper";
 import style from "./Canvas.module.scss";
 
 type ComponentType = {
@@ -15,6 +16,8 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
   const currentDevice = useRef(null);
   const deviceRef = useRef(selectedDevice);
 
+  const color = useCssVar("--clr-main-primary");
+  const [getImg] = useColoredImage();
 
   useEffect(() => {
     deviceRef.current = selectedDevice;
@@ -33,15 +36,25 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
           y: 10, 
         };
 
-      ctx.drawImage(
-        deviceToImage[device.type],
-        device?.position.x,
-        device?.position.y,
-        deviceSize.width,
-        deviceSize.height
-      );
+      (async () => {
+        const color2 = deviceRef.current === device.name ? color + "99" : color
+        console.log(selectedDevice, color2);
+        const test = await getImg(deviceToImage[device.type], color2);
+        test.onload = () => {
+          ctx.drawImage(
+            test,
+            device?.position.x,
+            device?.position.y,
+            deviceSize.width,
+            deviceSize.height
+          );
+        };
+
+        test.complete && test.onload(null);
+      })()
 
       ctx.textAlign = "center";
+      ctx.fillStyle = color;
       ctx.font = "16px 'Be Vietnam Pro'";
       ctx.fillText(
         device.name,
@@ -68,12 +81,12 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
     canvasRef.current.height = rect.height;
 
     canvasRef.current.onmouseup = () => {
-      setSelectedDevice(currentDevice.current);
       currentDevice.current = null;
     };
 
     canvasRef.current.onmousedown = (evt: MouseEvent) => {
       currentDevice.current = getDeviceByPosition(evt.offsetX, evt.offsetY);
+      setSelectedDevice(currentDevice.current);
       canvasRef.current.focus()
 
     };
@@ -107,7 +120,7 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
     console.dir(canvasRef.current);
 
     drawJson(topoJson);
-  }, [topoJson]);
+  }, [topoJson, selectedDevice]);
 
   return <canvas tabIndex={0} ref={canvasRef} className={`${style.canvas}`}></canvas>;
 };

@@ -15,15 +15,9 @@ export type Position = { x: number; y: number };
 
 export const deviceSize = { width: 100, height: 100 };
 
-const getImageOfDevice = (url: string) => {
-  const image = new Image();
-  image.src = url;
-  return image;
-};
-
-export const deviceToImage: Record<DeviceType, HTMLImageElement> = {
-  [DeviceType.PC]: getImageOfDevice("assets/laptop.svg"),
-  [DeviceType.Router]: getImageOfDevice("assets/router.svg"),
+export const deviceToImage: Record<DeviceType, string> = {
+  [DeviceType.PC]: "assets/laptop.svg",
+  [DeviceType.Router]: "assets/router.svg",
 };
 
 export const devices: Device[] = [

@@ -4,18 +4,18 @@ import { Button } from '../../../../components/Button/Button'
 
 
 type ComponentType = {
-  device : string
+  device: string
 }
 
-export const ConfigPanel = ({device}: ComponentType) => {
+export const ConfigPanel = ({ device }: ComponentType) => {
 
-    const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   return (
     device && <div className={style.panel} data-expanded={expanded}>
-        <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
+      <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
 
-        <span className={style.title}>Configuration - {device}</span>
+      <span className={style.title}>Configuration - {device}</span>
     </div>
   )
 }

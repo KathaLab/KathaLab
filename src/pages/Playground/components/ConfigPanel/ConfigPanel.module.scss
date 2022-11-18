@@ -19,18 +19,24 @@
     
 
     & .title {
-        visibility: visible;
+        position: absolute;
+        transform-origin: bottom left;
+        transform: rotate(90deg);
+        white-space: nowrap;
+        height: 4.5rem;
+        line-height: 4.5rem;
+        font-size: 1.5rem;
+        color: white;
     }
+
 }
 
-.title {
-    position: absolute;
-    transform-origin: bottom left;
-    transform: rotate(90deg);
-    white-space: nowrap;
-    height: 4.5rem;
-    line-height: 4.5rem;
-    font-size: 1.5rem;
-    color: white;
-    visibility: hidden;
+[data-expanded=true] {
+    min-width: 4.5rem;
+    
+
+    & .title {
+        
+    }
+    
 }
