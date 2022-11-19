@@ -7,9 +7,10 @@ import style from "./Header.module.scss";
 
 type componentType = {
   switchPage: (page: Pages) => void
+  handleSave: () => void
 }
 
-export const Header = ({switchPage}: componentType) => {
+export const Header = ({switchPage, handleSave}: componentType) => {
   return (
     <header className={style.header}>
       <div className={style.left}>
@@ -18,6 +19,7 @@ export const Header = ({switchPage}: componentType) => {
         <Button type="icon" value="settings"></Button>
       </div>
       <div className={style.right}>
+        <Button value="save" type="icon" onclick={handleSave}></Button>
         <Button value="Import"></Button>
         <Button value="Export"></Button>
       </div>
