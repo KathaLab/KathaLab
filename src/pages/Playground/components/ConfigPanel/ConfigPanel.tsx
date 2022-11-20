@@ -23,15 +23,15 @@ export const ConfigPanel = ({device}: ComponentType) => {
             <img src="/assets/laptop.svg" alt="img-device" />
           </div>
           <div className={style.form}>
-            <TextInput placeholder={device}></TextInput>
+            <TextInput placeholder={device} className={style.inputConfigPanel}></TextInput>
             <p className={style.labelInput}>Ip address</p>
-            <TextInput placeholder=""></TextInput>
+            <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
             <p className={style.labelInput}>Mask</p>
-            <TextInput placeholder=""></TextInput>
+            <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
             <p className={style.labelInput}>Gateway</p>
-            <TextInput placeholder=""></TextInput>
+            <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
             <p className={style.labelInput}>Startup command</p>
-            <TextInput placeholder=""></TextInput>
+            <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
           </div>
 
         </div>

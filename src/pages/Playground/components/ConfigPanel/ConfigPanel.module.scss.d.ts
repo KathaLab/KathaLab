@@ -4,6 +4,7 @@ interface CssExports {
   'container': string;
   'form': string;
   'image': string;
+  'inputConfigPanel': string;
   'labelInput': string;
   'panel': string;
   'title': string;

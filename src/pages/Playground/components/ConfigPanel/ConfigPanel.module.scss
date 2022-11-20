@@ -29,6 +29,16 @@
     }
 }
 
+[data-expanded=true] {
+    .toggleExpand {
+        background-color: var(--clr-main-primary);
+
+        &:hover {
+            background-color: var(--clr-main-lightgrey);
+        }
+    }
+}
+
 .title {
     position: absolute;
     transform-origin: bottom left;
@@ -82,4 +92,9 @@
             color: var(--clr-main-black);
         }
     }
+}
+
+.inputConfigPanel {
+    width: 100%;
+    background-color: var(--clr-main-white);
 }
