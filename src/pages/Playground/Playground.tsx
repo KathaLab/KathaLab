@@ -40,9 +40,18 @@ export const Playground = ({ switchPage }: componentType) => {
     })
   }
 
+  const handleExport = () => {
+    console.log("export")
+  }
+
+
+  const handleImport = () => {
+    console.log("export")
+  }
+
   return (
     <div className={style.page}>
-      <Header switchPage={switchPage} handleSave={handleSave}></Header>
+      <Header switchPage={switchPage} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
       <div className={style.content}>
         <ul>
           {devices.map((device, i) => (

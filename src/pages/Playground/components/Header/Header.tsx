@@ -8,9 +8,11 @@ import style from "./Header.module.scss";
 type componentType = {
   switchPage: (page: Pages) => void
   handleSave: () => void
+  handleImport: () => void
+  handleExport: () => void
 }
 
-export const Header = ({switchPage, handleSave}: componentType) => {
+export const Header = ({ switchPage, handleSave, handleExport, handleImport }: componentType) => {
   return (
     <header className={style.header}>
       <div className={style.left}>
@@ -20,8 +22,8 @@ export const Header = ({switchPage, handleSave}: componentType) => {
       </div>
       <div className={style.right}>
         <Button value="save" type="icon" onclick={handleSave}></Button>
-        <Button value="Import"></Button>
-        <Button value="Export"></Button>
+        <Button value="Import" onclick={handleImport} ></Button>
+        <Button value="Export" onclick={handleExport} ></Button>
       </div>
     </header>
   );
