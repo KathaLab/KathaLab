@@ -3,11 +3,11 @@ import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Header } from "./components/Header/Header";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
-import style from "./Playground.module.scss";
+import style from "./Playground.module.scss"
+;
 import { Pages } from "../../app";
 import { Device, devices } from "../../model/Device";
 import { useId } from "../../hooks/useId";
-
 type componentType = {
   switchPage: (page: Pages) => void;
 };
@@ -25,6 +25,15 @@ export const Playground = ({ switchPage }: componentType) => {
       },
     ]);
   };
+
+  const openFile = async () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const path = await window.electronAPI.chooseFile();
+      if (path.filePaths[0]) {
+          return path.filePaths[0]
+      }
+  }
 
   return (
     <div className={style.page}>
