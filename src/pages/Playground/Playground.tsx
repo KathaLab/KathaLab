@@ -42,48 +42,48 @@ export const Playground = ({ switchPage }: componentType) => {
     if (path.filePaths[0]) {
       return path.filePaths[0]
     }
-    const handleSave = () => {
-      console.log("test")
-      snackBar.updateContext({
-        duration: 2000,
-        icon: "save",
-        message: "Saved successfully!"
-      })
-    }
+  }
+  const handleSave = () => {
+    console.log("test")
+    snackBar.updateContext({
+      duration: 2000,
+      icon: "save",
+      message: "Saved successfully!"
+    })
+  }
 
-    const handleExport = () => {
-      console.log("export")
-    }
+  const handleExport = () => {
+    console.log("export")
+  }
 
 
-    const handleImport = () => {
-      console.log("export")
-    }
+  const handleImport = () => {
+    console.log("export")
+  }
 
-    return (
-      <div className={style.page}>
-        <Header switchPage={switchPage} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
-        <div className={style.content}>
-          <ul>
-            {devices.map((device, i) => (
-              <li key={i}>
-                <DeviceCard
-                  device={device}
-                  onClick={() => handleDeviceClick(device)}
-                  color={color}
-                ></DeviceCard>
-              </li>
-            ))}
-          </ul>
-          <Canvas
-            topoJson={json}
-            setJson={(json: Lab) => setJson(json)}
-            setSelectedDevice={(name: string) => setSelectedDevice(name)}
-            selectedDevice={selectedDevice}
-          ></Canvas>
-          <ConfigPanel device={selectedDevice}></ConfigPanel>
-        </div>
+  return (
+    <div className={style.page}>
+      <Header switchPage={switchPage} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
+      <div className={style.content}>
+        <ul>
+          {devices.map((device, i) => (
+            <li key={i}>
+              <DeviceCard
+                device={device}
+                onClick={() => handleDeviceClick(device)}
+                color={color}
+              ></DeviceCard>
+            </li>
+          ))}
+        </ul>
+        <Canvas
+          topoJson={json}
+          setJson={(json: Lab) => setJson(json)}
+          setSelectedDevice={(name: string) => setSelectedDevice(name)}
+          selectedDevice={selectedDevice}
+        ></Canvas>
+        <ConfigPanel device={selectedDevice}></ConfigPanel>
       </div>
-    );
-  };
-}
+    </div>
+  );
+};
