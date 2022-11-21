@@ -21,7 +21,7 @@ export const DeviceCard = ({ onClick, device, color }: ComponentType) => {
 
   return (
     <div className={style.deviceCard} onClick={onClick}>
-      <img ref={imageRef}  alt="img-device" />
+      <img ref={imageRef} alt="img-device" />
     </div>
   );
 };

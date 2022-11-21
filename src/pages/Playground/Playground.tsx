@@ -9,12 +9,16 @@ import { Device, devices } from "../../model/Device";
 import { useId } from "../../hooks/useId";
 import { useCssVar } from "../../hooks/useCssVar";
 import SnackBarContext from "../../context/SnackbarContext";
+import { Lab } from "../..//model/Lab";
 type componentType = {
   switchPage: (page: Pages) => void;
 };
 
 export const Playground = ({ switchPage }: componentType) => {
-  const [json, setJson] = useState<Device[]>([]);
+  const [json, setJson] = useState<Lab>({
+    name: "",
+    devices: []
+  });
   const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
 
   const snackBar = useContext(SnackBarContext);
@@ -22,13 +26,12 @@ export const Playground = ({ switchPage }: componentType) => {
   const color = useCssVar("--clr-main-primary");
 
   const handleDeviceClick = (device: Device) => {
-    setJson([
-      ...json,
-      {
+    setJson({
+      ...json, devices: [...json.devices, {
         ...device,
         name: `${device.type}${useId(device.type)}`,
-      },
-    ]);
+      }]
+    });
   };
 
   const handleSave = () => {
@@ -66,7 +69,7 @@ export const Playground = ({ switchPage }: componentType) => {
         </ul>
         <Canvas
           topoJson={json}
-          setJson={(json: Device[]) => setJson(json)}
+          setJson={(json: Lab) => setJson(json)}
           setSelectedDevice={(name: string) => setSelectedDevice(name)}
           selectedDevice={selectedDevice}
         ></Canvas>
