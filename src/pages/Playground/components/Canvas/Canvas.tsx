@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { useCssVar } from "../../../../hooks/useCssVar";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
-import { Device, deviceSize, deviceToImage } from "../../../../model/Device";
+import { Device, deviceSize } from "../../../../model/Device";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
 
@@ -75,7 +75,7 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
     })?.name;
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const rect = canvasRef.current.getBoundingClientRect();
     canvasRef.current.width = rect.width;
     canvasRef.current.height = rect.height;

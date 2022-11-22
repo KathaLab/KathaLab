@@ -7,7 +7,6 @@ import style from "./Playground.module.scss"
   ;
 import { Pages } from "../../app";
 import { Device, devices } from "../../model/Device";
-import { useId } from "../../hooks/useId";
 import { useCssVar } from "../../hooks/useCssVar";
 import SnackBarContext from "../../context/SnackbarContext";
 import { Lab } from "../..//model/Lab";
@@ -15,10 +14,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 type componentType = {
   switchPage: (page: Pages) => void;
+  lab?: Lab;
 };
 
-export const Playground = ({ switchPage }: componentType) => {
-  const [json, setJson] = useState<Lab>({
+export const Playground = ({ switchPage, lab }: componentType) => {
+  const [json, setJson] = useState<Lab>(lab || {
     name: "",
     id: uuidv4(),
     devices: []
@@ -31,10 +31,16 @@ export const Playground = ({ switchPage }: componentType) => {
   const color = useCssVar("--clr-main-primary");
 
   const handleDeviceClick = (device: Device) => {
+
+    let name = "";
+    let i = 1;
+
+    while (name == "" || json.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+
     setJson({
       ...json, devices: [...json.devices, {
         ...device,
-        name: `${device.type}${useId(device.type)}`,
+        name,
       }]
     });
   };
@@ -42,12 +48,12 @@ export const Playground = ({ switchPage }: componentType) => {
   const handleSave = async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const result = await window.electronAPI.saveData(json);
+    await window.electronAPI.saveData(json);
 
     snackBar.updateContext({
       duration: 3000,
       icon: "save",
-      message: result ? `Saved successfully!` : `Error while saving the lab`
+      message: `Saved successfully!`,
     })
   }
 

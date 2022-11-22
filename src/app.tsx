@@ -17,6 +17,7 @@ import themeContext from "./context/ThemeContext";
 import SnackBarContext from "./context/SnackbarContext";
 import { SnackBar, snackBarMessageType } from "./components/SnackBar/SnackBar";
 import { useDelayQueue } from "./hooks/useDelayQueue";
+import { Lab } from "./model/Lab";
 
 export type themeNames = keyof typeof themes
 export enum Pages {
@@ -31,6 +32,13 @@ const App = () => {
     const [theme, setTheme] = useState<themeNames>("theme-light")
     const [snackbarVisibility, setSnackbarVisibility] = useState(false)
 
+    const labRef = React.useRef<Lab | null>(null);
+
+    const switchPage = (page: Pages, option?: { lab?: Lab }) => {
+        labRef.current = option?.lab ?? null;
+        setPage(page);
+    }
+    
     // handle snackbar
     const handleSnackBarMessage = (message: snackBarMessageType) => {
         setSnackbarVisibility(true)
@@ -46,9 +54,9 @@ const App = () => {
             <themeContext.Provider value={{ theme, updateContext: setTheme }}>
                 <SnackBarContext.Provider value={{ updateContext: addElement }}>
                     {
-                        page == Pages.Gallery ? <Gallery switchPage={setPage} />
-                            : page == Pages.Playground ? <Playground switchPage={setPage} />
-                                : page == Pages.Settings ? <Settings switchPage={setPage} /> : null
+                        page == Pages.Gallery ? <Gallery switchPage={switchPage} />
+                            : page == Pages.Playground ? <Playground lab={labRef.current} switchPage={switchPage} />
+                                : page == Pages.Settings ? <Settings switchPage={switchPage} /> : null
                     }
                     <SnackBar visibility={snackbarVisibility} {...currentElement} />
                 </SnackBarContext.Provider>
