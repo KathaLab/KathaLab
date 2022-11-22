@@ -61,14 +61,20 @@ export const Playground = ({ switchPage, lab }: componentType) => {
     console.log("export")
   }
 
-
   const handleImport = () => {
     console.log("export")
   }
 
+  const handleNameChange = (name: string) => {
+    setJson({
+      ...json,
+      name
+    })
+  }
+
   return (
     <div className={style.page}>
-      <Header switchPage={switchPage} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
+      <Header switchPage={switchPage} name={json.name} onNameChange={handleNameChange} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
       <div className={style.content}>
         <ul>
           {devices.map((device, i) => (

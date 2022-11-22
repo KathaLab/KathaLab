@@ -1,5 +1,6 @@
 import { app, dialog, ipcMain } from 'electron';
 import fs from 'fs';
+import { Lab } from './model/Lab';
 
 export class electronAPI {
     initialize = async () => {
@@ -14,19 +15,16 @@ export class electronAPI {
                 console.warn(e)
             }
         })
-        ipcMain.handle('save:list', async (event) => {
-            try {
-                const files = fs.readdirSync(app.getAppPath() + `/data`)
-                event.sender.send('save:list', files)
-            }
-            catch (e) {
-                console.warn(e)
-            }
-        })
         ipcMain.handle('save:load', async (event, name) => {
             try {
-                const content = fs.readFileSync(app.getAppPath() + `/data/${name}`, {encoding:'utf8', flag:'r'})
-                event.sender.send('save:load', JSON.parse(content));
+                const files = fs.readdirSync(app.getAppPath() + `/data`);
+
+                const lab: Lab[] = [];
+
+                files.forEach(file => {
+                    lab.push(JSON.parse(fs.readFileSync(app.getAppPath() + `/data/${file}`, 'utf-8')));
+                })
+                event.sender.send('save:load', lab);
             }
             catch (e) {
                 console.warn(e)

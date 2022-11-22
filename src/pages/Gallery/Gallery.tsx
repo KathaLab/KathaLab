@@ -23,30 +23,23 @@ export const Gallery = ({ switchPage }: componentType) => {
   const [lab, setLabs] = useState<Lab[]>([]);
 
 
-  const handleFileSave = (_: unknown, data: Lab) => {
-    setLabs(old => [...old, data]);
+  const handleFileSave = (_: unknown, data: Lab[]) => {
+    setLabs(data);
   }
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.electronAPI.receive("save:list", handleListSave);
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window.electronAPI.receive("save:load", handleFileSave);
  
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    window.electronAPI.listSave();
+    window.electronAPI.loadSave();
 
     return () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.electronAPI.removeListener("save:list");
     }
   }, [])
 
@@ -61,7 +54,7 @@ export const Gallery = ({ switchPage }: componentType) => {
     <div className={style.cardList}>
       {
         lab.map((lab, index) => {
-          return <CardGallery key={index} onClick={() => switchPage(Pages.Playground, { lab })}></CardGallery>
+          return <CardGallery name={lab.name} key={index} onClick={() => switchPage(Pages.Playground, { lab })}></CardGallery>
         })
       }
       <button className={style.btnCreateTopology} onClick={() => { handleClick() }}>+</button>

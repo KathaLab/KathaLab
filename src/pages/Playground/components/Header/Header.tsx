@@ -10,14 +10,17 @@ type componentType = {
   handleSave: () => void
   handleImport: () => void
   handleExport: () => void
+  onNameChange: (name: string) => void
+  name: string
 }
 
-export const Header = ({ switchPage, handleSave, handleExport, handleImport }: componentType) => {
+export const Header = ({ switchPage, handleSave, handleExport, handleImport, onNameChange, name }: componentType) => {
+
   return (
     <header className={style.header}>
       <div className={style.left}>
         <Button type="icon" value="arrow_back" onclick={() => switchPage(Pages.Gallery)}></Button>
-        <TextInput placeholder="Topologie n°1"></TextInput>
+        <TextInput value={name} onChange={onNameChange} placeholder="Topologie n°1"></TextInput>
         <Button type="icon" value="settings"></Button>
       </div>
       <div className={style.right}>
