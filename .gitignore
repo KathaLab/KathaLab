@@ -93,4 +93,4 @@ out/
 /package-lock.json
 
 # specific 
-/data
+/data/*.json
