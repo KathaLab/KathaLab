@@ -39,7 +39,7 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
 
       (async () => {
         const color2 = deviceRef.current === device.name ? color + "99" : color
-        const test = await getImg(deviceToImage[device.type], color2);
+        const test = await getImg(device.type, color2);
         test.onload = () => {
           ctx.drawImage(
             test,

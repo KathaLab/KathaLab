@@ -11,6 +11,8 @@ import { useId } from "../../hooks/useId";
 import { useCssVar } from "../../hooks/useCssVar";
 import SnackBarContext from "../../context/SnackbarContext";
 import { Lab } from "../..//model/Lab";
+import { v4 as uuidv4 } from 'uuid';
+
 type componentType = {
   switchPage: (page: Pages) => void;
 };
@@ -18,8 +20,10 @@ type componentType = {
 export const Playground = ({ switchPage }: componentType) => {
   const [json, setJson] = useState<Lab>({
     name: "",
+    id: uuidv4(),
     devices: []
   });
+
   const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
 
   const snackBar = useContext(SnackBarContext);
@@ -35,20 +39,15 @@ export const Playground = ({ switchPage }: componentType) => {
     });
   };
 
-  const openFile = async () => {
+  const handleSave = async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const path = await window.electronAPI.chooseFile();
-    if (path.filePaths[0]) {
-      return path.filePaths[0]
-    }
-  }
-  const handleSave = () => {
-    console.log("test")
+    const result = await window.electronAPI.saveData(json);
+
     snackBar.updateContext({
-      duration: 2000,
+      duration: 3000,
       icon: "save",
-      message: "Saved successfully!"
+      message: result ? `Saved successfully!` : `Error while saving the lab`
     })
   }
 

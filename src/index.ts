@@ -6,7 +6,7 @@ import {electronAPI} from './electronAPI';
 // plugin that tells the Electron app where to look for the Webpack-bundled app code (depending on
 // whether you're running in development or production).
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
-const PRELOAD_PATH = path.join(app.getAppPath() + "/src/preload.ts");
+const PRELOAD_PATH = path.join(app.getAppPath() + "/src/preload.js");
 
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
