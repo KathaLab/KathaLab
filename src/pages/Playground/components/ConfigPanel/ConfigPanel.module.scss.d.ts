@@ -2,10 +2,13 @@
 // Please do not change this file!
 interface CssExports {
   'container': string;
+  'divSwitch': string;
   'form': string;
   'image': string;
   'inputConfigPanel': string;
-  'labelInput': string;
+  'ip': string;
+  'labelForm': string;
+  'labelMenu': string;
   'panel': string;
   'title': string;
   'toggleExpand': string;

@@ -30,7 +30,7 @@ export const Playground = ({ switchPage }: componentType) => {
     <div className={style.page}>
       <Header switchPage={switchPage}></Header>
       <div className={style.content}>
-        <ul>
+        <ul className={style.list}>
           {devices.map((device, i) => (
             <li key={i}>
               <DeviceCard
