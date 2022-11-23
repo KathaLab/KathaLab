@@ -46,13 +46,14 @@ const App = () => {
         <localizationContext.Provider value={{ language: localization, languageDico: LanguageToLocalization[localization], updateContext: setLocalization }}>
             <themeContext.Provider value={{ theme, updateContext: setTheme }}>
                 <SnackBarContext.Provider value={{ updateContext: addElement }}>
-                                <TitleBar switchPage={setPage}></TitleBar>
-                <div className="pageWrapper">
-                    {
-                        page == Pages.Gallery ? <Gallery switchPage={setPage} />
-                            : page == Pages.Playground ? <Playground switchPage={setPage} />
-                                : page == Pages.Settings ? <Settings switchPage={setPage} /> : null
-                    }
+                    <TitleBar switchPage={setPage}></TitleBar>
+                    <div className="pageWrapper">
+                        {
+                            page == Pages.Gallery ? <Gallery switchPage={setPage} />
+                                : page == Pages.Playground ? <Playground switchPage={setPage} />
+                                    : page == Pages.Settings ? <Settings switchPage={setPage} /> : null
+                        }
+                    </div>
                     <SnackBar visibility={snackbarVisibility} {...currentElement} />
                 </SnackBarContext.Provider>
             </themeContext.Provider>
