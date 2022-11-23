@@ -1,0 +1,76 @@
+.titleBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-color: #333;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    -webkit-app-region: drag;
+}
+
+.input {
+    justify-self: center;
+    background: transparent;
+    border: 1px solid var(--clr-main-black);
+    color: var(--clr-main-black);
+    border-radius: 5px;
+    padding: .25rem .5rem;
+    min-width: clamp(10rem, 40vw, 20rem);
+}
+
+.btnList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    align-content: center;
+
+    li {
+        height: 100%;
+        line-height: 3rem;
+        padding: 0rem 1rem;
+
+
+        &:hover {
+            background-color: var(--clr-main-primary);
+        }
+
+        &:last-child:hover {
+            background-color: red;
+        }
+    }
+}
+
+.clickable {
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+}
+
+.left {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: normal;
+
+}
+
+.separator {
+    height: 100%;
+    width: 2px;
+    margin: 0 1rem;
+    font-size: 1rem;
+}
+
+.separator ~ * {
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    border-radius: 5px;
+}
+
+.separator ~ *:hover {
+    background-color: rgba(255,255,255, 0.1);
+}
