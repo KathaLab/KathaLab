@@ -34,7 +34,7 @@ export const Settings = ({switchPage}: componentType) => {
 
             <div className={style.gridItemLeft}> <label htmlFor="language" className={style.label}>{languageDico[LocalizationName.languageParameterLabel]} : </label></div>
             <div className={style.gridItemRight}>
-                <select name="language" className={style.select}  onChange={(e)=>updateLocalization(e.target.value as Language)}>
+                <select id="language" name="language" className={style.select}  onChange={(e)=>updateLocalization(e.target.value as Language)}>
                     <option value={Language.EN}>
                         {languageDico[LocalizationName.languageEnglish]}
                     </option>
@@ -45,7 +45,7 @@ export const Settings = ({switchPage}: componentType) => {
             </div>
             <div className={style.gridItemLeft}> <label htmlFor="theme" className={style.label}>{languageDico[LocalizationName.themeParameterLabel]} : </label></div>
             <div className={style.gridItemRight}>
-                <select name="theme" className={style.select} onChange={(e)=>updateTheme(e.target.value)} value={theme}>
+                <select id="theme" name="theme" className={style.select} onChange={(e)=>updateTheme(e.target.value)} value={theme}>
                     <option  value="theme-light">
                         {languageDico[LocalizationName.themeLight]}
                     </option>
