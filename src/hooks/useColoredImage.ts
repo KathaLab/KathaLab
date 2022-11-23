@@ -5,8 +5,10 @@ export const useColoredImage : () => [(imageUrl: string, imageColor: string) => 
     const svgToColoredImage = async (url: string,color: string) => {
         const image = await fetch(url)
         const blob = await image.blob()
-        const coloredSvg = (await blob.text()).replace(/#000000/g, color)
-        const svg = new Blob([coloredSvg], { type: 'image/svg+xml' })
+        const coloredSvg = await blob.text()
+        const temp = coloredSvg.replace(/#000000/g, color)
+        console.log(temp)
+        const svg = new Blob([temp], { type: 'image/svg+xml' })
         const img = new Image();
 
         img.src = URL.createObjectURL(svg);

@@ -3,11 +3,12 @@ import { useCssVar } from "../../../../hooks/useCssVar";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { Device, deviceSize, deviceToImage } from "../../../../model/Device";
 import style from "./Canvas.module.scss";
+import { Lab } from "../../../../model/Lab";
 
 type ComponentType = {
-  topoJson: Device[];
+  topoJson: Lab;
   selectedDevice: string
-  setJson: (json: Device[]) => void;
+  setJson: (json: Lab) => void;
   setSelectedDevice: (name: string) => void;
 };
 
@@ -31,14 +32,13 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
 
     json.forEach((device, i) => {
       if (!device.position)
-        topoJson[i].position = device?.position || {
+        topoJson.devices[i].position = device?.position || {
           x: 10,
           y: 10, 
         };
 
       (async () => {
         const color2 = deviceRef.current === device.name ? color + "99" : color
-        console.log(selectedDevice, color2);
         const test = await getImg(deviceToImage[device.type], color2);
         test.onload = () => {
           ctx.drawImage(
@@ -65,7 +65,7 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
   };
 
   const getDeviceByPosition = (x: number, y: number) => {
-    return topoJson.find((device) => {
+    return topoJson.devices.find((device) => {
       return (
         x > device.position.x &&
         x < device.position.x + deviceSize.width &&
@@ -94,32 +94,30 @@ export const Canvas = ({ topoJson, setSelectedDevice, selectedDevice }: Componen
     canvasRef.current.onkeydown = (evt: KeyboardEvent) => {
 
       if (evt.key === "Delete") {
-        const index =  topoJson.findIndex(
+        const index =  topoJson.devices.findIndex(
           (device) => {
             return device.name === deviceRef.current;
           }
           );
           
-        index !== -1 && topoJson.splice(index, 1);
+        index !== -1 && topoJson.devices.splice(index, 1);
         setSelectedDevice(null);
-        drawJson(topoJson);
+        drawJson(topoJson.devices);
       }
     };
 
     canvasRef.current.onmousemove = (evt: MouseEvent) => {
       if (currentDevice.current) {
-        const device = topoJson.find(
+        const device = topoJson.devices.find(
           (device) => device.name === currentDevice.current
         );
         device.position.x = evt.offsetX - deviceSize.width / 2;
         device.position.y = evt.offsetY - deviceSize.height / 2;
-        drawJson(topoJson);
+        drawJson(topoJson.devices);
       }
     };
 
-    console.dir(canvasRef.current);
-
-    drawJson(topoJson);
+    drawJson(topoJson.devices);
   }, [topoJson, selectedDevice]);
 
   return <canvas tabIndex={0} ref={canvasRef} className={`${style.canvas}`}></canvas>;

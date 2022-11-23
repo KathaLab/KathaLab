@@ -1,8 +1,17 @@
 export type Device = {
-  name: string;
-  interfaces: Interface[];
-  position?: Position;
-  type: DeviceType;
+  name: string
+  type: DeviceType
+  position?: Position
+  memory?: number
+  interfaces?: {
+      ip: string
+      cidr: number 
+      is_up: boolean
+      collision_domain: string
+      bridged: boolean
+  }[]
+  default_command?: string[]
+  startups_commands?: string[]
 };
 
 export enum DeviceType {
@@ -23,12 +32,10 @@ export const deviceToImage: Record<DeviceType, string> = {
 export const devices: Device[] = [
   {
     name: "",
-    interfaces: [],
     type: DeviceType.PC,
   },
   {
     name: "",
-    interfaces: [],
     type: DeviceType.Router,
   }
 ];

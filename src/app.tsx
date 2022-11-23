@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // importing the two pages
 import { Gallery, Playground, Settings } from "./pages"
@@ -14,6 +14,11 @@ import themes from "./theme/_theme.scss"
 import themeContext from "./context/ThemeContext";
 import { TitleBar } from "./components/TitleBar/TitleBar";
 
+// SnackBarContext
+import SnackBarContext from "./context/SnackbarContext";
+import { SnackBar, snackBarMessageType } from "./components/SnackBar/SnackBar";
+import { useDelayQueue } from "./hooks/useDelayQueue";
+
 export type themeNames = keyof typeof themes
 export enum Pages {
     Gallery,
@@ -22,22 +27,34 @@ export enum Pages {
 }
 
 const App = () => {
-    const [page, setPage] = useState<Pages>(Pages.Gallery)
+    const [page, setPage] = useState<Pages>(Pages.Settings)
     const [localization, setLocalization] = useState<Language>(Language.EN)
     const [theme, setTheme] = useState<themeNames>("theme-dark2")
+    const [snackbarVisibility, setSnackbarVisibility] = useState(false)
+
+    // handle snackbar
+    const handleSnackBarMessage = (message: snackBarMessageType) => {
+        setSnackbarVisibility(true)
+        return new Promise<void>((resolve) => setTimeout(() => {
+            setSnackbarVisibility(false)
+            setTimeout(resolve, 200);
+        }, message.duration - 200))
+    }
+    const [[currentElement], addElement] = useDelayQueue<snackBarMessageType>(handleSnackBarMessage);
 
     return <main className={themes[theme]}>
         <localizationContext.Provider value={{ language: localization, languageDico: LanguageToLocalization[localization], updateContext: setLocalization }}>
             <themeContext.Provider value={{ theme, updateContext: setTheme }}>
-                <TitleBar switchPage={setPage}></TitleBar>
+                <SnackBarContext.Provider value={{ updateContext: addElement }}>
+                                <TitleBar switchPage={setPage}></TitleBar>
                 <div className="pageWrapper">
-                {
-                    page == Pages.Gallery ? <Gallery switchPage={setPage} />
-                    : page == Pages.Playground ? <Playground switchPage={setPage} />
-                    : page == Pages.Settings ? <Settings switchPage={setPage} /> : null
-                    
-                }
-                </div>
+                    {
+                        page == Pages.Gallery ? <Gallery switchPage={setPage} />
+                            : page == Pages.Playground ? <Playground switchPage={setPage} />
+                                : page == Pages.Settings ? <Settings switchPage={setPage} /> : null
+                    }
+                    <SnackBar visibility={snackbarVisibility} {...currentElement} />
+                </SnackBarContext.Provider>
             </themeContext.Provider>
         </localizationContext.Provider>
     </main>
