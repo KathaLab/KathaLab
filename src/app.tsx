@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 // importing styles
 import themes from "./theme/_theme.scss"
 import themeContext from "./context/ThemeContext";
+import { TitleBar } from "./components/TitleBar/TitleBar";
 
 // SnackBarContext
 import SnackBarContext from "./context/SnackbarContext";
@@ -28,7 +29,7 @@ export enum Pages {
 const App = () => {
     const [page, setPage] = useState<Pages>(Pages.Settings)
     const [localization, setLocalization] = useState<Language>(Language.EN)
-    const [theme, setTheme] = useState<themeNames>("theme-light")
+    const [theme, setTheme] = useState<themeNames>("theme-dark2")
     const [snackbarVisibility, setSnackbarVisibility] = useState(false)
 
     // handle snackbar
@@ -45,6 +46,8 @@ const App = () => {
         <localizationContext.Provider value={{ language: localization, languageDico: LanguageToLocalization[localization], updateContext: setLocalization }}>
             <themeContext.Provider value={{ theme, updateContext: setTheme }}>
                 <SnackBarContext.Provider value={{ updateContext: addElement }}>
+                                <TitleBar switchPage={setPage}></TitleBar>
+                <div className="pageWrapper">
                     {
                         page == Pages.Gallery ? <Gallery switchPage={setPage} />
                             : page == Pages.Playground ? <Playground switchPage={setPage} />
@@ -56,4 +59,5 @@ const App = () => {
         </localizationContext.Provider>
     </main>
 }
+
 createRoot(document.querySelector('#root')).render(<App />,);

@@ -1,0 +1,35 @@
+.menu {
+    position: absolute;
+    left: 7ch;
+    top: 3rem;
+    background-color: var(--clr-main-lightgrey);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.menu li {
+    font-size: 1rem;
+    padding: .75rem 2rem;
+
+    &:hover {
+        background-color: var(--clr-main-primary);
+    }
+}
+
+.separator {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--clr-light-grey);
+}
+
+.disabled {
+    color: var(--clr-light-grey);
+    cursor: not-allowed;
+
+    &:hover {
+        background-color: transparent !important;
+    }
+}

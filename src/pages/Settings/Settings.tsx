@@ -30,8 +30,9 @@ export const Settings = ({switchPage}: componentType) => {
             </div>
         </header>
 
-        <div className={style.parameterGrid}>
 
+        
+        <div className={style.parameterGrid}>
             <div className={style.gridItemLeft}> <label htmlFor="language" className={style.label}>{languageDico[LocalizationName.languageParameterLabel]} : </label></div>
             <div className={style.gridItemRight}>
                 <select id="language" name="language" className={style.select}  onChange={(e)=>updateLocalization(e.target.value as Language)}>
