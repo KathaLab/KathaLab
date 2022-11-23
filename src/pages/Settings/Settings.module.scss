@@ -1,6 +1,6 @@
 .page{
   height: 100vh;
-  background-color: var(--clr-main-lightgrey);
+  background-color: var(--clr-main-grey);
 }
 
 .header {
@@ -27,19 +27,24 @@
   gap: 1rem;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  margin-top: 2rem;
+.parameterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+  margin: 2rem 0 2rem 0;
 }
 
-.ParameterContainer{
+.gridItemLeft {
+  justify-self: end;
+  align-self: center;
+}
+
+.gridItemRight {
   display: flex;
-  flex-direction: row;
+  align-self: center;
   align-items: center;
-  margin: 1rem 3rem;
-  gap: 1rem;
-  font-size: 1.2rem;
 }
 
 .label {
@@ -47,10 +52,8 @@
 }
 
 .select {
-  border: none;
   border-color: var(--clr-main-secondary);
   border-width: 2px;
-  border-style: solid;
   width: 10rem;
   font-size: 1rem;
   padding: 0.1rem;
@@ -60,11 +63,8 @@
 }
 
 .storagePlaceInput {
-  border: none;
   border-color: var(--clr-main-secondary);
-  border-width: 2px;
   border-style: solid;
-  border: 1px solid var(clr-main-grey);
   width: 20rem;
   font-size: 1rem;
   padding: 0.1rem;
@@ -76,6 +76,17 @@
    box-shadow: none;
 }
 
+.centerDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnChooseDir {
+  background-color: transparent;
+  border: none;
+  color: var(--clr-main-primary);
+}
 
 
 

@@ -76,7 +76,7 @@ export const Playground = ({ switchPage, lab }: componentType) => {
     <div className={style.page}>
       <Header switchPage={switchPage} name={json.name} onNameChange={handleNameChange} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
       <div className={style.content}>
-        <ul>
+        <ul className={style.list}>
           {devices.map((device, i) => (
             <li key={i}>
               <DeviceCard

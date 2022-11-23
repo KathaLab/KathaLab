@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 // importing styles
 import themes from "./theme/_theme.scss"
 import themeContext from "./context/ThemeContext";
+import { TitleBar } from "./components/TitleBar/TitleBar";
 
 // SnackBarContext
 import SnackBarContext from "./context/SnackbarContext";
@@ -27,9 +28,9 @@ export enum Pages {
 }
 
 const App = () => {
-    const [page, setPage] = useState<Pages>(Pages.Gallery)
+    const [page, setPage] = useState<Pages>(Pages.Playground)
     const [localization, setLocalization] = useState<Language>(Language.EN)
-    const [theme, setTheme] = useState<themeNames>("theme-light")
+    const [theme, setTheme] = useState<themeNames>("theme-dark2")
     const [snackbarVisibility, setSnackbarVisibility] = useState(false)
 
     const labRef = React.useRef<Lab | null>(null);
@@ -53,11 +54,14 @@ const App = () => {
         <localizationContext.Provider value={{ language: localization, languageDico: LanguageToLocalization[localization], updateContext: setLocalization }}>
             <themeContext.Provider value={{ theme, updateContext: setTheme }}>
                 <SnackBarContext.Provider value={{ updateContext: addElement }}>
-                    {
-                        page == Pages.Gallery ? <Gallery switchPage={switchPage} />
-                            : page == Pages.Playground ? <Playground lab={labRef.current} switchPage={switchPage} />
-                                : page == Pages.Settings ? <Settings switchPage={switchPage} /> : null
-                    }
+                    <TitleBar switchPage={setPage}></TitleBar>
+                    <div className="pageWrapper">
+                        {
+                            page == Pages.Gallery ? <Gallery switchPage={setPage} />
+                                : page == Pages.Playground ? <Playground switchPage={setPage} />
+                                    : page == Pages.Settings ? <Settings switchPage={setPage} /> : null
+                        }
+                    </div>
                     <SnackBar visibility={snackbarVisibility} {...currentElement} />
                 </SnackBarContext.Provider>
             </themeContext.Provider>

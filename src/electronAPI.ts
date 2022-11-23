@@ -4,10 +4,25 @@ import { Lab } from './model/Lab';
 
 export class electronAPI {
     initialize = async () => {
-        ipcMain.handle('dialog:open', async (_, obj) => {
-            await dialog.showOpenDialog({ properties: ['openFile'] })
+
+        ipcMain.handle('dialog:open-file', async () => {
+            return await dialog.showOpenDialog({
+                properties: ['openFile']
+            }).then(response => {
+                return response.filePaths[0];
+            }).catch(err => {
+                console.warn(err.message)
+            })
         })
-        ipcMain.handle('save:save', async (_, obj) => {
+        ipcMain.handle('dialog:open-directory', async () => {
+            return await dialog.showOpenDialog({
+                properties: ['createDirectory', "openDirectory"],
+            }).then(response => {
+                return response.filePaths[0];
+            }).catch(err => {
+                console.warn(err.message)
+            })
+                    ipcMain.handle('save:save', async (_, obj) => {
             try {
                 fs.writeFileSync(app.getAppPath() + `/data/${obj.id}.json`, JSON.stringify(obj), 'utf-8');
             }

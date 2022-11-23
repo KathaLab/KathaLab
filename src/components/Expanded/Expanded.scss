@@ -1,0 +1,26 @@
+.expanded {
+    border-bottom: solid 5px var(--clr-main-black);
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .list {
+        padding-left: .75rem;
+    }
+
+    .list[data-expanded=true] {
+        margin-top: .5rem;
+        position: relative;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .list[data-expanded=false] {
+        position: absolute;
+        visibility: hidden;
+        transform: translateY(-100%);
+    }
+}

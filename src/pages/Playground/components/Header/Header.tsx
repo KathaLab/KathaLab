@@ -21,7 +21,7 @@ export const Header = ({ switchPage, handleSave, handleExport, handleImport, onN
       <div className={style.left}>
         <Button type="icon" value="arrow_back" onclick={() => switchPage(Pages.Gallery)}></Button>
         <TextInput value={name} onChange={onNameChange} placeholder="Topologie n°1"></TextInput>
-        <Button type="icon" value="settings"></Button>
+        <Button className= {style.settingButton}  type="icon" value="settings"></Button>
       </div>
       <div className={style.right}>
         <Button value="save" type="icon" onclick={handleSave}></Button>

@@ -49,7 +49,7 @@ export const Gallery = ({ switchPage }: componentType) => {
   }
 
   return <div className={style.container}>
-    <HeaderGallery switchPage={switchPage}></HeaderGallery>
+    {/* <HeaderGallery switchPage={switchPage}></HeaderGallery> */}
     <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
     <div className={style.cardList}>
       {
