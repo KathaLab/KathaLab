@@ -35,11 +35,6 @@ const App = () => {
 
   const labRef = React.useRef<Lab | null>(null);
 
-  const switchPage = (page: Pages, option?: { lab?: Lab }) => {
-    labRef.current = option?.lab ?? null;
-    setPage(page);
-  };
-
   // handle snackbar
   const handleSnackBarMessage = (message: snackBarMessageType) => {
     setSnackbarVisibility(true);
@@ -65,12 +60,12 @@ const App = () => {
       >
         <themeContext.Provider value={{ theme, updateContext: setTheme }}>
           <SnackBarContext.Provider value={{ updateContext: addElement }}>
-            <TitleBar switchPage={setPage}></TitleBar>
+            <TitleBar switchPage={setPage} page={page}></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
                 <Gallery switchPage={setPage} />
               ) : page == Pages.Playground ? (
-                <Playground switchPage={setPage} />
+                <Playground lab={labRef.current} />
               ) : page == Pages.Settings ? (
                 <Settings switchPage={setPage} />
               ) : null}

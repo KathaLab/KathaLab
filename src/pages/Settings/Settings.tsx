@@ -3,7 +3,6 @@ import {Pages} from "../../app";
 import LocalizationContext from "../../context/LocalizationContext";
 import ThemeContext from "../../context/ThemeContext";
 import style from "./Settings.module.scss"
-import { Button } from "../../components/Button/Button";
 import {Language, LocalizationName} from "../../localization";
 
 type componentType = {
@@ -23,15 +22,7 @@ export const Settings = ({switchPage}: componentType) => {
     // const windowSettings = new BrowserWindow({width: 800, height: 600})
 
     return <div className={style.page}>
-        <header className={style.header}>
-            <div className={style.left}>
-                <Button type="icon" value="arrow_back" onclick={() => switchPage(Pages.Gallery)}></Button>
-                <h1 className={style.headerTitle}>{languageDico[LocalizationName.titleSettings]}</h1>
-            </div>
-        </header>
-
-
-        
+      
         <div className={style.parameterGrid}>
             <div className={style.gridItemLeft}> <label htmlFor="language" className={style.label}>{languageDico[LocalizationName.languageParameterLabel]} : </label></div>
             <div className={style.gridItemRight}>

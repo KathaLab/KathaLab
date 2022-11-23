@@ -1,24 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pages } from '../../app'
 import { ContextMenu } from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
 
 type componentType = {
     switchPage: (page: Pages) => void
+    page: Pages
 }
 
-export const TitleBar = ({ switchPage }: componentType) => {
+export const TitleBar = ({ page, switchPage }: componentType) => {
 
     const [labExpanded, setLabExpanded] = useState(false);
+    const [isTitleEditable, setIsTitleEditable] = useState(false);
+    const [title, setTitle] = useState("");    
+
     const handleLabClick = () => setLabExpanded(x => !x);
 
+    useEffect(() => {
+        console.log("page")
+        setIsTitleEditable(page !== Pages.Playground)
+    }, [page])
+
     const labOptions = [
-        { label: 'New', onClick: () => { undefined } },
-        { label: 'Open', onClick: () => { undefined } },
+        { label: 'New', onClick: () => { switchPage(Pages.Playground); setLabExpanded(false) } },
+        { label: 'Open', options: [
+            { label: 'File 1', onClick: () => { undefined } },
+        ]},
         { separator: true },
-        { label: 'Save', onClick: () => { undefined }, disabled: true },
-        { label: 'Import', onClick: () => { undefined }, disabled: true },
-        { label: 'Export', onClick: () => { undefined }, disabled: true },
+        { label: 'Save', disabled: true },
+        { label: 'Import', disabled: true },
+        { label: 'Export', disabled: true },
     ];
 
     return (
@@ -28,14 +39,21 @@ export const TitleBar = ({ switchPage }: componentType) => {
                 <div>
                     <span className={styles.separator}>|</span>
                     <span className={styles.clickable + " " + (labExpanded ? styles.clicked : "")} onClick={handleLabClick}>Lab</span>
-                    {labExpanded && <ContextMenu options={labOptions}></ContextMenu>}
+                    {labExpanded && <ContextMenu options={labOptions} onHide={() => setLabExpanded(false)}></ContextMenu>}
+                    <span className={styles.clickable + " "} onClick={() => switchPage(Pages.Settings)}>Settings</span>
                 </div>
             </div>
-            <input className={styles.input + " " + styles.clickable} type="text" defaultValue="lab" />
-            <ul className={styles.btnList + " " + styles.clickable}>
-                <li className='material-icons material-icons-outlined'>minimize</li>
-                <li className='material-icons material-icons-outlined'>check_box_outline_blank</li>
-                <li className='material-icons material-icons-outlined'>close</li>
+            <input 
+                disabled={isTitleEditable} 
+                className={styles.input + " " + styles.clickable + " " + (isTitleEditable ? styles.title : "")}  
+                type="text"  
+                onChange={(e) => setTitle(e.target.value)}
+                value={(isTitleEditable ? "Lab creator" : title)}
+            />
+            <ul className={styles.btnList}>
+                <li className={'material-icons material-icons-outlined ' + styles.clickable}>remove</li>
+                <li className={'material-icons material-icons-outlined ' + styles.clickable}>check_box_outline_blank</li>
+                <li className={'material-icons material-icons-outlined ' + styles.clickable}>close</li>
             </ul>
         </div>
     )
