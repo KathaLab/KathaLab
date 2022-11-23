@@ -18,6 +18,7 @@ import { TitleBar } from "./components/TitleBar/TitleBar";
 import SnackBarContext from "./context/SnackbarContext";
 import { SnackBar, snackBarMessageType } from "./components/SnackBar/SnackBar";
 import { useDelayQueue } from "./hooks/useDelayQueue";
+import { Lab } from "./model/Lab";
 
 export type themeNames = keyof typeof themes
 export enum Pages {
@@ -32,6 +33,13 @@ const App = () => {
     const [theme, setTheme] = useState<themeNames>("theme-dark2")
     const [snackbarVisibility, setSnackbarVisibility] = useState(false)
 
+    const labRef = React.useRef<Lab | null>(null);
+
+    const switchPage = (page: Pages, option?: { lab?: Lab }) => {
+        labRef.current = option?.lab ?? null;
+        setPage(page);
+    }
+    
     // handle snackbar
     const handleSnackBarMessage = (message: snackBarMessageType) => {
         setSnackbarVisibility(true)

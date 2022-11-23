@@ -7,19 +7,23 @@ import style from "./Playground.module.scss"
   ;
 import { Pages } from "../../app";
 import { Device, devices } from "../../model/Device";
-import { useId } from "../../hooks/useId";
 import { useCssVar } from "../../hooks/useCssVar";
 import SnackBarContext from "../../context/SnackbarContext";
 import { Lab } from "../..//model/Lab";
+import { v4 as uuidv4 } from 'uuid';
+
 type componentType = {
   switchPage: (page: Pages) => void;
+  lab?: Lab;
 };
 
-export const Playground = ({ switchPage }: componentType) => {
-  const [json, setJson] = useState<Lab>({
+export const Playground = ({ switchPage, lab }: componentType) => {
+  const [json, setJson] = useState<Lab>(lab || {
     name: "",
+    id: uuidv4(),
     devices: []
   });
+
   const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
 
   const snackBar = useContext(SnackBarContext);
@@ -27,28 +31,29 @@ export const Playground = ({ switchPage }: componentType) => {
   const color = useCssVar("--clr-main-primary");
 
   const handleDeviceClick = (device: Device) => {
+
+    let name = "";
+    let i = 1;
+
+    while (name == "" || json.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+
     setJson({
       ...json, devices: [...json.devices, {
         ...device,
-        name: `${device.type}${useId(device.type)}`,
+        name,
       }]
     });
   };
 
-  const openFile = async () => {
+  const handleSave = async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const path = await window.electronAPI.chooseFile();
-    if (path.filePaths[0]) {
-      return path.filePaths[0]
-    }
-  }
-  const handleSave = () => {
-    console.log("test")
+    await window.electronAPI.saveData(json);
+
     snackBar.updateContext({
-      duration: 2000,
+      duration: 3000,
       icon: "save",
-      message: "Saved successfully!"
+      message: `Saved successfully!`,
     })
   }
 
@@ -56,14 +61,20 @@ export const Playground = ({ switchPage }: componentType) => {
     console.log("export")
   }
 
-
   const handleImport = () => {
     console.log("export")
   }
 
+  const handleNameChange = (name: string) => {
+    setJson({
+      ...json,
+      name
+    })
+  }
+
   return (
     <div className={style.page}>
-      <Header switchPage={switchPage} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
+      <Header switchPage={switchPage} name={json.name} onNameChange={handleNameChange} handleSave={handleSave} handleExport={handleExport} handleImport={handleImport}></Header>
       <div className={style.content}>
         <ul className={style.list}>
           {devices.map((device, i) => (

@@ -1,21 +1,50 @@
-import React, {useContext} from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Pages } from "../../app"
-import {LocalizationName} from "../../localization";
+import { LocalizationName } from "../../localization";
 import LocalizationContext from "../../context/LocalizationContext";
 import style from "./Gallery.scss"
-import {CardGallery} from './Components/CardGallery/CardGallery'
+import { HeaderGallery } from './Components/HeaderGallery/HeaderGallery'
+import { CardGallery } from './Components/CardGallery/CardGallery'
+import { Lab } from "../../model/Lab";
 
 type componentType = {
-  switchPage: (page: Pages) => void
+  switchPage: (page: Pages, option?: { lab?: Lab }) => void
 }
-let nbrGallery = 1;
 
-export const Gallery = ({switchPage}: componentType) => {
+const handleListSave = (_: unknown, data: string[]) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  data.forEach(filename => window.electronAPI.loadData(filename))
+}
+
+export const Gallery = ({ switchPage }: componentType) => {
 
   const { languageDico } = useContext(LocalizationContext);
+  const [lab, setLabs] = useState<Lab[]>([]);
+
+
+  const handleFileSave = (_: unknown, data: Lab[]) => {
+    setLabs(data);
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.receive("save:load", handleFileSave);
+ 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.loadSave();
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.electronAPI.removeListener("save:load");
+    }
+  }, [])
+
 
   function handleClick() {
-    nbrGallery++;
     switchPage(Pages.Playground)
   }
 
@@ -24,9 +53,11 @@ export const Gallery = ({switchPage}: componentType) => {
     <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
     <div className={style.cardList}>
       {
-        Array.from(Array(nbrGallery), (_, i) => <CardGallery key={i} onClick={() => switchPage(Pages.Playground)}></CardGallery>)
+        lab.map((lab, index) => {
+          return <CardGallery name={lab.name} key={index} onClick={() => switchPage(Pages.Playground, { lab })}></CardGallery>
+        })
       }
-      <button className={style.btnCreateTopology} onClick={()=>{handleClick()}}>+</button>
+      <button className={style.btnCreateTopology} onClick={() => { handleClick() }}>+</button>
     </div>
   </div>
 }

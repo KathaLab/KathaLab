@@ -1,29 +1,24 @@
-export const useColoredImage : () => [(imageUrl: string, imageColor: string) => Promise<HTMLImageElement>, Record<string, Record<string, Promise<HTMLImageElement>>>] = (() => {
+import { deviceToImage, DeviceType } from '../model/Device';
 
-    const images : Record<string, Record<string, Promise<HTMLImageElement>>> =  {}
+export const useColoredImage : () => [(imageUrl: string, imageColor: string) => HTMLImageElement, Record<string, Record<string, HTMLImageElement>>] = (() => {
 
-    const svgToColoredImage = async (url: string,color: string) => {
-        const image = await fetch(url)
-        const blob = await image.blob()
-        const coloredSvg = await blob.text()
-        const temp = coloredSvg.replace(/#000000/g, color)
-        console.log(temp)
-        const svg = new Blob([temp], { type: 'image/svg+xml' })
+    const images : Record<string, Record<string, HTMLImageElement>> =  {}
+
+    const svgToColoredImage = (type: DeviceType,color: string) => {
+        const svg = deviceToImage[type].replace(/#000000/g, color)
         const img = new Image();
-
-        img.src = URL.createObjectURL(svg);
-
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
         return img;
     }
 
-    const fn = (imageUrl: string, imageColor: string) => {
+    const fn = (type: DeviceType, imageColor: string) => {
 
-        if (!images?.[imageUrl]?.[imageColor]) {
-            if(!images?.[imageUrl]) images[imageUrl] = {}
-            images[imageUrl][imageColor] = svgToColoredImage(imageUrl, imageColor)
+        if (!images?.[type]?.[imageColor]) {
+            if(!images?.[type]) images[type] = {}
+            images[type][imageColor] = svgToColoredImage(type, imageColor)
         }
 
-        return images[imageUrl][imageColor]
+        return images[type][imageColor]
     }
 
     return () => [fn, images]

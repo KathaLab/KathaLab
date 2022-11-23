@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef } from "react";
-import { Device, deviceToImage } from "../../../../model/Device";
+import { Device } from "../../../../model/Device";
 import style from "./DeviceCard.scss";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 
@@ -15,8 +15,7 @@ export const DeviceCard = ({ onClick, device, color }: ComponentType) => {
   const imageRef = useRef(null);
 
   useLayoutEffect(() => {
-    console.log(color);
-    (async () => imageRef.current.src = (await getImg(deviceToImage[device.type], color)).src)();
+    imageRef.current.src = getImg(device.type, color).src;
   }, [color])
 
   return (

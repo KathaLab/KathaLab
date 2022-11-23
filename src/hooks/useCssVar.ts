@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 
 export const useCssVar = (name: string) => {
-    const [value, setValue] = useState("#000000");
+    const ref = useRef<string>("#000000");
 
-    useEffect(() => {
-        setValue(getComputedStyle(document.querySelector('main')).getPropertyValue(name));
-    }, [name, setValue])
+    ref.current = getComputedStyle(document.querySelector('main')).getPropertyValue(name);
 
-    return value;
+    return ref.current;
 }

@@ -91,3 +91,6 @@ out/
 # package manager
 /yarn.lock
 /package-lock.json
+
+# specific 
+/data/*.json

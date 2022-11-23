@@ -1,6 +1,7 @@
 import { Device } from "./Device"
 
 export interface Lab {
+    id: string
     name: string 
     description?: string
     version?: string 
