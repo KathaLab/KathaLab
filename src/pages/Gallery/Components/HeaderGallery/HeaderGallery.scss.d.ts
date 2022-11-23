@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'header': string;
+  'settingButton': string;
   'title': string;
 }
 export const cssExports: CssExports;

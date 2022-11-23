@@ -129,4 +129,15 @@
         margin-bottom: 0;
         margin-right: 1.5rem;
     }
+
+}
+
+[data-expanded=true] {
+    min-width: 4.5rem;
+    
+
+    & .title {
+        
+    }
+    
 }

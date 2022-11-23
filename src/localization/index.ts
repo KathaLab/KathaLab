@@ -8,6 +8,7 @@ export enum LocalizationName {
     themeParameterLabel,
     themeLight,
     themeDark,
+    themeDark2,
     titleGallery,
     titlePlayground,
     titleSettings,

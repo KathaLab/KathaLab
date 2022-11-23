@@ -1,8 +1,17 @@
 export type Device = {
-  name: string;
-  interfaces: Interface[];
-  position?: Position;
-  type: DeviceType;
+  name: string
+  type: DeviceType
+  position?: Position
+  memory?: number
+  interfaces?: {
+      ip: string
+      cidr: number 
+      is_up: boolean
+      collision_domain: string
+      bridged: boolean
+  }[]
+  default_command?: string[]
+  startups_commands?: string[]
 };
 
 export enum DeviceType {
@@ -15,26 +24,18 @@ export type Position = { x: number; y: number };
 
 export const deviceSize = { width: 100, height: 100 };
 
-const getImageOfDevice = (url: string) => {
-  const image = new Image();
-  image.src = url;
-  return image;
-};
-
-export const deviceToImage: Record<DeviceType, HTMLImageElement> = {
-  [DeviceType.PC]: getImageOfDevice("assets/laptop.svg"),
-  [DeviceType.Router]: getImageOfDevice("assets/router.svg"),
+export const deviceToImage: Record<DeviceType, string> = {
+  [DeviceType.PC]: "assets/laptop.svg",
+  [DeviceType.Router]: "assets/router.svg",
 };
 
 export const devices: Device[] = [
   {
     name: "",
-    interfaces: [],
     type: DeviceType.PC,
   },
   {
     name: "",
-    interfaces: [],
     type: DeviceType.Router,
   }
 ];
