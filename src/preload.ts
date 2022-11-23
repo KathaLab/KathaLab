@@ -6,5 +6,5 @@ const {contextBridge, ipcRenderer, dialog} = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     chooseFile: async () => await ipcRenderer.invoke('dialog:open-file'),
-    chooseDirectory : async () => await ipcRenderer.invoke('dialog:open-directory'),
+    chooseDirectory: async () => await ipcRenderer.invoke('dialog:open-directory'),
 })
