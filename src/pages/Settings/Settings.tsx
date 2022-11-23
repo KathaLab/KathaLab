@@ -45,6 +45,9 @@ export const Settings = ({switchPage}: componentType) => {
                         <option value="theme-dark">
                             {languageDico[LocalizationName.themeDark]}
                         </option>
+                        <option value="theme-dark2">
+                            {languageDico[LocalizationName.themeDark2]}
+                        </option>
                     </select>
                 </div>
         </div>

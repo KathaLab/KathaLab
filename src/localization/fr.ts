@@ -15,5 +15,6 @@ export const fr : Record<LocalizationName, string> = {
     [LocalizationName.titleGallery] : "Gallerie",
     [LocalizationName.titlePlayground] : "Terrain de jeu",
     [LocalizationName.titleSettings] : "Réglages",
+    [LocalizationName.themeDark2] : "Dark theme 2",
 
 }

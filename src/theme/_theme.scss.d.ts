@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'theme-dark': string;
+  'theme-dark2': string;
   'theme-light': string;
 }
 export const cssExports: CssExports;
