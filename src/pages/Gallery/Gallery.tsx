@@ -3,7 +3,6 @@ import { Pages } from "../../app"
 import {LocalizationName} from "../../localization";
 import LocalizationContext from "../../context/LocalizationContext";
 import style from "./Gallery.scss"
-import {HeaderGallery} from './Components/HeaderGallery/HeaderGallery'
 import {CardGallery} from './Components/CardGallery/CardGallery'
 
 type componentType = {
