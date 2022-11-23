@@ -1,19 +1,27 @@
 $themes: (
   light: (
     clr-main-primary: #5A587C,
+    clr-main-orange: #ffffff,
     clr-main-white: #ffffff,
+    clr-white: #ffffff,
+    clr-main-black: #000,
+    clr-main-secondary: #6c7087, 
     clr-main-grey: #ebebeb,
-    clr-main-secondary: #6c7087,    
-    clr-main-lightgrey: #c4c6d1,    
-    clr-main-black: #000
+    clr-main-lightgrey: #c4c6d1, 
+    clr-light-grey: #6c7087,
+    clr-dark-grey: #ebebeb
   ),
   dark: (
     clr-main-primary: #dd733c,
+    clr-main-orange: #dd733c,
     clr-main-white: #000,
-    clr-main-grey: #222222,
-    clr-main-secondary: #424242,    
-    clr-main-lightgrey: #525252,    
-    clr-main-black: #fff
+    clr-white: #ffffff,
+    clr-main-black: #fff,
+    clr-main-secondary: #212121, 
+    clr-main-grey: #424242,
+    clr-main-lightgrey: #212121,
+    clr-light-grey: #424242, 
+    clr-dark-grey: #212121,
   )
 );
 

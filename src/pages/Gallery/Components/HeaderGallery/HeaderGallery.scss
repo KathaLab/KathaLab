@@ -13,5 +13,16 @@
 .title {
     font-weight: bold;
     font-size: 2rem;
-	color: var(--clr-main-white);
+	color: var(--clr-white);
+}
+
+.settingButton {
+    display: flex;
+    color: var(--clr-main-orange);
+    align-items: center;
+}
+
+.settingButton:hover {
+    background-color: var(--clr-main-orange);
+    color: var(--clr-main-secondary);
 }

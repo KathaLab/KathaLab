@@ -20,3 +20,14 @@
     align-items: center;
     gap: 1rem;
 }
+
+.settingButton {
+    display: flex;
+    color: var(--clr-main-orange);
+    align-items: center;
+}
+
+.settingButton:hover {
+    background-color: var(--clr-main-orange);
+    color: var(--clr-main-secondary);
+}

@@ -16,7 +16,7 @@ export const HeaderGallery = ({ switchPage }: componentType) => {
     return <>
     <div className={styles.header}>
         <h1 className={styles.title}>{languageDico[LocalizationName.titleHeader]}</h1>
-        <Button type="icon" value="settings" onclick={() => switchPage(Pages.Settings)}></Button>
+        <Button className={styles.settingButton} type="icon" value="settings" onclick={() => switchPage(Pages.Settings)}></Button>
     </div>
     </>
 }
