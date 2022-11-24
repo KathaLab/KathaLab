@@ -25,7 +25,7 @@ export const ConfigPanel = ({ device }: ComponentType) => {
             <img src="/assets/laptop.svg" alt="img-device" />
           </div>
           <div className={style.form}>
-            <TextInput placeholder={device} className={style.inputConfigPanel}></TextInput>
+            <TextInput value={device} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
             <Expanded title="Interface" classTitle={style.labelMenu}>
               <p className={style.labelForm}>Ip address</p>
               <div className={style.ip}>
@@ -36,7 +36,7 @@ export const ConfigPanel = ({ device }: ComponentType) => {
               <p className={style.labelForm}>Mask</p>
               <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
               <p className={style.labelForm}>Collision domain</p>
-              <TextInput autocommplete={['eth 0','eth 1']} placeholder="autocomplete" className={style.inputConfigPanel}></TextInput>
+              <TextInput autocommplete={['eth 0','eth 1']} placeholder="Autocomplete" className={style.inputConfigPanel}></TextInput>
 
 
               <div className={style.divSwitch}>

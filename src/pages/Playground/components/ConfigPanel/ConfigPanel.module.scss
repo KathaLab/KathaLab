@@ -95,13 +95,25 @@
 
 .inputConfigPanel {
     width: 100%;
-    background-color: var(--clr-main-white);
     margin-bottom: 1rem;
+
+    &:active,
+    &:focus,
+    &:hover {
+        border: 2px solid var(--clr-main-primary);
+        outline: none;
+    }
+
+    &.inputDeviceName {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
 }
 
 .labelMenu {
     font-size: 1.5rem;
     transition: 1s;
+    color: var(--clr-main-black);
 }
 
 .ip {
@@ -109,6 +121,10 @@
     align-items: center;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+
+    span {
+        margin: 0 0.5rem;
+    }
 
     input {
         margin-bottom: 0;
@@ -133,11 +149,5 @@
 }
 
 [data-expanded=true] {
-    min-width: 4.5rem;
-    
-
-    & .title {
-        
-    }
-    
+    min-width: 4.5rem;    
 }

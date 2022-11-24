@@ -1,10 +1,11 @@
 .expanded {
-    border-bottom: solid 5px var(--clr-main-black);
+    border-bottom: solid 3px var(--clr-main-black);
 
     .head {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 0.5rem 0;
     }
 
     .list {
