@@ -39,7 +39,7 @@ export class electronAPI {
         console.warn(e);
       }
     });
-    ipcMain.handle("save:load", async (event, name) => {
+    ipcMain.handle("save:load", async (event) => {
       try {
         const files = fs.readdirSync(app.getAppPath() + `/data`);
 

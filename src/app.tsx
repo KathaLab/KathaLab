@@ -67,7 +67,7 @@ const App = () => {
               ) : page == Pages.Playground ? (
                 <Playground lab={labRef.current} />
               ) : page == Pages.Settings ? (
-                <Settings switchPage={setPage} />
+                <Settings />
               ) : null}
             </div>
             <SnackBar visibility={snackbarVisibility} {...currentElement} />

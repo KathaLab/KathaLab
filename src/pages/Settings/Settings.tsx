@@ -1,15 +1,10 @@
 import React, {useContext, useState} from "react"
-import {Pages} from "../../app";
 import LocalizationContext from "../../context/LocalizationContext";
 import ThemeContext from "../../context/ThemeContext";
 import style from "./Settings.module.scss"
 import {Language, LocalizationName} from "../../localization";
 
-type componentType = {
-    switchPage: (page: Pages) => void
-}
-
-export const Settings = ({switchPage}: componentType) => {
+export const Settings = () => {
     const {updateContext: updateLocalization, languageDico} = useContext(LocalizationContext);
     const {updateContext: updateTheme, theme} = useContext(ThemeContext);
     const [path, setPath] = useState("C:\\Users\\JhonDoe\\Desktop\\katharaConfiguration")
@@ -22,7 +17,6 @@ export const Settings = ({switchPage}: componentType) => {
     // const windowSettings = new BrowserWindow({width: 800, height: 600})
 
     return <div className={style.page}>
-      
         <div className={style.parameterGrid}>
             <div className={style.gridItemLeft}> <label htmlFor="language" className={style.label}>{languageDico[LocalizationName.languageParameterLabel]} : </label></div>
             <div className={style.gridItemRight}>
