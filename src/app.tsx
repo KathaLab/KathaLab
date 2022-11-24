@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // importing the two pages
 import { Gallery, Playground, Settings } from "./pages";
@@ -38,21 +38,18 @@ const App = () => {
   const [currentLab, setCurrentLab] = useState<Lab>({
     name: "",
     id: uuidv4(),
-    devices: []
+    devices: [],
   });
 
-
   const setLab = (lab: Lab) => {
-    setCurrentLab(lab || {
-      name: "",
-      id: uuidv4(),
-      devices: []
-    });
-  }
-  
-  const handleFileSave = (_: unknown, data: Lab[]) => {
-    setLabs(data);
-  }
+    setCurrentLab(
+      lab || {
+        name: "",
+        id: uuidv4(),
+        devices: [],
+      }
+    );
+  };
 
   // handle snackbar
   const handleSnackBarMessage = (message: snackBarMessageType) => {
@@ -72,7 +69,9 @@ const App = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    window.electronAPI.receive("save:load", handleFileSave);
+    window.electronAPI.receive("save:load", (_: unknown, data: Lab[]) => {
+      setLabs(data);
+    });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -82,14 +81,18 @@ const App = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
-    }
-  }, [])
+    };
+  }, []);
 
-    const handleSave = async () => {
+  const handleSave = async () => {
+    console.log({ currentLab });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await window.electronAPI.saveData(currentLab);
-  }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.loadSave();
+  };
 
   return (
     <main className={themes[theme]}>
@@ -102,12 +105,24 @@ const App = () => {
       >
         <themeContext.Provider value={{ theme, updateContext: setTheme }}>
           <SnackBarContext.Provider value={{ updateContext: addElement }}>
-            <TitleBar switchPage={setPage} page={page} onSave={handleSave}></TitleBar>
+            <TitleBar
+              switchPage={setPage}
+              page={page}
+              onSave={handleSave}
+              setSelectedLab={setLab}
+              labs={labs}
+              selectedLab={currentLab}
+              onChange={(name) => setCurrentLab({ ...currentLab, name })}
+            ></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
-                <Gallery switchPage={setPage} labs={labs} setSelectedLab={setLab} />
+                <Gallery
+                  switchPage={setPage}
+                  labs={labs}
+                  setSelectedLab={setLab}
+                />
               ) : page == Pages.Playground ? (
-                <Playground lab={currentLab} />
+                <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
               ) : page == Pages.Settings ? (
                 <Settings />
               ) : null}

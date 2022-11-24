@@ -10,10 +10,10 @@ import { Lab } from "../..//model/Lab";
 
 type componentType = {
   lab?: Lab;
+  setCurrentLab: (lab: Lab) => void;
 };
 
-export const Playground = ({ lab }: componentType) => {
-  const [json, setJson] = useState<Lab>(lab);
+export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
 
@@ -24,10 +24,10 @@ export const Playground = ({ lab }: componentType) => {
     let name = "";
     let i = 0;
 
-    while (name == "" || json.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+    while (name == "" || lab.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
 
-    setJson({
-      ...json, devices: [...json.devices, {
+    setCurrentLab({
+      ...lab, devices: [...lab.devices, {
         ...device,
         name,
       }]
@@ -48,9 +48,9 @@ export const Playground = ({ lab }: componentType) => {
             </li>
           ))}
         </ul>
-        <Canvas
-          topoJson={json}
-          setJson={(json: Lab) => setJson(json)}
+         <Canvas
+          topoJson={lab}
+          setJson={(json: Lab) => setCurrentLab(json)}
           setSelectedDevice={(name: string) => setSelectedDevice(name)}
           selectedDevice={selectedDevice}
         ></Canvas>

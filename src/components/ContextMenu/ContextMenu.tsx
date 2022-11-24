@@ -24,15 +24,45 @@ export const ContextMenu = ({ onHide, options }: componentType) => {
             return <span key={index} className={style.separator}></span>;
           }
           return (
-            <li key={index} className={option.disabled ? style.disabled : ""} onClick={option?.onClick}>
+            <li
+              key={index}
+              className={option.disabled ? style.disabled : ""}
+              onClick={() => {
+                if (!option.onClick) return;
+                option?.onClick?.();
+                onHide();
+              }}
+            >
               {option?.label}
-              {option?.options && <span className={style.expand + " material-icons material-symbols-outlined"}>chevron_right</span>}
-              {option.options && <ul className={style.menu}>
-                {option.options.map((opt, index) => {
-                  if (opt.separator) {return (<span key={index} className={style.separator}></span>);}
-                  return (<li key={index} className={opt.disabled ? style.disabled : ""} onClick={opt?.onClick}>{opt?.label}</li>);
-                })}
-              </ul>}
+              {option?.options && (
+                <span
+                  className={
+                    style.expand + " material-icons material-symbols-outlined"
+                  }
+                >
+                  chevron_right
+                </span>
+              )}
+              {option.options && (
+                <ul className={style.menu}>
+                  {option.options.map((opt, index) => {
+                    if (opt.separator) {
+                      return (
+                        <span key={index} className={style.separator}></span>
+                      );
+                    }
+                    return (
+                      <li
+                        key={index}
+                        className={opt.disabled ? style.disabled : ""}
+                        onClick={opt?.onClick}
+                      >
+                        {opt?.label}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </li>
           );
         })}

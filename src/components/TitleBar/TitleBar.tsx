@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Lab } from '../../model/Lab'
 import { Pages } from '../../app'
 import { ContextMenu } from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
 
 type componentType = {
     switchPage: (page: Pages) => void
+    setSelectedLab: (lab: Lab) => void
+    selectedLab: Lab
     onSave: () => void
     page: Pages
+    labs: Lab[]
+    onChange: (title: string) => void
 }
 
-export const TitleBar = ({ page, switchPage, onSave }: componentType) => {
+export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selectedLab, onChange }: componentType) => {
 
     const [labExpanded, setLabExpanded] = useState(false);
-    const [isDisabled, setIsTitleEditable] = useState(false);
-    const [title, setTitle] = useState("");
+    const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleLabClick = () => setLabExpanded(x => !x);
-
+    
     useEffect(() => {
-        console.log("page")
         setIsTitleEditable(page !== Pages.Playground)
-    }, [page])
+        inputRef.current.value = page !== Pages.Playground ? "Lab Maker" : selectedLab.name;
+    }, [selectedLab, page])
 
     const labOptions = [
-        { label: 'New', onClick: () => { switchPage(Pages.Playground); setLabExpanded(false) } },
+        { label: 'New', onClick: () => { setSelectedLab(undefined); switchPage(Pages.Playground); setLabExpanded(false); } },
         {
-            label: 'Open', options: [
-                { label: 'File 1', onClick: () => { undefined } },
-            ]
+            label: 'Open', options: labs.map(lab => {
+                return {
+                    label: lab.name || 'Untitled',
+                    onClick: () => {
+                        setSelectedLab({...lab});
+                        setLabExpanded(false);
+                        switchPage(Pages.Playground);
+                    }
+                }
+            })
         },
         { separator: true },
         { label: 'Save', disabled: isDisabled, onClick: onSave },
@@ -68,8 +81,9 @@ export const TitleBar = ({ page, switchPage, onSave }: componentType) => {
                 disabled={isDisabled}
                 className={styles.input + " " + styles.clickable + " " + (isDisabled ? styles.title : "")}
                 type="text"
-                onChange={(e) => setTitle(e.target.value)}
-                value={(isDisabled ? "Lab creator" : title)}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Untitled"
+                ref={inputRef}
             />
             <ul className={styles.btnList}>
                 <li className={'material-icons material-icons-outlined ' + styles.clickable} onClick={handleMinimimze}>remove</li>
