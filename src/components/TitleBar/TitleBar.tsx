@@ -25,7 +25,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
     
     useEffect(() => {
         setIsTitleEditable(page !== Pages.Playground)
-        inputRef.current.value = page !== Pages.Playground ? "Lab Maker" : selectedLab.name;
+        inputRef.current.value = page !== Pages.Playground ? "KathaLab" : selectedLab.name;
     }, [selectedLab, page])
 
     const labOptions = [
