@@ -4,11 +4,14 @@
     border-radius:.5rem;
     background-color: white;
     position: relative;
-    overflow: hidden;
     transition: transform .2s;
+    cursor: pointer;
 
     &:hover{
         transform: scale(1.025);
+        & .deleteBtn {
+            opacity: 1;
+        }
     }
 }
 
@@ -22,10 +25,30 @@
     line-height: 4rem;
     font-size: 1.5rem;
     text-align: center;
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
 }
 
 .img {
     position: absolute;
     margin: 10%;
     width: 80%;
+}
+
+.deleteBtn {
+    opacity: 0;
+    position: absolute;
+    font-size: 1rem;
+    line-height: 2rem;
+    height: 2rem;
+    width: 2rem;
+    top: -0.5rem;
+    right: -0.5rem;
+    background-color: red;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    border-radius: 50%;
+    isolation: isolate;
+    transition: opacity .2s;
 }

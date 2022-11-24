@@ -57,5 +57,12 @@ export class electronAPI {
         console.warn(e);
       }
     });
+    ipcMain.handle("save:delete", async (_, id) => {
+      try {
+       fs.unlinkSync(app.getAppPath() + `/data/${id}.json`);
+      } catch (e) {
+        console.warn(e);
+      }
+    });
   };
 }

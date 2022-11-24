@@ -10,9 +10,10 @@ type componentType = {
   switchPage: (page: Pages, option?: { lab?: Lab }) => void
   labs: Lab[];
   setSelectedLab: (lab: Lab) => void;
+  handleDelete: (labId: string) => void;
 }
 
-export const Gallery = ({ switchPage, labs, setSelectedLab }: componentType) => {
+export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: componentType) => {
 
   const { languageDico } = useContext(LocalizationContext);
 
@@ -21,7 +22,7 @@ export const Gallery = ({ switchPage, labs, setSelectedLab }: componentType) => 
     <div className={style.cardList}>
       {
         labs.map((lab, index) => {
-          return <CardGallery name={lab.name} key={index} onClick={() => {switchPage(Pages.Playground); setSelectedLab(labs.find((l) => lab.id === l.id))}}></CardGallery>
+          return <CardGallery name={lab.name} key={index} onClick={() => {switchPage(Pages.Playground); setSelectedLab(labs.find((l) => lab.id === l.id))}} onDelete={() => handleDelete(lab.id)}></CardGallery>
         })
       }
       <button className={style.btnCreateTopology} onClick={() => {setSelectedLab(undefined); switchPage(Pages.Playground) }}>+</button>

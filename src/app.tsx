@@ -51,6 +51,13 @@ const App = () => {
     );
   };
 
+  const handleDelete = (labId: string) => {
+    setLabs(labs.filter((lab) => lab.id !== labId));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.deleteSave(labId);
+  };
+
   // handle snackbar
   const handleSnackBarMessage = (message: snackBarMessageType) => {
     setSnackbarVisibility(true);
@@ -117,6 +124,7 @@ const App = () => {
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
                 <Gallery
+                  handleDelete={handleDelete}
                   switchPage={setPage}
                   labs={labs}
                   setSelectedLab={setLab}
