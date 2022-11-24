@@ -5,13 +5,14 @@ import styles from './TitleBar.module.scss'
 
 type componentType = {
     switchPage: (page: Pages) => void
+    onSave: () => void
     page: Pages
 }
 
-export const TitleBar = ({ page, switchPage }: componentType) => {
+export const TitleBar = ({ page, switchPage, onSave }: componentType) => {
 
     const [labExpanded, setLabExpanded] = useState(false);
-    const [isTitleEditable, setIsTitleEditable] = useState(false);
+    const [isDisabled, setIsTitleEditable] = useState(false);
     const [title, setTitle] = useState("");
 
     const handleLabClick = () => setLabExpanded(x => !x);
@@ -29,9 +30,9 @@ export const TitleBar = ({ page, switchPage }: componentType) => {
             ]
         },
         { separator: true },
-        { label: 'Save', disabled: true },
-        { label: 'Import', disabled: true },
-        { label: 'Export', disabled: true },
+        { label: 'Save', disabled: isDisabled, onClick: onSave },
+        { label: 'Import', disabled: isDisabled },
+        { label: 'Export', disabled: isDisabled },
     ];
 
     const handleMinimimze = () => {
@@ -64,11 +65,11 @@ export const TitleBar = ({ page, switchPage }: componentType) => {
                 </div>
             </div>
             <input
-                disabled={isTitleEditable}
-                className={styles.input + " " + styles.clickable + " " + (isTitleEditable ? styles.title : "")}
+                disabled={isDisabled}
+                className={styles.input + " " + styles.clickable + " " + (isDisabled ? styles.title : "")}
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
-                value={(isTitleEditable ? "Lab creator" : title)}
+                value={(isDisabled ? "Lab creator" : title)}
             />
             <ul className={styles.btnList}>
                 <li className={'material-icons material-icons-outlined ' + styles.clickable} onClick={handleMinimimze}>remove</li>

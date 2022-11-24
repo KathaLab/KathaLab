@@ -7,18 +7,13 @@ import style from "./Playground.module.scss"
 import { Device, devices } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../..//model/Lab";
-import { v4 as uuidv4 } from 'uuid';
 
 type componentType = {
   lab?: Lab;
 };
 
 export const Playground = ({ lab }: componentType) => {
-  const [json, setJson] = useState<Lab>(lab || {
-    name: "",
-    id: uuidv4(),
-    devices: []
-  });
+  const [json, setJson] = useState<Lab>(lab);
 
   const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
 
@@ -38,13 +33,6 @@ export const Playground = ({ lab }: componentType) => {
       }]
     });
   };
-
-  // const handleSave = async () => {
-  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //   // @ts-ignore
-  //   await window.electronAPI.saveData(json);
-
-  // }
 
   return (
     <div className={style.page}>

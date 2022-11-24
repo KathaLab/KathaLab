@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { v4 as uuidv4 } from 'uuid';
+
 // importing the two pages
 import { Gallery, Playground, Settings } from "./pages";
 
@@ -32,8 +34,25 @@ const App = () => {
   const [localization, setLocalization] = useState<Language>(Language.EN);
   const [theme, setTheme] = useState<themeNames>("theme-dark2");
   const [snackbarVisibility, setSnackbarVisibility] = useState(false);
+  const [labs, setLabs] = useState<Lab[]>([]);
+  const [currentLab, setCurrentLab] = useState<Lab>({
+    name: "",
+    id: uuidv4(),
+    devices: []
+  });
 
-  const labRef = React.useRef<Lab | null>(null);
+
+  const setLab = (lab: Lab) => {
+    setCurrentLab(lab || {
+      name: "",
+      id: uuidv4(),
+      devices: []
+    });
+  }
+  
+  const handleFileSave = (_: unknown, data: Lab[]) => {
+    setLabs(data);
+  }
 
   // handle snackbar
   const handleSnackBarMessage = (message: snackBarMessageType) => {
@@ -49,6 +68,29 @@ const App = () => {
     handleSnackBarMessage
   );
 
+  //fetch labs on load
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.receive("save:load", handleFileSave);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.loadSave();
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.electronAPI.removeListener("save:load");
+    }
+  }, [])
+
+    const handleSave = async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await window.electronAPI.saveData(currentLab);
+  }
+
   return (
     <main className={themes[theme]}>
       <localizationContext.Provider
@@ -60,12 +102,12 @@ const App = () => {
       >
         <themeContext.Provider value={{ theme, updateContext: setTheme }}>
           <SnackBarContext.Provider value={{ updateContext: addElement }}>
-            <TitleBar switchPage={setPage} page={page}></TitleBar>
+            <TitleBar switchPage={setPage} page={page} onSave={handleSave}></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
-                <Gallery switchPage={setPage} />
+                <Gallery switchPage={setPage} labs={labs} setSelectedLab={setLab} />
               ) : page == Pages.Playground ? (
-                <Playground lab={labRef.current} />
+                <Playground lab={currentLab} />
               ) : page == Pages.Settings ? (
                 <Settings />
               ) : null}
