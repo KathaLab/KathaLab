@@ -42,7 +42,7 @@ export const Canvas = ({
         };
 
       (async () => {
-        const color2 = deviceRef.current === device.name ? color + "99" : color;
+        const color2 = deviceRef.current === device.deviceName ? color + "99" : color;
         const test = await getImg(device.type, color2);
         test.onload = () => {
           ctx.drawImage(
@@ -61,7 +61,7 @@ export const Canvas = ({
       ctx.fillStyle = color;
       ctx.font = "16px 'Be Vietnam Pro'";
       ctx.fillText(
-        device.name,
+        device.deviceName,
         device?.position.x + deviceSize.width / 2,
         device?.position.y + deviceSize.height + 20
       );
@@ -76,7 +76,7 @@ export const Canvas = ({
         y > device.position.y &&
         y < device.position.y + deviceSize.height
       );
-    })?.name;
+    })?.deviceName;
   };
 
   useLayoutEffect(() => {
@@ -93,7 +93,7 @@ export const Canvas = ({
     canvasRef.current.onkeydown = (evt: KeyboardEvent) => {
       if (evt.key === "Delete") {
         const index = topoJson.devices.findIndex((device) => {
-          return device.name === deviceRef.current;
+          return device.deviceName === deviceRef.current;
         });
         index !== -1 && topoJson.devices.splice(index, 1);
         setSelectedDevice(null);
@@ -103,7 +103,7 @@ export const Canvas = ({
     canvasRef.current.onmousemove = (evt: MouseEvent) => {
       if (currentDevice.current) {
         const device = topoJson.devices.find(
-          (device) => device.name === currentDevice.current
+          (device) => device.deviceName === currentDevice.current
         );
         device.position.x = evt.offsetX - deviceSize.width / 2;
         device.position.y = evt.offsetY - deviceSize.height / 2;

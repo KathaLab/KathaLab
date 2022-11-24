@@ -41,6 +41,11 @@ export class electronAPI {
     });
     ipcMain.handle("save:load", async (event, name) => {
       try {
+
+        if (name){
+          return JSON.parse(fs.readFileSync(app.getAppPath() + `/data/${name}`, "utf-8"));
+        }
+
         const files = fs.readdirSync(app.getAppPath() + `/data`);
 
         const lab: Lab[] = [];
