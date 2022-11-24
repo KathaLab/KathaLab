@@ -1,7 +1,7 @@
 import React, { useState, useContext} from 'react'
 import style from './ConfigPanel.module.scss'
 import { Button } from '../../../../components/Button/Button'
-import { TextInput } from "../../../../components/TextInput/TextInput";
+import { TextInput, textInputType } from "../../../../components/TextInput/TextInput";
 import { Switch } from "../../../../components/Switch/Switch";
 import { Expanded } from '../../../../components/Expanded/Expanded';
 import { ListCommand } from './ListCommand/ListCommand';
@@ -29,7 +29,7 @@ export const ConfigPanel = ({ device }: ComponentType) => {
             <Expanded title="Interface" classTitle={style.labelMenu}>
               <p className={style.labelForm}>Ip address</p>
               <div className={style.ip}>
-                <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
+                <TextInput type={textInputType.NUMBER} placeholder="" className={style.inputConfigPanel}></TextInput>
                 <span>/</span>
                 <TextInput placeholder="cidr" className={style.inputConfigPanel}></TextInput>
               </div>
