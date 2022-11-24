@@ -25,7 +25,7 @@ export const CardGallery = ({ onClick, name, onDelete }: ComponentType) => {
         alt="image de topologie"
       />
       <h2 className={styles.cardTitle}>{name || "Untitled"}</h2>
-      <span ref={btnRef} onClick={onDelete} className={styles.deleteBtn + " material-icons material-symbols-outlined"}>close</span>
+      <span ref={btnRef} className={styles.deleteBtn + " material-icons material-symbols-outlined"}>close</span>
     </div>
   );
 };

@@ -44,7 +44,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
         },
         { separator: true },
         { label: 'Save', disabled: isDisabled, onClick: onSave },
-        { label: 'Import', disabled: isDisabled },
+        { label: 'Import', disabled: true },
         { label: 'Export', disabled: isDisabled },
     ];
 
