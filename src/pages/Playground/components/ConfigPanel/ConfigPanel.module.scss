@@ -3,8 +3,8 @@
     display: block;
     height: 100%;
     right: 0;
-    min-width: 15rem;
-    width: 15rem;
+    min-width: 16rem;
+    width: 16rem;
     overflow: auto;
     background-color: var(--clr-main-lightgrey);
     transition: all 0.2s ease-in-out;
@@ -17,7 +17,7 @@
     }
 
     &[data-expanded=false] {
-        transform: translate(12rem);
+        transform: translate(13rem);
 
         .title {
             visibility: visible;
@@ -48,6 +48,10 @@
         font-size: 1rem;
         color: white;
         visibility: hidden;
+    }
+
+    input {
+        margin-bottom: .5rem;
     }
 }
 
@@ -98,13 +102,13 @@
     padding: 0.25rem;
 
     .labelForm {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         margin-bottom: .5rem;
         color: var(--clr-main-black);
     }
 
     .labelMenu {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         transition: 1s;
         color: var(--clr-main-black);
     }
@@ -116,7 +120,7 @@
 
         span {
             font-size: 1rem;
-            margin: 0 0.12rem;
+            margin: 0 0.25rem;
             color: var(--clr-main-black);
         }
 
@@ -133,7 +137,7 @@
     .divSwitch {
         display: flex;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: .5rem;
 
         & .labelForm {
             margin-bottom: 0;

@@ -29,7 +29,7 @@ export const ConfigPanel = ({ device }: ComponentType) => {
             <Expanded title="Interface" classTitle={style.labelMenu}>
               <p className={style.labelForm}>Ip address</p>
               <div className={style.ip}>
-                <TextInput type={textInputType.NUMBER} placeholder="" className={style.inputConfigPanel}></TextInput>
+                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
                 <span>/</span>
                 <TextInput placeholder="cidr" className={style.inputConfigPanel}></TextInput>
               </div>
