@@ -1,7 +1,7 @@
 import React, { useState, useContext} from 'react'
 import style from './ConfigPanel.module.scss'
 import { Button } from '../../../../components/Button/Button'
-import { TextInput } from "../../../../components/TextInput/TextInput";
+import { TextInput, textInputType } from "../../../../components/TextInput/TextInput";
 import { Switch } from "../../../../components/Switch/Switch";
 import { Expanded } from '../../../../components/Expanded/Expanded';
 import { ListCommand } from './ListCommand/ListCommand';
@@ -25,18 +25,18 @@ export const ConfigPanel = ({ device }: ComponentType) => {
             <img src="/assets/laptop.svg" alt="img-device" />
           </div>
           <div className={style.form}>
-            <TextInput placeholder={device} className={style.inputConfigPanel}></TextInput>
+            <TextInput value={device} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
             <Expanded title="Interface" classTitle={style.labelMenu}>
               <p className={style.labelForm}>Ip address</p>
               <div className={style.ip}>
-                <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
+                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
                 <span>/</span>
                 <TextInput placeholder="cidr" className={style.inputConfigPanel}></TextInput>
               </div>
               <p className={style.labelForm}>Mask</p>
               <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
               <p className={style.labelForm}>Collision domain</p>
-              <TextInput autocommplete={['eth 0','eth 1']} placeholder="autocomplete" className={style.inputConfigPanel}></TextInput>
+              <TextInput autocommplete={['eth 0','eth 1']} placeholder="Autocomplete" className={style.inputConfigPanel}></TextInput>
 
 
               <div className={style.divSwitch}>

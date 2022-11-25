@@ -1,17 +1,17 @@
 .iconButton {
-    padding: 6px 6px;
+    padding: 5px 5px;
     display: flex;
     cursor: pointer;
     background: transparent;
     border: none;
-    color: var(--clr-main-grey);
+    color: var(--clr-main-black);
     text-align: center;
     aspect-ratio: 1;
     transition: .2s;
     border-radius: .5rem;
 
     span {
-        font-size: 2rem;
+        font-size: 1.5rem;
         margin: 0;padding: 0;   
     }
 

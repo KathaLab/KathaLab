@@ -6,6 +6,7 @@ interface CssExports {
   'form': string;
   'image': string;
   'inputConfigPanel': string;
+  'inputDeviceName': string;
   'ip': string;
   'labelForm': string;
   'labelMenu': string;
