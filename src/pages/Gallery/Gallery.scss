@@ -8,7 +8,7 @@
 	grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
 	justify-items: center;
 	padding: 2rem;
-	gap: 2rem;
+	gap: 2rem 1rem;
 	grid-auto-flow: row;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .btnCreateTopology {
-	width: 18rem;
+	width: 16rem;
 	aspect-ratio: 1;
 	border: none;
 	font-size: 11rem;
