@@ -1,43 +1,71 @@
 .container {
-	background-color: var(--clr-main-lightgrey);
-	min-height: 100vh;
+  background-color: var(--clr-main-lightgrey);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardList {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-	justify-items: center;
-	padding: 2rem;
-	gap: 2rem 1rem;
-	grid-auto-flow: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  justify-items: center;
+  padding: 2rem;
+  gap: 2rem 1rem;
+  grid-auto-flow: row;
 }
 
-.galleryExplication{
-	text-align: center;
-	padding: 3rem 0;
-	line-height: 8rem;
-	font-size: 3rem;
-	font-weight: 700 ;
-    color: var(--clr-main-primary);
-	background-color: var(--clr-main-grey);
+.galleryExplication {
+  text-align: center;
+  padding: 3rem 0;
+  line-height: 8rem;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--clr-main-primary);
+  background-color: var(--clr-main-grey);
 }
 
 .btnCreateTopology {
-	width: 16rem;
-	aspect-ratio: 1;
-	border: none;
-	font-size: 11rem;
-	font-weight: 200;
-	color: var(--clr-main-primary);
-	border-radius: 0.5rem;
-	background-color: var(--clr-main-grey);
-	transition: .2s;
+  width: 16rem;
+  aspect-ratio: 1;
+  border: none;
+  font-size: 11rem;
+  font-weight: 200;
+  color: var(--clr-main-primary);
+  border-radius: 0.5rem;
+  background-color: var(--clr-main-grey);
+  transition: 0.2s;
 
-	&:hover{
-		transform: scale(1.025);
-	}
+  &:hover {
+    transform: scale(1.025);
+  }
 }
 
-.btnCreateTopology:active, .btnCreateTopology:focus {
-	outline: none;
+.btnCreateTopology:active,
+.btnCreateTopology:focus {
+  outline: none;
+}
+
+.searchInput {
+  background: var(--clr-main-grey);
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 2rem;
+  text-align: center;
+  min-width: 30ch;
+  border-radius: 5px;
+  color: #aaa;
+
+  &:focus,
+  &:active {
+    outline: 2px solid var(--clr-main-primary);
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.search {
+	display: flex;
+	justify-content: center;
+  width: 100%;
 }

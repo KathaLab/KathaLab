@@ -5,6 +5,8 @@ interface CssExports {
   'cardList': string;
   'container': string;
   'galleryExplication': string;
+  'search': string;
+  'searchInput': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
