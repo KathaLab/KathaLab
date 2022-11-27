@@ -7,14 +7,14 @@ import { Lab } from "../../../../model/Lab";
 
 type ComponentType = {
   topoJson: Lab;
-  selectedDevice: string;
-  setJson: (json: Lab) => void;
-  setSelectedDevice: (name: string) => void;
+  selectedDevice?: string;
+  setJson?: (json: Lab) => void;
+  setSelectedDevice?: (name: string) => void;
 };
 
 export const Canvas = ({
   topoJson,
-  setSelectedDevice,
+  setSelectedDevice = () => {undefined},
   selectedDevice,
 }: ComponentType) => {
   const canvasRef = useRef(null);
