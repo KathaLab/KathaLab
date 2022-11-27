@@ -54,7 +54,6 @@ export class electronAPI {
           }))
           .sort((a, b) => b.time - a.time)
           .forEach((file) => {
-            console.log(file.name);
             lab.push(
               JSON.parse(
                 fs.readFileSync(
