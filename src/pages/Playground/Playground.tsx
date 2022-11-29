@@ -34,6 +34,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   };
 
+
   return (
     <div className={style.page}>
       <div className={style.content}>
@@ -50,9 +51,9 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         </ul>
          <Canvas
           topoJson={lab}
-          setJson={(json: Lab) => setCurrentLab(json)}
-          setSelectedDevice={(name: string) => setSelectedDevice(name)}
-          selectedDevice={selectedDevice}
+          // setJson={(json: Lab) => setCurrentLab(json)}
+          // setSelectedDevice={(name: string) => setSelectedDevice(name)}
+          // selectedDevice={selectedDevice}
         ></Canvas>
         <ConfigPanel device={selectedDevice}></ConfigPanel>
       </div>

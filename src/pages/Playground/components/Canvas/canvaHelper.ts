@@ -1,26 +1,51 @@
-export const roundRect = (
-  ctx: CanvasRenderingContext2D,
-  x0: number,
-  y0: number,
-  x1: number,
-  y1: number,
-  r: number,
-  color: string
-) => {
-  const w = x1 - x0;
-  const h = y1 - y0;
-  if (r > w / 2) r = w / 2;
-  if (r > h / 2) r = h / 2;
-  ctx.beginPath();
-  ctx.moveTo(x1 - r, y0);
-  ctx.quadraticCurveTo(x1, y0, x1, y0 + r);
-  ctx.lineTo(x1, y1 - r);
-  ctx.quadraticCurveTo(x1, y1, x1 - r, y1);
-  ctx.lineTo(x0 + r, y1);
-  ctx.quadraticCurveTo(x0, y1, x0, y1 - r);
-  ctx.lineTo(x0, y0 + r);
-  ctx.quadraticCurveTo(x0, y0, x0 + r, y0);
-  ctx.closePath();
+import { MutableRefObject } from "react";
+import { useCssVar } from "../../../../hooks/useCssVar";
+import { useColoredImage } from "../../../../hooks/useColoredImage";
+import { Lab } from "../../../../model/Lab";
+import { deviceSize } from "../../../../model/Device";
+
+export const renderJson = (json: Lab, canvasRef: MutableRefObject<HTMLCanvasElement>) => {
+
+  const [getImg] = useColoredImage();
+  const color = useCssVar("--clr-main-primary");
+
+  const ctx = canvasRef.current.getContext("2d");
+  if (!ctx) return;
+
+  // render devices
+  json.devices.forEach((device, i) => {
+    if (!device.position)
+    json.devices[i].position = device?.position || {
+      x: 10,
+      y: 10,
+    };
+
+  (async () => {
+    const color2 = color;
+    const test = await getImg(device.type, color2);
+    test.onload = () => {
+      ctx.drawImage(
+        test,
+        device?.position.x,
+        device?.position.y,
+        deviceSize.width,
+        deviceSize.height
+      );
+    };
+
+    test.complete && test.onload(null);
+  })();
+
+  ctx.textAlign = "center";
   ctx.fillStyle = color;
-  ctx.fill();
+  ctx.font = "16px 'Be Vietnam Pro'";
+  ctx.fillText(
+    device.name,
+    device?.position.x + deviceSize.width / 2,
+    device?.position.y + deviceSize.height + 20
+  );
+
+  });
+
+
 };
