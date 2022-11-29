@@ -92,6 +92,12 @@ export const Canvas = ({ topoJson }: ComponentType) => {
     console.log("render");
 
     renderJson(topoJson);
+
+    return () => {
+      canvasRef.current.onmousedown = null;
+      canvasRef.current.onmouseleave = null;
+      canvasRef.current.onmouseup = null;
+    };
   }, [canvasRef, topoJson]);
 
   return (
