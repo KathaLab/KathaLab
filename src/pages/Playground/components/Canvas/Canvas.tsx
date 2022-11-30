@@ -1,17 +1,34 @@
-import React, { useEffect, useRef } from "react";
+import React, {
+  useEffect,
+  useRef,
+  MouseEventHandler,
+  KeyboardEventHandler,
+} from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
-import { deviceSize } from "../../../../model/Device";
+import { Device, deviceSize } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
 
 type ComponentType = {
   topoJson: Lab;
+  setSelectedDevices: (devices: Device[]) => void;
+  selectedDevices: Device[];
 };
 
-export const Canvas = ({ topoJson }: ComponentType) => {
+export const Canvas = ({
+  topoJson,
+  setSelectedDevices,
+  selectedDevices,
+}: ComponentType) => {
   const canvasRef = useRef(null);
   const canvasCenter = useRef({ x: 0, y: 0 });
+
+  const mouseDownPosRef = useRef({ x: 0, y: 0 });
+  const isMouseDownRef = useRef(false);
+  const isMajPressedRef = useRef(false);
+
+  const actionTypeRef = useRef<"move" | "select">("select");
 
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-main-primary");
@@ -27,10 +44,13 @@ export const Canvas = ({ topoJson }: ComponentType) => {
     // render devices
     json.devices.forEach((device, i) => {
       if (!device.position)
-        json.devices[i].position = device?.position || { x: rect.width / 2 - canvasCenter.current.x, y: rect.height / 2 - canvasCenter.current.y };
+        json.devices[i].position = device?.position || {
+          x: rect.width / 2 - canvasCenter.current.x,
+          y: rect.height / 2 - canvasCenter.current.y,
+        };
 
       (async () => {
-        const color2 = color;
+        const color2 = selectedDevices.includes(device) ? "red" : color;
 
         const image = await getImg(device.type, color2);
 
@@ -62,45 +82,150 @@ export const Canvas = ({ topoJson }: ComponentType) => {
     });
   };
 
+  const renderSelection = (x: number, y: number) => {
+    const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillRect(
+      mouseDownPosRef.current.x + canvasCenter.current.x,
+      mouseDownPosRef.current.y + canvasCenter.current.y,
+      x - mouseDownPosRef.current.x,
+      y - mouseDownPosRef.current.y
+    );
+  };
+
+  const pageMousePositionToCanvasPosition = (x: number, y: number) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+
+    return {
+      x: x - rect.left - canvasCenter.current.x,
+      y: y - rect.top - canvasCenter.current.y,
+    };
+  };
+
+  const getDeviceInZone = (x1: number, y1: number, x2: number, y2: number) => {
+    return topoJson.devices.filter((device) => {
+      return (
+        x2 >= device.position.x - deviceSize.width / 2 &&
+        x1 <= device.position.x + deviceSize.width / 2 &&
+        y2 >= device.position.y - deviceSize.height / 2 &&
+        y1 <= device.position.y + deviceSize.height / 2
+      );
+    });
+  };
+  //#region mouse events
+
+  const handleMouseDown: MouseEventHandler = (e) => {
+    isMouseDownRef.current = true;
+    const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
+    mouseDownPosRef.current = position;
+
+    const [devices] = getDeviceInZone(
+      position.x,
+      position.y,
+      position.x,
+      position.y
+    );
+
+    if (!selectedDevices.includes(devices)) {
+      setSelectedDevices([devices]);
+    }
+
+    if (!devices) {
+      actionTypeRef.current = "select";
+    } else if (devices) {
+      actionTypeRef.current = "move";
+    }
+  };
+
+  const handleMouseUp: MouseEventHandler = (e) => {
+    isMouseDownRef.current = false;
+
+    if (actionTypeRef.current === "select") {
+      renderJson(topoJson);
+
+      const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
+
+      setSelectedDevices(
+        getDeviceInZone(
+          Math.min(mouseDownPosRef.current.x, position.x),
+          Math.min(mouseDownPosRef.current.y, position.y),
+          Math.max(mouseDownPosRef.current.x, position.x),
+          Math.max(mouseDownPosRef.current.y, position.y)
+        )
+      );
+    }
+  };
+
+  const handleMouseMove: MouseEventHandler = (e) => {
+
+    if (isMouseDownRef.current && isMajPressedRef.current) {
+      canvasCenter.current.x += e.movementX;
+      canvasCenter.current.y += e.movementY;
+      renderJson(topoJson);
+    } else if (isMouseDownRef.current && actionTypeRef.current === "select") {
+      const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
+      renderJson(topoJson);
+      renderSelection(position.x, position.y);
+    } else if (isMouseDownRef.current && actionTypeRef.current === "move") {
+      selectedDevices.forEach((device) => {
+        device.position.x += e.movementX;
+        device.position.y += e.movementY;
+      });
+      renderJson(topoJson);
+    }
+
+    //else if (
+    //   isMouseDownRef.current &&
+    //   (selectedDevices.length === 0
+    //     || getDeviceInZone(mouseDownPosRef.current.x, mouseDownPosRef.current.y, mouseDownPosRef.current.x, mouseDownPosRef.current.y).length === 0)) {
+
+    // }
+  };
+
+  //#endregion
+
+  //#region keyboard events
+
+  const handleKeyDown: KeyboardEventHandler = (e) => {
+    if (e.key === "Shift") {
+      isMajPressedRef.current = true;
+      canvasRef.current.style.cursor = "grab";
+    }
+  };
+
+  const handleKeyUp: KeyboardEventHandler = (e) => {
+    if (e.key === "Shift") {
+      isMajPressedRef.current = false;
+      canvasRef.current.style.cursor = "default";
+    }
+  };
+
+  //#endregion
+
   useEffect(() => {
     const rect = canvasRef.current.getBoundingClientRect();
 
-    canvasCenter.current.x = rect.width / 2;
-    canvasCenter.current.y = rect.height / 2;
-  }, [canvasRef]);
-
-  useEffect(() => {
-    const rect = canvasRef.current.getBoundingClientRect();
     canvasRef.current.width = rect.width;
     canvasRef.current.height = rect.height;
 
-    canvasRef.current.onmousedown = (e: MouseEvent) => {
-      canvasRef.current.onmousemove = (evt: MouseEvent) => {
-        canvasCenter.current.x += evt.movementX;
-        canvasCenter.current.y += evt.movementY;
-        renderJson(topoJson);
-      };
-    };
+    canvasCenter.current.x = rect.width / 2;
+    canvasCenter.current.y = rect.height / 2;
+  }, []);
 
-    canvasRef.current.onmouseleave = () => {
-      canvasRef.current.onmousemove = null;
-    };
-    canvasRef.current.onmouseup = () => {
-      canvasRef.current.onmousemove = null;
-    };
-
-    console.log("render");
-
-    renderJson(topoJson);
-
-    return () => {
-      canvasRef.current.onmousedown = null;
-      canvasRef.current.onmouseleave = null;
-      canvasRef.current.onmouseup = null;
-    };
-  }, [canvasRef, topoJson]);
+  useEffect(() => renderJson(topoJson), [topoJson, selectedDevices]);
 
   return (
-    <canvas tabIndex={0} ref={canvasRef} className={`${style.canvas}`}></canvas>
+    <canvas
+      tabIndex={0}
+      ref={canvasRef}
+      className={`${style.canvas}`}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+    ></canvas>
   );
 };

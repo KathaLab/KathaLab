@@ -15,7 +15,7 @@ type componentType = {
 
 export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
-  const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
+  const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
   const color = useCssVar("--clr-main-primary");
 
@@ -51,11 +51,10 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         </ul>
          <Canvas
           topoJson={lab}
-          // setJson={(json: Lab) => setCurrentLab(json)}
-          // setSelectedDevice={(name: string) => setSelectedDevice(name)}
-          // selectedDevice={selectedDevice}
+          setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
+          selectedDevices={selectedDevices}
         ></Canvas>
-        <ConfigPanel device={selectedDevice}></ConfigPanel>
+        <ConfigPanel device={selectedDevices?.[0]?.name}></ConfigPanel>
       </div>
     </div>
   );
