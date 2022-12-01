@@ -10,29 +10,29 @@ export default class ExportLabConf {
     this.json = json
   }
 
-  exportGlobalLabConf() {
+  public exportGlobalLabConf() {
     let conf = "";
     const devices = this.getDevices();
 
     conf += this.getLabConf(this.json);
 
     devices.forEach(device => {
-      conf += this.createDevicesConf(device);
+      conf += this.createLabDevicesConf(device);
       const interfaces = this.getDeviceInterfaces(device);
       interfaces.forEach(itfList => {
         if (itfList.length > 1) {
           itfList.forEach(itf => {
-            conf += this.createInterfacesConf(itf, device)
+            conf += this.createLabInterfacesConf(itf, device)
           })
         } else {
-          conf += this.createInterfacesConf(<Interfaces><unknown>itfList, device);
+          conf += this.createLabInterfacesConf(<Interfaces><unknown>itfList, device);
         }
       })
     })
     return conf;
   }
 
-  private createDevicesConf(device: Device) {
+  private createLabDevicesConf(device: Device) {
     let conf = "";
 
     for (const key in device) {
@@ -47,14 +47,14 @@ export default class ExportLabConf {
     return conf;
   }
 
-  private createInterfacesConf(itf: Interfaces, device: Device) {
+  private createLabInterfacesConf(itf: Interfaces, device: Device) {
     let conf = "";
     for (const key in itf) {
       if (key == 'bridged' && itf[key] == false){
         continue;
       }
       conf = this.createLabConf(key, conf);
-      conf = this.replaceInterfaceName(itf, conf);
+      conf = this.replaceInterfaceInformation(itf, conf);
       conf = this.replaceDeviceName(device, conf);
 
     }
@@ -64,9 +64,9 @@ export default class ExportLabConf {
   private createLabConf(key: string, conf: string, labJson: Lab = undefined) {
     const confKey = key
 
-    if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'bridged' || confKey == 'mail' || confKey == 'collision_domain' || confKey == 'description') {
+    if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'mail' || confKey == 'collision_domain' || confKey == 'bridged' || confKey == 'description') {
       if (labJson) {
-        if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'id' || key == 'mail' || key == 'version' || key == 'description') {
+        if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'mail' || key == 'version' || key == 'description') {
           conf += JsonToConf[confKey] + `"${labJson[key]}"` + "\n";
         }
       } else {
@@ -77,18 +77,19 @@ export default class ExportLabConf {
     return conf;
   }
 
-  private replaceInterfaceName(itf: Interfaces, conf: string): string {
+  public replaceInterfaceInformation(itf: Interfaces, conf: string): string {
     for (const key in itf) {
-      if (key !== undefined && key == 'ip' || key == 'cidr' || key == 'is_up' || key == 'interfaceName' || key == 'collision_domain' || key == 'bridged') {
+      if (key == 'interfaceName' || key == 'bridged' || key == 'collision_domain') {
         conf = conf.replace(`%${key}%`, <string>itf[key]);
       }
     }
     return conf;
   }
 
-  private replaceDeviceName(device: Device, conf: string) {
+  public replaceDeviceName(device: Device, conf: string) {
     for (const key in device) {
-      if (key !== undefined && key == 'deviceName' || key == 'interfaces' || key == 'type' || key == 'position' || key == 'default_command' || key == 'startups_commands') {
+
+      if (key == 'deviceName') {
         conf = conf.replace(`%${key}%`, <string>device[key]);
       }
     }
@@ -103,7 +104,7 @@ export default class ExportLabConf {
     return conf;
   }
 
-  private getDevices(): Device[] {
+  public getDevices(): Device[] {
     const DEVICE_KEY = 'devices'
     for (const key in this.json) {
       if (key === DEVICE_KEY) {
@@ -113,7 +114,7 @@ export default class ExportLabConf {
     return;
   }
 
-  private getDeviceInterfaces(device: Device): Interfaces[][] {
+  public getDeviceInterfaces(device: Device): Interfaces[][] {
     const INTERFACE_KEY = 'interfaces'
     const interfaces: Interfaces[][] = [];
 
