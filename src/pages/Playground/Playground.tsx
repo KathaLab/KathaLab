@@ -20,7 +20,7 @@ type componentType = {
 
 export const Playground = ({switchPage, lab}: componentType) => {
   const [json, setJson] = useState<Lab>(lab || {
-    name: "",
+    labName: "",
     id: uuidv4(),
     devices: []
   });
@@ -63,27 +63,39 @@ export const Playground = ({switchPage, lab}: componentType) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const data = await window.electronAPI.loadSave("test.json");
-
     const exportedData = new ExportLabConf(data);
+    const labConf = exportedData.exportGlobalLabConf()
+    //TODO UTILISEZ LE JSON RENVOYE PAS LE LAB
 
-    console.log(exportedData.exportGlobalLabConf())
+    const fileName = "lab.txt";
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await window.electronAPI.chooseDirectory()
+        .then((filePath: string) => {
+          if (filePath){
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window.electronAPI.saveFile(filePath,fileName, labConf);
+            console.log("ca marche ? ?")
+          }
+        })
   }
 
   const handleImport = () => {
     console.log("import")
   }
 
-  const handleNameChange = (name: string) => {
+  const handleNameChange = (labName: string) => {
     setJson({
       ...json,
-      name
+      labName
     })
   }
 
   return (
       <div className={style.page}>
-        <Header switchPage={switchPage} name={json.name} onNameChange={handleNameChange} handleSave={handleSave}
+        <Header switchPage={switchPage} name={json.labName} onNameChange={handleNameChange} handleSave={handleSave}
                 handleExport={handleExport} handleImport={handleImport}></Header>
         <div className={style.content}>
           <ul className={style.list}>

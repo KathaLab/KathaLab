@@ -5,9 +5,11 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    chooseFile: async () => await ipcRenderer.invoke('dialog:open'),
+    chooseFile: async () => await ipcRenderer.invoke('dialog:open-file'),
+    chooseDirectory: async () => await ipcRenderer.invoke('dialog:open-directory'),
     saveData: async (data) => await ipcRenderer.invoke('save:save', data),
     loadSave: async (filename) => await ipcRenderer.invoke('save:load', filename),
+    saveFile : async (filePath, fileName, content) => await ipcRenderer.invoke('fs:save-file', filePath, fileName, content),
 
     removeListener: (channel) => {
         ipcRenderer.removeAllListeners(channel)

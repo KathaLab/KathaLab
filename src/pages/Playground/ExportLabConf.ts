@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/namespace
 import {JsonToConf} from "../../model/JsonToConf";
 import {Lab} from "../../model/Lab";
 import {Device} from "../../model/Device";
@@ -13,64 +12,98 @@ export default class ExportLabConf {
 
   exportGlobalLabConf() {
     let conf = "";
-    const devices = this.getLabDevices();
-    conf += this.generateLabConf(this.json);
+    const devices = this.getDevices();
+
+    conf += this.getLabConf(this.json);
 
     devices.forEach(device => {
+      conf += this.createDevicesConf(device);
       const interfaces = this.getDeviceInterfaces(device);
       interfaces.forEach(itfList => {
-
         if (itfList.length > 1) {
           itfList.forEach(itf => {
-            conf += this.generateInterfacesConf(itf)
-            conf = this.setConfDeviceName(device, conf);
-            conf = this.setInterfaceConf(itf, conf);
+            conf += this.createInterfacesConf(itf, device)
           })
         } else {
-          conf += this.generateInterfacesConf(itfList);
-          conf = this.setConfDeviceName(device, conf);
-          conf = this.setInterfaceConf(itfList, conf);
+          conf += this.createInterfacesConf(<Interfaces><unknown>itfList, device);
         }
       })
     })
     return conf;
   }
 
-  private generateLabConf(json: Lab) {
+  private createDevicesConf(device: Device) {
     let conf = "";
-    for (const key in json) {
-      if (JsonToConf[key] && json[key] && key !== undefined) {
-        conf += JsonToConf[key] + json[key] + "\n";
-      }
-    }
-    return conf;
-  }
 
-  private generateInterfacesConf(interfaces: Interfaces | Interfaces[]) {
-    let conf = "";
-    for (const key in interfaces) {
-      if (JsonToConf[key] && interfaces[key] && key !== undefined) {
-        conf += JsonToConf[key] + "\n";
-      }
-    }
-    return conf;
-  }
-
-  private setInterfaceConf(itf: Interfaces | Interfaces[], conf: string) {
-    for (const key in itf) {
-      conf = conf.replace(`%${key}%`, itf[key]);
-    }
-    return conf;
-  }
-
-  private setConfDeviceName(device: Device, conf: string) {
     for (const key in device) {
-      conf = conf.replace(`%${key}%`, device[key]);
+      if (key == 'default_command' && device[key]) {
+        device[key].forEach(defaultCommand => {
+          conf += defaultCommand;
+        })
+      }
+      conf = this.createLabConf(key, conf);
+      conf = this.replaceDeviceName(device, conf);
     }
     return conf;
   }
 
-  getLabDevices(): Device[] {
+  private createInterfacesConf(itf: Interfaces, device: Device) {
+    let conf = "";
+    for (const key in itf) {
+      if (key == 'bridged' && itf[key] == false){
+        continue;
+      }
+      conf = this.createLabConf(key, conf);
+      conf = this.replaceInterfaceName(itf, conf);
+      conf = this.replaceDeviceName(device, conf);
+
+    }
+    return conf;
+  }
+
+  private createLabConf(key: string, conf: string, labJson: Lab = undefined) {
+    const confKey = key
+
+    if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'bridged' || confKey == 'mail' || confKey == 'collision_domain' || confKey == 'description') {
+      if (labJson) {
+        if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'id' || key == 'mail' || key == 'version' || key == 'description') {
+          conf += JsonToConf[confKey] + `"${labJson[key]}"` + "\n";
+        }
+      } else {
+        conf += JsonToConf[confKey] + "\n";
+      }
+    }
+
+    return conf;
+  }
+
+  private replaceInterfaceName(itf: Interfaces, conf: string): string {
+    for (const key in itf) {
+      if (key !== undefined && key == 'ip' || key == 'cidr' || key == 'is_up' || key == 'interfaceName' || key == 'collision_domain' || key == 'bridged') {
+        conf = conf.replace(`%${key}%`, <string>itf[key]);
+      }
+    }
+    return conf;
+  }
+
+  private replaceDeviceName(device: Device, conf: string) {
+    for (const key in device) {
+      if (key !== undefined && key == 'deviceName' || key == 'interfaces' || key == 'type' || key == 'position' || key == 'default_command' || key == 'startups_commands') {
+        conf = conf.replace(`%${key}%`, <string>device[key]);
+      }
+    }
+    return conf;
+  }
+
+  private getLabConf(lab: Lab) {
+    let conf = "";
+    for (const key in lab) {
+      conf = this.createLabConf(key, conf, lab);
+    }
+    return conf;
+  }
+
+  private getDevices(): Device[] {
     const DEVICE_KEY = 'devices'
     for (const key in this.json) {
       if (key === DEVICE_KEY) {
@@ -80,7 +113,7 @@ export default class ExportLabConf {
     return;
   }
 
-  getDeviceInterfaces(device: Device) {
+  private getDeviceInterfaces(device: Device): Interfaces[][] {
     const INTERFACE_KEY = 'interfaces'
     const interfaces: Interfaces[][] = [];
 
@@ -89,7 +122,6 @@ export default class ExportLabConf {
         interfaces.push(device[key]);
       }
     }
-
     return interfaces
   }
 }

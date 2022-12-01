@@ -54,7 +54,7 @@ export const Gallery = ({ switchPage }: componentType) => {
     <div className={style.cardList}>
       {
         lab.map((lab, index) => {
-          return <CardGallery name={lab.name} key={index} onClick={() => switchPage(Pages.Playground, { lab })}></CardGallery>
+          return <CardGallery name={lab.labName} key={index} onClick={() => switchPage(Pages.Playground, { lab })}></CardGallery>
         })
       }
       <button className={style.btnCreateTopology} onClick={() => { handleClick() }}>+</button>
