@@ -9,6 +9,7 @@ import { Lab } from "../../../../model/Lab";
 import { Device, deviceSize } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
+import { MouseButtonType } from "./canvaHelper";
 
 type ComponentType = {
   topoJson: Lab;
@@ -25,7 +26,7 @@ export const Canvas = ({
   const canvasCenter = useRef({ x: 0, y: 0 });
 
   const mouseDownPosRef = useRef({ x: 0, y: 0 });
-  const isMouseDownRef = useRef(false);
+  const mouseButtonDownRef = useRef<MouseButtonType>(MouseButtonType.None);
   const isMajPressedRef = useRef(false);
 
   const actionTypeRef = useRef<"move" | "select">("select");
@@ -116,7 +117,18 @@ export const Canvas = ({
   //#region mouse events
 
   const handleMouseDown: MouseEventHandler = (e) => {
-    isMouseDownRef.current = true;
+    mouseButtonDownRef.current = e.buttons;
+    renderJson(topoJson);
+
+    if(mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
+      canvasRef.current.style.cursor = "grabbing";
+    } else {
+      canvasRef.current.style.cursor = "default";
+    }
+
+
+    if (e.buttons !== MouseButtonType.LeftClick) return
+
     const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
     mouseDownPosRef.current = position;
 
@@ -139,9 +151,9 @@ export const Canvas = ({
   };
 
   const handleMouseUp: MouseEventHandler = (e) => {
-    isMouseDownRef.current = false;
+    
 
-    if (actionTypeRef.current === "select") {
+    if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
       renderJson(topoJson);
 
       const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
@@ -155,32 +167,27 @@ export const Canvas = ({
         )
       );
     }
+    canvasRef.current.style.cursor = "default"
+    mouseButtonDownRef.current = MouseButtonType.None;
   };
 
   const handleMouseMove: MouseEventHandler = (e) => {
 
-    if (isMouseDownRef.current && isMajPressedRef.current) {
+    if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
       canvasCenter.current.x += e.movementX;
       canvasCenter.current.y += e.movementY;
       renderJson(topoJson);
-    } else if (isMouseDownRef.current && actionTypeRef.current === "select") {
+    } else if (mouseButtonDownRef.current === MouseButtonType.LeftClick && actionTypeRef.current === "select") {
       const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
       renderJson(topoJson);
       renderSelection(position.x, position.y);
-    } else if (isMouseDownRef.current && actionTypeRef.current === "move") {
+    } else if (mouseButtonDownRef.current === MouseButtonType.LeftClick && actionTypeRef.current === "move") {
       selectedDevices.forEach((device) => {
         device.position.x += e.movementX;
         device.position.y += e.movementY;
       });
       renderJson(topoJson);
     }
-
-    //else if (
-    //   isMouseDownRef.current &&
-    //   (selectedDevices.length === 0
-    //     || getDeviceInZone(mouseDownPosRef.current.x, mouseDownPosRef.current.y, mouseDownPosRef.current.x, mouseDownPosRef.current.y).length === 0)) {
-
-    // }
   };
 
   //#endregion
