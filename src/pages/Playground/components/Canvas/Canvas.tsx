@@ -3,6 +3,7 @@ import React, {
   useRef,
   MouseEventHandler,
   KeyboardEventHandler,
+  WheelEventHandler,
 } from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
@@ -27,6 +28,7 @@ export const Canvas = ({
 
   const mouseDownPosRef = useRef({ x: 0, y: 0 });
   const mouseButtonDownRef = useRef<MouseButtonType>(MouseButtonType.None);
+
   const isMajPressedRef = useRef(false);
 
   const actionTypeRef = useRef<"move" | "select">("select");
@@ -43,9 +45,9 @@ export const Canvas = ({
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
     // render devices
-    json.devices.forEach((device, i) => {
+    json.devices.forEach((device) => {
       if (!device.position)
-        json.devices[i].position = device?.position || {
+        device.position = device?.position || {
           x: rect.width / 2 - canvasCenter.current.x,
           y: rect.height / 2 - canvasCenter.current.y,
         };
@@ -75,10 +77,10 @@ export const Canvas = ({
         device.name,
         canvasCenter.current.x + device?.position.x,
         canvasCenter.current.y +
-          device?.position.y -
-          deviceSize.height / 2 +
-          deviceSize.height +
-          20
+        device?.position.y -
+        deviceSize.height / 2 +
+        deviceSize.height +
+        20
       );
     });
   };
@@ -114,13 +116,14 @@ export const Canvas = ({
       );
     });
   };
+
   //#region mouse events
 
   const handleMouseDown: MouseEventHandler = (e) => {
     mouseButtonDownRef.current = e.buttons;
     renderJson(topoJson);
 
-    if(mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
+    if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
       canvasRef.current.style.cursor = "grabbing";
     } else {
       canvasRef.current.style.cursor = "default";
@@ -151,7 +154,7 @@ export const Canvas = ({
   };
 
   const handleMouseUp: MouseEventHandler = (e) => {
-    
+
 
     if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
       renderJson(topoJson);
@@ -190,6 +193,16 @@ export const Canvas = ({
     }
   };
 
+  const handleWheel: WheelEventHandler = (e) => {
+    console.log(e)
+    if(isMajPressedRef.current) {
+      canvasCenter.current.x += e.deltaY;
+    } else {
+      canvasCenter.current.y -= e.deltaY;
+    }
+    renderJson(topoJson);
+  };
+
   //#endregion
 
   //#region keyboard events
@@ -197,14 +210,12 @@ export const Canvas = ({
   const handleKeyDown: KeyboardEventHandler = (e) => {
     if (e.key === "Shift") {
       isMajPressedRef.current = true;
-      canvasRef.current.style.cursor = "grab";
     }
   };
 
   const handleKeyUp: KeyboardEventHandler = (e) => {
     if (e.key === "Shift") {
       isMajPressedRef.current = false;
-      canvasRef.current.style.cursor = "default";
     }
   };
 
@@ -233,6 +244,7 @@ export const Canvas = ({
       onMouseMove={handleMouseMove}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
+      onWheel={handleWheel}
     ></canvas>
   );
 };
