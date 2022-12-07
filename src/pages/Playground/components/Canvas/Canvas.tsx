@@ -36,6 +36,14 @@ export const Canvas = ({
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-main-primary");
 
+
+  const renderScrollbars = () => {
+
+    // console.log({mostLeftDevicePosition, mostRightDevicePosition, viewportLeft, viewportRight});
+
+
+  }; 
+
   const renderJson = (json: Lab) => {
     const ctx = canvasRef.current.getContext("2d");
     const rect = canvasRef.current.getBoundingClientRect();
@@ -83,6 +91,9 @@ export const Canvas = ({
         20
       );
     });
+
+    // render scrollbars
+    renderScrollbars();
   };
 
   const renderSelection = (x: number, y: number) => {
@@ -197,8 +208,15 @@ export const Canvas = ({
     console.log(e)
     if(isMajPressedRef.current) {
       canvasCenter.current.x += e.deltaY;
+      selectedDevices.forEach((device) => {
+        device.position.x -= e.deltaY;
+      });
+      
     } else {
       canvasCenter.current.y -= e.deltaY;
+      selectedDevices.forEach((device) => {
+        device.position.y += e.deltaY;
+      });
     }
     renderJson(topoJson);
   };
