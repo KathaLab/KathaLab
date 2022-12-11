@@ -4,17 +4,19 @@ import {Device} from "../../model/Device";
 import {Interfaces} from "../../model/Interfaces";
 
 export default class ExportLabConf {
-  private readonly json: Lab;
+  protected labData: Lab;
 
   constructor(json: Lab) {
-    this.json = json
+    this.labData = json
   }
 
   public exportGlobalLabConf() {
+
+    const labConf: { [labName: string]: string } = {}
     let conf = "";
     const devices = this.getDevices();
 
-    conf += this.getLabConf(this.json);
+    conf += this.getLabConf(this.labData);
 
     devices.forEach(device => {
       conf += this.createLabDevicesConf(device);
@@ -29,7 +31,8 @@ export default class ExportLabConf {
         }
       })
     })
-    return conf;
+    labConf[this.getLabName()] = conf
+    return labConf
   }
 
   private createLabDevicesConf(device: Device) {
@@ -77,18 +80,17 @@ export default class ExportLabConf {
     return conf;
   }
 
-  public replaceInterfaceInformation(itf: Interfaces, conf: string): string {
+  protected replaceInterfaceInformation(itf: Interfaces, conf: string): string {
     for (const key in itf) {
-      if (key == 'interfaceName' || key == 'bridged' || key == 'collision_domain') {
+      if (key == 'interfaceName' || key == 'bridged' || key == 'collision_domain' || key == 'ip' || key == 'cidr') {
         conf = conf.replace(`%${key}%`, <string>itf[key]);
       }
     }
     return conf;
   }
 
-  public replaceDeviceName(device: Device, conf: string) {
+  protected replaceDeviceName(device: Device, conf: string) {
     for (const key in device) {
-
       if (key == 'deviceName') {
         conf = conf.replace(`%${key}%`, <string>device[key]);
       }
@@ -104,17 +106,17 @@ export default class ExportLabConf {
     return conf;
   }
 
-  public getDevices(): Device[] {
+  protected getDevices(): Device[] {
     const DEVICE_KEY = 'devices'
-    for (const key in this.json) {
+    for (const key in this.labData) {
       if (key === DEVICE_KEY) {
-        return this.json[key]
+        return this.labData[key]
       }
     }
     return;
   }
 
-  public getDeviceInterfaces(device: Device): Interfaces[][] {
+  protected getDeviceInterfaces(device: Device): Interfaces[][] {
     const INTERFACE_KEY = 'interfaces'
     const interfaces: Interfaces[][] = [];
 
@@ -124,5 +126,11 @@ export default class ExportLabConf {
       }
     }
     return interfaces
+  }
+
+  private getLabName() {
+    if (this.labData.labName){
+      return this.labData.labName
+    }
   }
 }

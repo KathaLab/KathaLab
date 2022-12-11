@@ -12,6 +12,7 @@ import SnackBarContext from "../../context/SnackbarContext";
 import {Lab} from "../../model/Lab";
 import {v4 as uuidv4} from 'uuid';
 import ExportLabConf from "./ExportLabConf"
+import ExportDevicesConf from "./ExportDevicesConf";
 
 type componentType = {
   switchPage: (page: Pages) => void;
@@ -60,24 +61,31 @@ export const Playground = ({switchPage, lab}: componentType) => {
 
   const handleExport = async () => {
 
+    //Getting data sets in a json file
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const data = await window.electronAPI.loadSave("test.json");
-    const exportedData = new ExportLabConf(data);
-    const labConf = exportedData.exportGlobalLabConf()
-    //TODO UTILISEZ LE JSON RENVOYE PAS LE LAB
+    const labConf = new ExportLabConf(data).exportGlobalLabConf();
+    const devicesConf = new ExportDevicesConf(data).exportGlobalDevicesConf()
 
-    const fileName = "lab.txt";
-
+    //Creating lab.conf and all device.startup
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await window.electronAPI.chooseDirectory()
         .then((filePath: string) => {
-          if (filePath){
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            window.electronAPI.saveFile(filePath,fileName, labConf);
-            console.log("ca marche ? ?")
+          if (filePath && labConf && devicesConf) {
+            for (const labName in labConf){
+              const fileName = labName + ".txt";
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              window.electronAPI.saveFile(filePath, fileName, labConf[labName]);
+            }
+            for (const deviceName in devicesConf) {
+              const fileName = deviceName + ".txt";
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              window.electronAPI.saveFile(filePath, fileName, devicesConf[deviceName])
+            }
           }
         })
   }
