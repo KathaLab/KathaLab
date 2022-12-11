@@ -4,3 +4,5 @@ export enum MouseButtonType {
   MiddleClick = 4,
   None = 0,
 }
+
+export const ScrollBarWidth = 5;

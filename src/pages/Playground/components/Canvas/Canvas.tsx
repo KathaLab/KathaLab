@@ -10,7 +10,7 @@ import { Lab } from "../../../../model/Lab";
 import { Device, deviceSize } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
-import { MouseButtonType } from "./canvaHelper";
+import { MouseButtonType, ScrollBarWidth } from "./canvaHelper";
 
 type ComponentType = {
   topoJson: Lab;
@@ -37,11 +37,72 @@ export const Canvas = ({
   const color = useCssVar("--clr-main-primary");
 
 
-  const renderScrollbars = () => {
+  const renderHScrollbars = () => {
 
-    // console.log({mostLeftDevicePosition, mostRightDevicePosition, viewportLeft, viewportRight});
+    // most left and most right devices position 
+    const mostLeftDevicePosition = topoJson.devices.reduce((prev, curr) => {
+      return curr.position.x < prev.position.x ? curr : prev;
+    }).position.x - deviceSize.width / 2;
 
+    const mostRightDevicePosition = topoJson.devices.reduce((prev, curr) => {
+      return curr.position.x > prev.position.x ? curr : prev;
+    }).position.x + deviceSize.width / 2;
 
+    const viewportLeft = 0 - canvasCenter.current.x;
+    const viewportRight = (canvasRef.current.width - canvasCenter.current.x) ;
+    
+    const mostLeft = Math.min(mostLeftDevicePosition, viewportLeft);
+    const mostRight = Math.max(mostRightDevicePosition, viewportRight);
+    
+    const innerWidth = viewportRight - viewportLeft;
+    const outerWidth = mostRight - mostLeft;
+
+    const ratio = (100 * innerWidth) / outerWidth;
+    const offsetRatio = 100 * (viewportLeft - mostLeft) / outerWidth;
+
+    if(ratio === 100) return;
+    const ctx = canvasRef.current.getContext("2d");
+    if(!ctx) return;
+    ctx.fillStyle = "red";
+    ctx.fillRect(
+      ScrollBarWidth + ((canvasRef.current.width - ScrollBarWidth * 5) * offsetRatio / 100), 
+      canvasRef.current.height - ScrollBarWidth * 2, 
+      (canvasRef.current.width - ScrollBarWidth * 5) * ratio / 100, 
+      ScrollBarWidth);
+  }; 
+
+  const renderVScrollbars = () => {
+
+    // most left and most right devices position 
+    const mostTopDevicePosition = topoJson.devices.reduce((prev, curr) => {
+      return curr.position.y < prev.position.y ? curr : prev;
+    }).position.y - deviceSize.height / 2;
+
+    const mostBottomDevicePosition = topoJson.devices.reduce((prev, curr) => {
+      return curr.position.y > prev.position.y ? curr : prev;
+    }).position.y + deviceSize.height;
+
+    const viewportTop = 0 - canvasCenter.current.y;
+    const viewportBottom = (canvasRef.current.height - canvasCenter.current.y) ;
+    
+    const mostTop = Math.min(mostTopDevicePosition, viewportTop);
+    const mostBottom = Math.max(mostBottomDevicePosition, viewportBottom);
+    
+    const innerWidth = viewportBottom - viewportTop;
+    const outerWidth = mostBottom - mostTop;
+
+    const ratio = (100 * innerWidth) / outerWidth;
+    const offsetRatio = 100 * (viewportTop - mostTop) / outerWidth;
+
+    if(ratio === 100) return;
+    const ctx = canvasRef.current.getContext("2d");
+    if(!ctx) return;
+    ctx.fillStyle = "red";
+    ctx.fillRect(
+      canvasRef.current.width - ScrollBarWidth * 2, 
+      10 + ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio / 100), 
+      ScrollBarWidth, 
+      (canvasRef.current.height - ScrollBarWidth * 5) * ratio / 100);
   }; 
 
   const renderJson = (json: Lab) => {
@@ -93,7 +154,8 @@ export const Canvas = ({
     });
 
     // render scrollbars
-    renderScrollbars();
+    renderHScrollbars();
+    renderVScrollbars();
   };
 
   const renderSelection = (x: number, y: number) => {
