@@ -36,74 +36,93 @@ export const Canvas = ({
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-main-primary");
 
+  const observer = React.useRef(
+    new ResizeObserver(entries => {
+      console.log("resize")
+      resize()
+    })
+  )
 
   const renderHScrollbars = () => {
+    if (!topoJson.devices.length) return;
 
-    // most left and most right devices position 
-    const mostLeftDevicePosition = topoJson.devices.reduce((prev, curr) => {
-      return curr.position.x < prev.position.x ? curr : prev;
-    }).position.x - deviceSize.width / 2;
+    // most left and most right devices position
+    const mostLeftDevicePosition =
+      topoJson.devices?.reduce((prev, curr) => {
+        return curr.position.x < prev.position.x ? curr : prev;
+      })?.position?.x -
+      deviceSize.width / 2;
 
-    const mostRightDevicePosition = topoJson.devices.reduce((prev, curr) => {
-      return curr.position.x > prev.position.x ? curr : prev;
-    }).position.x + deviceSize.width / 2;
+    const mostRightDevicePosition =
+      topoJson.devices?.reduce((prev, curr) => {
+        return curr.position.x > prev.position.x ? curr : prev;
+      })?.position?.x +
+      deviceSize.width / 2;
 
     const viewportLeft = 0 - canvasCenter.current.x;
-    const viewportRight = (canvasRef.current.width - canvasCenter.current.x) ;
-    
+    const viewportRight = canvasRef.current.width - canvasCenter.current.x;
+
     const mostLeft = Math.min(mostLeftDevicePosition, viewportLeft);
     const mostRight = Math.max(mostRightDevicePosition, viewportRight);
-    
+
     const innerWidth = viewportRight - viewportLeft;
     const outerWidth = mostRight - mostLeft;
 
     const ratio = (100 * innerWidth) / outerWidth;
-    const offsetRatio = 100 * (viewportLeft - mostLeft) / outerWidth;
+    const offsetRatio = (100 * (viewportLeft - mostLeft)) / outerWidth;
 
-    if(ratio === 100) return;
+    if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
-    if(!ctx) return;
+    if (!ctx) return;
     ctx.fillStyle = "red";
     ctx.fillRect(
-      ScrollBarWidth + ((canvasRef.current.width - ScrollBarWidth * 5) * offsetRatio / 100), 
-      canvasRef.current.height - ScrollBarWidth * 2, 
-      (canvasRef.current.width - ScrollBarWidth * 5) * ratio / 100, 
-      ScrollBarWidth);
-  }; 
+      ScrollBarWidth +
+        ((canvasRef.current.width - ScrollBarWidth * 5) * offsetRatio) / 100,
+      canvasRef.current.height - ScrollBarWidth * 2,
+      ((canvasRef.current.width - ScrollBarWidth * 5) * ratio) / 100,
+      ScrollBarWidth
+    );
+  };
 
   const renderVScrollbars = () => {
+    if (!topoJson.devices.length) return;
 
-    // most left and most right devices position 
-    const mostTopDevicePosition = topoJson.devices.reduce((prev, curr) => {
-      return curr.position.y < prev.position.y ? curr : prev;
-    }).position.y - deviceSize.height / 2;
+    // most left and most right devices position
+    const mostTopDevicePosition =
+      topoJson.devices?.reduce((prev, curr) => {
+        return curr.position.y < prev.position.y ? curr : prev;
+      }).position.y -
+      deviceSize.height / 2;
 
-    const mostBottomDevicePosition = topoJson.devices.reduce((prev, curr) => {
-      return curr.position.y > prev.position.y ? curr : prev;
-    }).position.y + deviceSize.height;
+    const mostBottomDevicePosition =
+      topoJson.devices?.reduce((prev, curr) => {
+        return curr.position.y > prev.position.y ? curr : prev;
+      }).position.y + deviceSize.height;
 
     const viewportTop = 0 - canvasCenter.current.y;
-    const viewportBottom = (canvasRef.current.height - canvasCenter.current.y) ;
-    
+    const viewportBottom = canvasRef.current.height - canvasCenter.current.y;
+
     const mostTop = Math.min(mostTopDevicePosition, viewportTop);
     const mostBottom = Math.max(mostBottomDevicePosition, viewportBottom);
-    
+
     const innerWidth = viewportBottom - viewportTop;
     const outerWidth = mostBottom - mostTop;
 
     const ratio = (100 * innerWidth) / outerWidth;
-    const offsetRatio = 100 * (viewportTop - mostTop) / outerWidth;
+    const offsetRatio = (100 * (viewportTop - mostTop)) / outerWidth;
 
-    if(ratio === 100) return;
+    if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
-    if(!ctx) return;
+    if (!ctx) return;
     ctx.fillStyle = "red";
     ctx.fillRect(
-      canvasRef.current.width - ScrollBarWidth * 2, 
-      10 + ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio / 100), 
-      ScrollBarWidth, 
-      (canvasRef.current.height - ScrollBarWidth * 5) * ratio / 100);
-  }; 
+      canvasRef.current.width - ScrollBarWidth * 2,
+      10 +
+        ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio) / 100,
+      ScrollBarWidth,
+      ((canvasRef.current.height - ScrollBarWidth * 5) * ratio) / 100
+    );
+  };
 
   const renderJson = (json: Lab) => {
     const ctx = canvasRef.current.getContext("2d");
@@ -146,10 +165,10 @@ export const Canvas = ({
         device.name,
         canvasCenter.current.x + device?.position.x,
         canvasCenter.current.y +
-        device?.position.y -
-        deviceSize.height / 2 +
-        deviceSize.height +
-        20
+          device?.position.y -
+          deviceSize.height / 2 +
+          deviceSize.height +
+          20
       );
     });
 
@@ -202,8 +221,7 @@ export const Canvas = ({
       canvasRef.current.style.cursor = "default";
     }
 
-
-    if (e.buttons !== MouseButtonType.LeftClick) return
+    if (e.buttons !== MouseButtonType.LeftClick) return;
 
     const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
     mouseDownPosRef.current = position;
@@ -215,7 +233,7 @@ export const Canvas = ({
       position.y
     );
 
-    if (!selectedDevices.includes(devices)) {
+    if (devices && !selectedDevices.includes(devices)) {
       setSelectedDevices([devices]);
     }
 
@@ -227,9 +245,10 @@ export const Canvas = ({
   };
 
   const handleMouseUp: MouseEventHandler = (e) => {
-
-
-    if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
+    if (
+      actionTypeRef.current === "select" &&
+      mouseButtonDownRef.current === MouseButtonType.LeftClick
+    ) {
       renderJson(topoJson);
 
       const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
@@ -243,21 +262,26 @@ export const Canvas = ({
         )
       );
     }
-    canvasRef.current.style.cursor = "default"
+    canvasRef.current.style.cursor = "default";
     mouseButtonDownRef.current = MouseButtonType.None;
   };
 
   const handleMouseMove: MouseEventHandler = (e) => {
-
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
       canvasCenter.current.x += e.movementX;
       canvasCenter.current.y += e.movementY;
       renderJson(topoJson);
-    } else if (mouseButtonDownRef.current === MouseButtonType.LeftClick && actionTypeRef.current === "select") {
+    } else if (
+      mouseButtonDownRef.current === MouseButtonType.LeftClick &&
+      actionTypeRef.current === "select"
+    ) {
       const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
       renderJson(topoJson);
       renderSelection(position.x, position.y);
-    } else if (mouseButtonDownRef.current === MouseButtonType.LeftClick && actionTypeRef.current === "move") {
+    } else if (
+      mouseButtonDownRef.current === MouseButtonType.LeftClick &&
+      actionTypeRef.current === "move"
+    ) {
       selectedDevices.forEach((device) => {
         device.position.x += e.movementX;
         device.position.y += e.movementY;
@@ -267,19 +291,23 @@ export const Canvas = ({
   };
 
   const handleWheel: WheelEventHandler = (e) => {
-    console.log(e)
-    if(isMajPressedRef.current) {
+    if (isMajPressedRef.current) {
       canvasCenter.current.x += e.deltaY;
-      selectedDevices.forEach((device) => {
-        device.position.x -= e.deltaY;
-      });
-      
+
+      if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
+        selectedDevices.forEach((device) => {
+          device.position.x -= e.deltaY;
+        });
+      }
     } else {
       canvasCenter.current.y -= e.deltaY;
-      selectedDevices.forEach((device) => {
-        device.position.y += e.deltaY;
-      });
+      if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
+        selectedDevices.forEach((device) => {
+          device.position.y += e.deltaY;
+        });
+      }
     }
+
     renderJson(topoJson);
   };
 
@@ -290,6 +318,15 @@ export const Canvas = ({
   const handleKeyDown: KeyboardEventHandler = (e) => {
     if (e.key === "Shift") {
       isMajPressedRef.current = true;
+    }
+    if (e.key === "a" && e.ctrlKey) {
+      setSelectedDevices(topoJson.devices);
+    }
+    if (e.key === "Delete" || e.key === "Backspace") {
+      topoJson.devices = topoJson.devices.filter(
+        (device) => !selectedDevices.includes(device)
+      );
+      setSelectedDevices([]);
     }
   };
 
@@ -302,14 +339,29 @@ export const Canvas = ({
   //#endregion
 
   useEffect(() => {
+    resize(true);
+    if (canvasCenter.current) {
+      observer.current.observe(canvasRef.current)
+    }
+    
+    // start observing for resize
+  }, [canvasCenter, observer]);
+
+  const resize = (changeCenter = false) =>  {
     const rect = canvasRef.current.getBoundingClientRect();
 
     canvasRef.current.width = rect.width;
     canvasRef.current.height = rect.height;
+    
+    if (changeCenter) { 
+      console.log("change center")
+      canvasCenter.current.x = rect.width / 2;
+      canvasCenter.current.y = rect.height / 2;
+    }
 
-    canvasCenter.current.x = rect.width / 2;
-    canvasCenter.current.y = rect.height / 2;
-  }, []);
+    renderJson(topoJson);
+  } 
+
 
   useEffect(() => renderJson(topoJson), [topoJson, selectedDevices]);
 
@@ -325,6 +377,7 @@ export const Canvas = ({
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
+      
     ></canvas>
   );
 };
