@@ -38,6 +38,7 @@ export const Canvas = ({
 
 
   const renderHScrollbars = () => {
+    if (!topoJson.devices.length) return;
 
     // most left and most right devices position 
     const mostLeftDevicePosition = topoJson.devices.reduce((prev, curr) => {
@@ -72,6 +73,7 @@ export const Canvas = ({
   }; 
 
   const renderVScrollbars = () => {
+    if (!topoJson.devices.length) return;
 
     // most left and most right devices position 
     const mostTopDevicePosition = topoJson.devices.reduce((prev, curr) => {
@@ -83,27 +85,29 @@ export const Canvas = ({
     }).position.y + deviceSize.height;
 
     const viewportTop = 0 - canvasCenter.current.y;
-    const viewportBottom = (canvasRef.current.height - canvasCenter.current.y) ;
-    
+    const viewportBottom = canvasRef.current.height - canvasCenter.current.y;
+
     const mostTop = Math.min(mostTopDevicePosition, viewportTop);
     const mostBottom = Math.max(mostBottomDevicePosition, viewportBottom);
-    
+
     const innerWidth = viewportBottom - viewportTop;
     const outerWidth = mostBottom - mostTop;
 
     const ratio = (100 * innerWidth) / outerWidth;
-    const offsetRatio = 100 * (viewportTop - mostTop) / outerWidth;
+    const offsetRatio = (100 * (viewportTop - mostTop)) / outerWidth;
 
-    if(ratio === 100) return;
+    if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
-    if(!ctx) return;
+    if (!ctx) return;
     ctx.fillStyle = "red";
     ctx.fillRect(
-      canvasRef.current.width - ScrollBarWidth * 2, 
-      10 + ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio / 100), 
-      ScrollBarWidth, 
-      (canvasRef.current.height - ScrollBarWidth * 5) * ratio / 100);
-  }; 
+      canvasRef.current.width - ScrollBarWidth * 2,
+      10 +
+        ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio) / 100,
+      ScrollBarWidth,
+      ((canvasRef.current.height - ScrollBarWidth * 5) * ratio) / 100
+    );
+  };
 
   const renderJson = (json: Lab) => {
     const ctx = canvasRef.current.getContext("2d");
@@ -146,10 +150,10 @@ export const Canvas = ({
         device.name,
         canvasCenter.current.x + device?.position.x,
         canvasCenter.current.y +
-        device?.position.y -
-        deviceSize.height / 2 +
-        deviceSize.height +
-        20
+          device?.position.y -
+          deviceSize.height / 2 +
+          deviceSize.height +
+          20
       );
     });
 
@@ -215,7 +219,7 @@ export const Canvas = ({
       position.y
     );
 
-    if (!selectedDevices.includes(devices)) {
+    if (devices && !selectedDevices.includes(devices)) {
       setSelectedDevices([devices]);
     }
 
@@ -227,7 +231,6 @@ export const Canvas = ({
   };
 
   const handleMouseUp: MouseEventHandler = (e) => {
-
 
     if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
       renderJson(topoJson);
@@ -248,7 +251,6 @@ export const Canvas = ({
   };
 
   const handleMouseMove: MouseEventHandler = (e) => {
-
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
       canvasCenter.current.x += e.movementX;
       canvasCenter.current.y += e.movementY;
@@ -267,19 +269,23 @@ export const Canvas = ({
   };
 
   const handleWheel: WheelEventHandler = (e) => {
-    console.log(e)
-    if(isMajPressedRef.current) {
+    if (isMajPressedRef.current) {
       canvasCenter.current.x += e.deltaY;
-      selectedDevices.forEach((device) => {
-        device.position.x -= e.deltaY;
-      });
-      
+
+      if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
+        selectedDevices.forEach((device) => {
+          device.position.x -= e.deltaY;
+        });
+      }
     } else {
       canvasCenter.current.y -= e.deltaY;
-      selectedDevices.forEach((device) => {
-        device.position.y += e.deltaY;
-      });
+      if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
+        selectedDevices.forEach((device) => {
+          device.position.y += e.deltaY;
+        });
+      }
     }
+
     renderJson(topoJson);
   };
 
@@ -290,6 +296,15 @@ export const Canvas = ({
   const handleKeyDown: KeyboardEventHandler = (e) => {
     if (e.key === "Shift") {
       isMajPressedRef.current = true;
+    }
+    if (e.key === "a" && e.ctrlKey) {
+      setSelectedDevices(topoJson.devices);
+    }
+    if (e.key === "Delete" || e.key === "Backspace") {
+      topoJson.devices = topoJson.devices.filter(
+        (device) => !selectedDevices.includes(device)
+      );
+      setSelectedDevices([]);
     }
   };
 
