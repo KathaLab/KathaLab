@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Pages } from "../../app"
 import style from "./Gallery.scss"
 import { CardGallery } from './Components/CardGallery/CardGallery'
@@ -13,17 +13,27 @@ type componentType = {
 
 export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: componentType) => {
 
+  const [search, setSearch] = useState<string>("");
+  const [labList, setLabList] = useState<Lab[]>(labs);
+
+  useEffect(() => {
+    setLabList(labs);
+  }, [labs]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    setLabList(labs.filter(lab => lab.name.toLowerCase().includes(value.toLowerCase())));
+  } 
 
   return <div className={style.container}>
+    <div className={style.search}>
+      <input type="text" className={style.searchInput} placeholder="Searching a lab ?" value={search} onChange={handleSearch}/>
+    </div>
     <div className={style.cardList}>
       {
-        labs.map((lab, index) => {
-          return <CardGallery 
-            name={lab.name} 
-            key={index} 
-            onClick={() => {switchPage(Pages.Playground); setSelectedLab({ ...labs.find((l) => lab.id === l.id)})}} 
-            onDelete={() => handleDelete(lab.id)}
-          ></CardGallery>
+        labList.map((lab, index) => {
+          return <CardGallery lab={lab} name={lab.name} key={index} onClick={() => {switchPage(Pages.Playground); setSelectedLab(labList.find((l) => lab.id === l.id))}} onDelete={() => handleDelete(lab.id)}></CardGallery>
         })
       }
       <button className={style.btnCreateTopology} onClick={() => {setSelectedLab(undefined); switchPage(Pages.Playground) }}>+</button>

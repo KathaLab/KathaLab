@@ -93,6 +93,8 @@ const App = () => {
   }, []);
 
   const handleSave = async () => {
+    if (currentLab.name === "") currentLab.name = "Untitled";
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await window.electronAPI.saveData(currentLab);
