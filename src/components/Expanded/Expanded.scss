@@ -1,11 +1,11 @@
 .expanded {
-    border-bottom: solid 2px var(--clr-main-black);
+    border-bottom: solid 1px var(--clr-main-black);
 
     .head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.2rem 0;
+        padding: 0.2rem 0.5rem;
         cursor: pointer;
 
         span {
@@ -33,6 +33,7 @@
 
     .list {
         padding-left: .75rem;
+        padding-right: .75rem;
     }
 
     .list[data-expanded=true] {
