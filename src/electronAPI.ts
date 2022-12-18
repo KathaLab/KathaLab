@@ -39,7 +39,7 @@ export class electronAPI {
         console.warn(e);
       }
     });
-    ipcMain.handle("save:load", async (event, name) => {
+    ipcMain.handle("save:load", async (event) => {
       try {
         const files = fs.readdirSync(app.getAppPath() + `/data`);
 
@@ -53,6 +53,13 @@ export class electronAPI {
           );
         });
         event.sender.send("save:load", lab);
+      } catch (e) {
+        console.warn(e);
+      }
+    });
+    ipcMain.handle("save:delete", async (_, id) => {
+      try {
+       fs.unlinkSync(app.getAppPath() + `/data/${id}.json`);
       } catch (e) {
         console.warn(e);
       }

@@ -1,93 +1,106 @@
 .titleBar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 50px;
-    background-color: #333;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 600;
-    -webkit-app-region: drag;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: space-between;
+  align-items: center;
+  height: 2.5rem;
+  background-color: #333;
+  color: var(--clr-title-color);
+  font-size: 0.75rem;
+  font-weight: 300;
+  -webkit-app-region: drag;
 }
 
 .input {
-    justify-self: center;
-    background: transparent;
-    border: 2px solid var(--clr-main-black);
-    color: var(--clr-main-black);
-    border-radius: 5px;
-    padding: .25rem .5rem;
-    min-width: clamp(10rem, 40vw, 20rem);
+  text-align: center;
+  justify-self: center;
+  background: transparent;
+  border: 1px solid var(--clr-title-color);
+  color: var(--clr-title-color);
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+  min-width: clamp(5rem, 20vw, 20rem);
 
-    &:active,
-    &:focus,
-    &:hover {
-        border: 2px solid var(--clr-main-primary);
-        outline: none;
-    }
+  &:active,
+  &:focus,
+  &:hover {
+    border: 1px solid var(--clr-main-primary);
+    outline: none;
+  }
 
+  &:focus {
+    text-align: left;
+  }
 }
 
 .btnList {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  height: 100%;
+  align-content: center;
+
+  li {
     height: 100%;
-    align-content: center;
+    line-height: 2.5rem;
+    padding: 0rem 1rem;
+    transition: background-color 0.1s;
+    font-size: 1rem;
 
-    li {
-        height: 100%;
-        line-height: 3rem;
-        padding: 0rem 1rem;
-        transition: background-color 0.1s;
-
-        &:hover {
-            background-color: var(--clr-main-primary);
-        }
-
-        &:last-child:hover {
-            background-color: red;
-        }
+    &:hover {
+      background-color: var(--clr-main-primary);
     }
+
+    &:last-child:hover {
+      background-color: red;
+    }
+  }
 }
 
 .clickable {
-    -webkit-app-region: no-drag;
-    cursor: pointer;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
 }
 
 .left {
-    padding: 0 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-weight: normal;
-
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .separator {
-    height: 100%;
-    width: 2px;
-    margin: 0 1rem;
-    font-size: 1rem;
+  height: 100%;
+  width: 2px;
+  margin: 0 1rem;
 }
 
-.separator~span {
-    transition: background-color 0.1s;
-    font-size: 1rem;
-    padding: .5rem 1rem;
-    border-radius: 5px;
+.separator ~ span {
+  font-size: 1rem;
+  transition: background-color 0.1s;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  margin-right: 0.5rem;
 }
 
 .clicked,
-.separator~span:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.separator ~ span:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .backBtn {
-    transition: color 0.1s;
-    &:hover {
-        color: var(--clr-main-primary);
-    }
+  transition: color 0.1s;
+  &:hover {
+    color: var(--clr-main-primary);
+  }
+}
+
+.title,
+.title:hover,
+.title:active,
+.title:focus {
+  min-width: fit-content;
+  border: none;
+  cursor: default;
+  pointer-events: none;
 }
