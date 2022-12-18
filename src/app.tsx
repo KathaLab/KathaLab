@@ -30,7 +30,7 @@ export enum Pages {
 }
 
 const App = () => {
-  const [page, setPage] = useState<Pages>(Pages.Gallery);
+  const [page, setPage] = useState<Pages>(Pages.Settings);
   const [localization, setLocalization] = useState<Language>(Language.EN);
   const [theme, setTheme] = useState<themeNames>("theme-dark2");
   const [snackbarVisibility, setSnackbarVisibility] = useState(false);
