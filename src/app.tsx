@@ -30,16 +30,12 @@ export enum Pages {
 }
 
 const App = () => {
-  const [page, setPage] = useState<Pages>(Pages.Gallery);
+  const [page, setPage] = useState<Pages>(Pages.Settings);
   const [localization, setLocalization] = useState<Language>(Language.EN);
   const [theme, setTheme] = useState<themeNames>("theme-dark2");
   const [snackbarVisibility, setSnackbarVisibility] = useState(false);
   const [labs, setLabs] = useState<Lab[]>([]);
-  const [currentLab, setCurrentLab] = useState<Lab>({
-    name: "",
-    id: uuidv4(),
-    devices: [],
-  });
+  const [currentLab, setCurrentLab] = useState<Lab>(null);
 
   const setLab = (lab: Lab) => {
     setCurrentLab(
@@ -47,6 +43,11 @@ const App = () => {
         name: "",
         id: uuidv4(),
         devices: [],
+        canvas: {
+          x: 0,
+          y: 0,
+          zoom: 1,
+        },
       }
     );
   };
@@ -92,8 +93,8 @@ const App = () => {
   }, []);
 
   const handleSave = async () => {
-    console.log({ currentLab });
     if (currentLab.name === "") currentLab.name = "Untitled";
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await window.electronAPI.saveData(currentLab);

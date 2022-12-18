@@ -5,9 +5,10 @@ import { TextInput, textInputType } from "../../../../components/TextInput/TextI
 import { Switch } from "../../../../components/Switch/Switch";
 import { Expanded } from '../../../../components/Expanded/Expanded';
 import { ListCommand } from './ListCommand/ListCommand';
+import { Device } from "../../../../model/Device";
 
 type ComponentType = {
-  device: string
+  device: Device
 }
 
 export const ConfigPanel = ({ device }: ComponentType) => {
@@ -18,41 +19,44 @@ export const ConfigPanel = ({ device }: ComponentType) => {
     device && <div className={style.panel} data-expanded={expanded}>
       <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
 
-        <span className={style.title}>Configuration - {device}</span>
+        <span className={style.title}>Configuration - {device.name}</span>
         <div className={style.container}>
-          <p className={style.type}>{device}</p>
+          <p className={style.type}>{device.type}</p>
           <div className={style.image}>
             <img src="/assets/laptop.svg" alt="img-device" />
           </div>
           <div className={style.form}>
-            <TextInput value={device} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
+            <TextInput value={device.name} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
             <Expanded title="Interface" classTitle={style.labelMenu}>
-              <p className={style.labelForm}>Ip address</p>
-              <div className={style.ip}>
+              <div className={style.test}>
+                <p className={style.labelForm}>Ip address</p>
                 <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
-                <span>/</span>
-                <TextInput placeholder="cidr" className={style.inputConfigPanel}></TextInput>
               </div>
-              <p className={style.labelForm}>Mask</p>
-              <TextInput placeholder="" className={style.inputConfigPanel}></TextInput>
-              <p className={style.labelForm}>Collision domain</p>
-              <TextInput autocommplete={['eth 0','eth 1']} placeholder="Autocomplete" className={style.inputConfigPanel}></TextInput>
-
-
-              <div className={style.divSwitch}>
+              <div className={style.test}>
+                <p className={style.labelForm}>CIDR</p>
+                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
+              </div>
+              <div className={style.test}>
+                <p className={style.labelForm}>Mask</p>
+                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
+              </div>
+              <div className={style.test}>
+                <p className={style.labelForm}>Collision domain</p>
+                <TextInput autocommplete={['eth 0','eth 1']} placeholder="Autocomplete" className={style.inputConfigPanel}></TextInput>
+              </div>
+              <div className={style.test}>
                 <p className={style.labelForm}>Ip Active</p>
                 <Switch></Switch>
               </div>
-              <div className={style.divSwitch}>
+              <div className={style.test}>
                 <p className={style.labelForm}>Gateway</p>
                 <Switch></Switch>
               </div>
             </Expanded>
-
-            <Expanded title="Startup command" classTitle={style.labelMenu}>
-              <ListCommand list={['cmd 1','cmd 2']} className={style.inputConfigPanel}></ListCommand>
-            </Expanded>
           </div>
+          <Expanded title="Startup command" classTitle={style.labelMenu}>
+            <ListCommand list={['cmd 1','cmd 2']} className={style.inputConfigPanel}></ListCommand>
+          </Expanded>
         </div>
     </div>
   )
