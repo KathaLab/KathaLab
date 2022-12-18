@@ -54,7 +54,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           setSelectedDevice={(name: string) => setSelectedDevice(name)}
           selectedDevice={selectedDevice}
         ></Canvas>
-        <ConfigPanel device={selectedDevice}></ConfigPanel>
+        <ConfigPanel device={lab.devices.find(o => o.name === selectedDevice)}></ConfigPanel>
       </div>
     </div>
   );
