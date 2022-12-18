@@ -1,8 +1,8 @@
 export enum LocalizationName {
     galleryExplication,
     titleHeader,
-    languageEnglish,
-    languageFrench,
+    EN,
+    FR,
     languageParameterLabel,
     storagePlaceLabel,
     themeParameterLabel,
@@ -19,8 +19,8 @@ import { fr } from "./fr"
 import { en } from "./en"
 
 export enum Language {
-    FR = "fr",
-    EN = "en"
+    FR = "Français",
+    EN = "English"
 }
 
 export const LanguageToLocalization : Record<Language, Record<LocalizationName, string>> = {
