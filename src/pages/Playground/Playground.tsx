@@ -34,7 +34,6 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   };
 
-
   return (
     <div className={style.page}>
       <div className={style.content}>
@@ -54,7 +53,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
           selectedDevices={selectedDevices}
         ></Canvas>
-        <ConfigPanel device={selectedDevices?.[0]?.name}></ConfigPanel>
+        <ConfigPanel device={selectedDevices?.[0]}></ConfigPanel>
       </div>
     </div>
   );
