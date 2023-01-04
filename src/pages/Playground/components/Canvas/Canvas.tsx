@@ -122,7 +122,11 @@ export const Canvas = ({
     );
   };
 
-  const renderJson = (json: Lab) => {
+  const lighten = (color: string, diff = 50) => {
+    return `#${Math.min(255, parseInt(color.slice(2, 4), 16) + diff).toString(16).padStart(2, "0")}${Math.min(255, parseInt(color.slice(4, 6), 16) + diff).toString(16).padStart(2, "0")}${Math.min(255, parseInt(color.slice(6, 8), 16) + diff).toString(16).padStart(2, '0')}`
+}
+
+  const renderJson = async (json: Lab) => {
     const ctx = canvasRef.current.getContext("2d");
     const rect = canvasRef.current.getBoundingClientRect();
 
@@ -131,15 +135,17 @@ export const Canvas = ({
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
     // render devices
-    json.devices.forEach((device) => {
+    await Promise.all(json.devices.map((device) => {
       if (!device.position)
         device.position = device?.position || {
           x: rect.width / 2 - canvasCenter.current.x,
           y: rect.height / 2 - canvasCenter.current.y,
         };
 
-      (async () => {
-        const color2 = selectedDevices.includes(device) ? "red" : color;
+        const selected =  selectedDevices.includes(device);
+      const color2 = selected  ? lighten(color, 75) : color ;
+
+      return (async () => {
 
         const image = await getImg(device.type, color2);
 
@@ -154,21 +160,23 @@ export const Canvas = ({
         };
 
         image.complete && image.onload(null);
+
+        ctx.textAlign = "center";
+        ctx.fillStyle = color2;
+        ctx.font = `${selected ? '800 18px' : '700 16px'} 'Be Vietnam Pro'`;
+        ctx.font
+        ctx.fillText(
+          device.name,
+          canvasCenter.current.x + device?.position.x,
+          canvasCenter.current.y +
+          device?.position.y -
+          deviceSize.height / 2 +
+          deviceSize.height +
+          20
+        );
       })();
 
-      ctx.textAlign = "center";
-      ctx.fillStyle = color;
-      ctx.font = "16px 'Be Vietnam Pro'";
-      ctx.fillText(
-        device.name,
-        canvasCenter.current.x + device?.position.x,
-        canvasCenter.current.y +
-        device?.position.y -
-        deviceSize.height / 2 +
-        deviceSize.height +
-        20
-      );
-    });
+    }));
 
     // render scrollbars
     renderHScrollbars();
@@ -178,7 +186,7 @@ export const Canvas = ({
   const renderSelection = (x: number, y: number) => {
     const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
 
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     ctx.fillRect(
       mouseDownPosRef.current.x + canvasCenter.current.x,
       mouseDownPosRef.current.y + canvasCenter.current.y,
@@ -264,7 +272,7 @@ export const Canvas = ({
     mouseButtonDownRef.current = MouseButtonType.None;
   };
 
-  const handleMouseMove: MouseEventHandler = (e) => {
+  const handleMouseMove: MouseEventHandler = async (e) => {
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
       canvasCenter.current.x += e.movementX;
       canvasCenter.current.y += e.movementY;
@@ -274,7 +282,7 @@ export const Canvas = ({
       actionTypeRef.current === "select"
     ) {
       const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
-      renderJson(topoJson);
+      await renderJson(topoJson);
       renderSelection(position.x, position.y);
     } else if (
       mouseButtonDownRef.current === MouseButtonType.LeftClick &&
@@ -353,8 +361,11 @@ export const Canvas = ({
     renderJson(topoJson);
   }
 
-
-  useEffect(() => renderJson(topoJson), [topoJson, selectedDevices]);
+  useEffect(() => {
+    const fn = async () =>  renderJson(topoJson)
+    
+    fn();
+  }, [topoJson, selectedDevices]);
 
   return (
     <canvas

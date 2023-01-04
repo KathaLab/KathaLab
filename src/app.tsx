@@ -39,7 +39,7 @@ const App = () => {
 
   const setLab = (lab: Lab) => {
     setCurrentLab(
-      lab || {
+      JSON.parse(JSON.stringify(lab)) || {
         name: "",
         id: uuidv4(),
         devices: [],
@@ -121,7 +121,7 @@ const App = () => {
               setSelectedLab={setLab}
               labs={labs}
               selectedLab={currentLab}
-              onChange={(name) => setCurrentLab({ ...currentLab, name })}
+              onChange={(name) => setCurrentLab(JSON.parse(JSON.stringify({ ...currentLab, name })))}
             ></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
