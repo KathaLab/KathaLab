@@ -14,9 +14,9 @@ export const Expanded = ({ children, classTitle, title }: componentType) => {
 
     return (
         <div className={style.expanded}>
-            <div className={style.head}>
+            <div className={style.head} onClick={() => setExpanded(old => !old)} tabIndex={0}>
                 <p className={classTitle}>{title}</p>
-                <Button type='icon' value={expanded ? "expand_less" : "expand_more"} onclick={() => setExpanded(old => !old)}></Button>
+                <span className={"material-icons material-icons-outlined"}>{expanded ? "expand_less" : "expand_more"}</span>
             </div>
             <div className={style.list} data-expanded={expanded}>
                 {children}

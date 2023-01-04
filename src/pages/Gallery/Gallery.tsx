@@ -1,63 +1,42 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Pages } from "../../app"
-import { LocalizationName } from "../../localization";
-import LocalizationContext from "../../context/LocalizationContext";
 import style from "./Gallery.scss"
-import { HeaderGallery } from './Components/HeaderGallery/HeaderGallery'
 import { CardGallery } from './Components/CardGallery/CardGallery'
 import { Lab } from "../../model/Lab";
 
 type componentType = {
   switchPage: (page: Pages, option?: { lab?: Lab }) => void
+  labs: Lab[];
+  setSelectedLab: (lab: Lab) => void;
+  handleDelete: (labId: string) => void;
 }
 
-const handleListSave = (_: unknown, data: string[]) => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  data.forEach(filename => window.electronAPI.loadData(filename))
-}
+export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: componentType) => {
 
-export const Gallery = ({ switchPage }: componentType) => {
-
-  const { languageDico } = useContext(LocalizationContext);
-  const [lab, setLabs] = useState<Lab[]>([]);
-
-
-  const handleFileSave = (_: unknown, data: Lab[]) => {
-    setLabs(data);
-  }
+  const [search, setSearch] = useState<string>("");
+  const [labList, setLabList] = useState<Lab[]>(labs);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.electronAPI.receive("save:load", handleFileSave);
- 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.electronAPI.loadSave();
+    setLabList(labs);
+  }, [labs]);
 
-    return () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.electronAPI.removeListener("save:load");
-    }
-  }, [])
-
-
-  function handleClick() {
-    switchPage(Pages.Playground)
-  }
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    setLabList(labs.filter(lab => lab.name.toLowerCase().includes(value.toLowerCase())));
+  } 
 
   return <div className={style.container}>
-    {/* <HeaderGallery switchPage={switchPage}></HeaderGallery> */}
-    <div className={style.galleryExplication}>{languageDico[LocalizationName.galleryExplication]}</div>
+    <div className={style.search}>
+      <input type="text" className={style.searchInput} placeholder="Searching a lab ?" value={search} onChange={handleSearch}/>
+    </div>
     <div className={style.cardList}>
       {
-        lab.map((lab, index) => {
-          return <CardGallery name={lab.labName} key={index} onClick={() => switchPage(Pages.Playground, { lab })}></CardGallery>
+        labList.map((lab, index) => {
+          return <CardGallery lab={lab} name={lab.labName} key={index} onClick={() => {switchPage(Pages.Playground); setSelectedLab(labList.find((l) => lab.id === l.id))}} onDelete={() => handleDelete(lab.id)}></CardGallery>
         })
       }
-      <button className={style.btnCreateTopology} onClick={() => { handleClick() }}>+</button>
+      <button className={style.btnCreateTopology} onClick={() => {setSelectedLab(undefined); switchPage(Pages.Playground) }}>+</button>
     </div>
   </div>
 }

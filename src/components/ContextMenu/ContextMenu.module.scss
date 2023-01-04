@@ -1,20 +1,46 @@
 .menu {
     position: absolute;
-    left: 7ch;
-    top: 3rem;
+    left: 10ch;
+    top: 2.25rem;
     background-color: var(--clr-main-lightgrey);
     z-index: 1;
-    border-radius: 5px;
-    overflow: hidden;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+    padding: 5px 0;
+    border-radius: 5px;
+
+    & .menu {
+        z-index: 1;
+        transition: .1s;
+        position: absolute;
+        left: 100%;
+        top: 2.25rem;
+        background-color: var(--clr-main-lightgrey);
+        z-index: 1;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        visibility: hidden;
+    }
+    
 }
 
 .menu li {
-    font-size: 1rem;
-    padding: .75rem 2rem;
-
+    font-size: .75rem;
+    padding: .5rem 2rem;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
     &:hover {
         background-color: var(--clr-main-primary);
+
+        .menu {
+            visibility: visible;
+        }
+    }
+
+    .expand {
+        position: absolute;
+        right: .5rem;
+        font-size: 1rem;
     }
 }
 
@@ -26,10 +52,18 @@
 }
 
 .disabled {
-    color: var(--clr-light-grey);
+    color: #333;
+    font-weight: bold;
     cursor: not-allowed;
 
     &:hover {
         background-color: transparent !important;
     }
+}
+
+.background {
+    isolation: isolate;
+    z-index: 1;
+    position: absolute;
+    inset: 0;
 }

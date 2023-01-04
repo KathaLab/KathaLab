@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { v4 as uuidv4 } from "uuid";
+
 // importing the two pages
 import { Gallery, Playground, Settings } from "./pages";
 
@@ -32,12 +34,29 @@ const App = () => {
   const [localization, setLocalization] = useState<Language>(Language.EN);
   const [theme, setTheme] = useState<themeNames>("theme-dark2");
   const [snackbarVisibility, setSnackbarVisibility] = useState(false);
+  const [labs, setLabs] = useState<Lab[]>([]);
+  const [currentLab, setCurrentLab] = useState<Lab>(null);
 
-  const labRef = React.useRef<Lab | null>(null);
+  const setLab = (lab: Lab) => {
+    setCurrentLab(
+      lab || {
+        name: "",
+        id: uuidv4(),
+        devices: [],
+        canvas: {
+          x: 0,
+          y: 0,
+          zoom: 1,
+        },
+      }
+    );
+  };
 
-  const switchPage = (page: Pages, option?: { lab?: Lab }) => {
-    labRef.current = option?.lab ?? null;
-    setPage(page);
+  const handleDelete = (labId: string) => {
+    setLabs(labs.filter((lab) => lab.id !== labId));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.deleteSave(labId);
   };
 
   // handle snackbar
@@ -54,6 +73,36 @@ const App = () => {
     handleSnackBarMessage
   );
 
+  //fetch labs on load
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.receive("save:load", (_: unknown, data: Lab[]) => {
+      setLabs(data);
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.loadSave();
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.electronAPI.removeListener("save:load");
+    };
+  }, []);
+
+  const handleSave = async () => {
+    if (currentLab.name === "") currentLab.name = "Untitled";
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await window.electronAPI.saveData(currentLab);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.loadSave();
+  };
+
   return (
     <main className={themes[theme]}>
       <localizationContext.Provider
@@ -65,14 +114,27 @@ const App = () => {
       >
         <themeContext.Provider value={{ theme, updateContext: setTheme }}>
           <SnackBarContext.Provider value={{ updateContext: addElement }}>
-            <TitleBar switchPage={setPage}></TitleBar>
+            <TitleBar
+              switchPage={setPage}
+              page={page}
+              onSave={handleSave}
+              setSelectedLab={setLab}
+              labs={labs}
+              selectedLab={currentLab}
+              onChange={(name) => setCurrentLab({ ...currentLab, name })}
+            ></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
-                <Gallery switchPage={setPage} />
+                <Gallery
+                  handleDelete={handleDelete}
+                  switchPage={setPage}
+                  labs={labs}
+                  setSelectedLab={setLab}
+                />
               ) : page == Pages.Playground ? (
-                <Playground switchPage={setPage} />
+                <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
               ) : page == Pages.Settings ? (
-                <Settings switchPage={setPage} />
+                <Settings />
               ) : null}
             </div>
             <SnackBar visibility={snackbarVisibility} {...currentElement} />

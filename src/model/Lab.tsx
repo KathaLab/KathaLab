@@ -9,4 +9,9 @@ export interface Lab {
     mail?: string
     web?: string
     devices: Device[]
+    canvas : {
+        x: number
+        y: number
+        zoom: number
+    }
 }

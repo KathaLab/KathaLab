@@ -3,8 +3,7 @@ import {DeviceCard} from "./components/DeviceCard/DeviceCard";
 import {Header} from "./components/Header/Header";
 import {Canvas} from "./components/Canvas/Canvas";
 import {ConfigPanel} from "./components/ConfigPanel/ConfigPanel";
-import style from "./Playground.module.scss"
-  ;
+import style from "./Playground.module.scss";
 import {Pages} from "../../app";
 import {Device, devices} from "../../model/Device";
 import {useCssVar} from "../../hooks/useCssVar";
@@ -14,51 +13,35 @@ import {v4 as uuidv4} from 'uuid';
 import ExportLabConf from "./ExportLabConf"
 import ExportDevicesConf from "./ExportDevicesConf";
 
+
 type componentType = {
-  switchPage: (page: Pages) => void;
   lab?: Lab;
+  setCurrentLab: (lab: Lab) => void;
 };
 
-export const Playground = ({switchPage, lab}: componentType) => {
-  const [json, setJson] = useState<Lab>(lab || {
-    labName: "",
-    id: uuidv4(),
-    devices: []
-  });
 
-  const [selectedDevice, setSelectedDevice] = useState<null | string>(null);
+export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
-  const snackBar = useContext(SnackBarContext);
+  const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
   const color = useCssVar("--clr-main-primary");
 
   const handleDeviceClick = (device: Device) => {
 
+
     let deviceName = "";
-    let i = 1;
+    let i = 0;
 
-    while (deviceName == "" || json.devices.map(d => d.deviceName).includes(deviceName)) deviceName = `${device.type}${i++}`;
+    while (name == "" || lab.devices.map(d => d.deviceName).includes(name)) deviceName = `${device.type}${i++}`;
 
-    setJson({
-      ...json, devices: [...json.devices, {
+    setCurrentLab({
+      ...lab, devices: [...lab.devices, {
         ...device,
         deviceName,
       }]
     });
   };
-
-  const handleSave = async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await window.electronAPI.saveData(json);
-
-    snackBar.updateContext({
-      duration: 3000,
-      icon: "save",
-      message: `Saved successfully!`,
-    })
-  }
-
+  
   const handleExport = async () => {
 
     //Getting data sets in a json file
@@ -90,41 +73,27 @@ export const Playground = ({switchPage, lab}: componentType) => {
         })
   }
 
-  const handleImport = () => {
-    console.log("import")
-  }
-
-  const handleNameChange = (labName: string) => {
-    setJson({
-      ...json,
-      labName
-    })
-  }
 
   return (
-      <div className={style.page}>
-        <Header switchPage={switchPage} name={json.labName} onNameChange={handleNameChange} handleSave={handleSave}
-                handleExport={handleExport} handleImport={handleImport}></Header>
-        <div className={style.content}>
-          <ul className={style.list}>
-            {devices.map((device, i) => (
-                <li key={i}>
-                  <DeviceCard
-                      device={device}
-                      onClick={() => handleDeviceClick(device)}
-                      color={color}
-                  ></DeviceCard>
-                </li>
-            ))}
-          </ul>
-          <Canvas
-              topoJson={json}
-              setJson={(json: Lab) => setJson(json)}
-              setSelectedDevice={(name: string) => setSelectedDevice(name)}
-              selectedDevice={selectedDevice}
-          ></Canvas>
-          <ConfigPanel device={selectedDevice}></ConfigPanel>
-        </div>
+    <div className={style.page}>
+      <div className={style.content}>
+        <ul className={style.list}>
+          {devices.map((device, i) => (
+            <li key={i}>
+              <DeviceCard
+                device={device}
+                onClick={() => handleDeviceClick(device)}
+                color={color}
+              ></DeviceCard>
+            </li>
+          ))}
+        </ul>
+         <Canvas
+          topoJson={lab}
+          setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
+          selectedDevices={selectedDevices}
+        ></Canvas>
+        <ConfigPanel device={selectedDevices?.[0]}></ConfigPanel>
       </div>
   );
 };

@@ -39,7 +39,7 @@ export class electronAPI {
         console.warn(e);
       }
     });
-    ipcMain.handle("save:load", async (event, name) => {
+    ipcMain.handle("save:load", async (event) => {
       try {
 
         //TODO DELETE THE 3 NEXT LINE ONLY USED FOR TEST
@@ -51,13 +51,24 @@ export class electronAPI {
 
         const lab: Lab[] = [];
 
-        files.forEach((file) => {
-          lab.push(
-            JSON.parse(
-              fs.readFileSync(app.getAppPath() + `/data/${file}`, "utf-8")
-            )
-          );
-        });
+        files
+          .map((fileName) => ({
+            name: fileName,
+            time: fs
+              .statSync(`${app.getAppPath()}/data/${fileName}`)
+              .mtime.getTime(),
+          }))
+          .sort((a, b) => b.time - a.time)
+          .forEach((file) => {
+            lab.push(
+              JSON.parse(
+                fs.readFileSync(
+                  app.getAppPath() + `/data/${file.name}`,
+                  "utf-8"
+                )
+              )
+            );
+          });
         event.sender.send("save:load", lab);
       } catch (e) {
         console.warn(e);
@@ -72,5 +83,13 @@ export class electronAPI {
         console.warn(e.message);
       }
     })
+
+    ipcMain.handle("save:delete", async (_, id) => {
+      try {
+        fs.unlinkSync(app.getAppPath() + `/data/${id}.json`);
+      } catch (e) {
+        console.warn(e);
+      }
+    });
   };
 }
