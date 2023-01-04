@@ -40,7 +40,7 @@ const App = () => {
   const setLab = (lab: Lab) => {
     setCurrentLab(
       lab || {
-        name: "",
+        labName: "",
         id: uuidv4(),
         devices: [],
         canvas: {
@@ -93,7 +93,7 @@ const App = () => {
   }, []);
 
   const handleSave = async () => {
-    if (currentLab.name === "") currentLab.name = "Untitled";
+    if (currentLab.labName === "") currentLab.labName = "Untitled";
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -121,7 +121,7 @@ const App = () => {
               setSelectedLab={setLab}
               labs={labs}
               selectedLab={currentLab}
-              onChange={(name) => setCurrentLab({ ...currentLab, name })}
+              onChange={(labName) => setCurrentLab({ ...currentLab, labName })}
             ></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (

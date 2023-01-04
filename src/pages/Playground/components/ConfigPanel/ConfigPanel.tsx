@@ -19,14 +19,14 @@ export const ConfigPanel = ({ device }: ComponentType) => {
     device && <div className={style.panel} data-expanded={expanded}>
       <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
 
-        <span className={style.title}>Configuration - {device.name}</span>
+        <span className={style.title}>Configuration - {device.deviceName}</span>
         <div className={style.container}>
           <p className={style.type}>{device.type}</p>
           <div className={style.image}>
             <img src="/assets/laptop.svg" alt="img-device" />
           </div>
           <div className={style.form}>
-            <TextInput value={device.name} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
+            <TextInput value={device.deviceName} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
             <Expanded title="Interface" classTitle={style.labelMenu}>
               <div className={style.test}>
                 <p className={style.labelForm}>Ip address</p>

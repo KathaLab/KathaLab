@@ -32,7 +32,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     let deviceName = "";
     let i = 0;
 
-    while (name == "" || lab.devices.map(d => d.deviceName).includes(name)) deviceName = `${device.type}${i++}`;
+    while (deviceName == "" || lab.devices.map(d => d.deviceName).includes(deviceName)) deviceName = `${device.type}${i++}`;
 
     setCurrentLab({
       ...lab, devices: [...lab.devices, {
@@ -95,5 +95,6 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         ></Canvas>
         <ConfigPanel device={selectedDevices?.[0]}></ConfigPanel>
       </div>
+    </div>
   );
 };

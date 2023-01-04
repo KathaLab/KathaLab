@@ -25,7 +25,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
     
     useEffect(() => {
         setIsTitleEditable(page !== Pages.Playground)
-        inputRef.current.value = page !== Pages.Playground ? "KathaLab" : selectedLab.name;
+        inputRef.current.value = page !== Pages.Playground ? "KathaLab" : selectedLab.labName;
     }, [selectedLab, page])
 
     const labOptions = [
@@ -33,7 +33,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
         {
             label: 'Open', options: labs.map(lab => {
                 return {
-                    label: lab.name || 'Untitled',
+                    label: lab.labName || 'Untitled',
                     onClick: () => {
                         setSelectedLab({...lab});
                         setLabExpanded(false);

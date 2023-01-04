@@ -39,7 +39,7 @@ export class electronAPI {
         console.warn(e);
       }
     });
-    ipcMain.handle("save:load", async (event) => {
+    ipcMain.handle("save:load", async (event, name) => {
       try {
 
         //TODO DELETE THE 3 NEXT LINE ONLY USED FOR TEST

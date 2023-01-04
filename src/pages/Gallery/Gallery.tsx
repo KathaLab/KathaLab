@@ -23,7 +23,7 @@ export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: comp
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    setLabList(labs.filter(lab => lab.name.toLowerCase().includes(value.toLowerCase())));
+    setLabList(labs.filter(lab => lab.labName.toLowerCase().includes(value.toLowerCase())));
   } 
 
   return <div className={style.container}>
