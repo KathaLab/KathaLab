@@ -1,8 +1,8 @@
-import {JsonToConf} from "../../model/JsonToConf";
-import {Lab} from "../../model/Lab";
-import {Device} from "../../model/Device";
-import {Interfaces} from "../../model/Interfaces";
 import ExportLabConf from "./ExportLabConf";
+import {Lab} from "../model/Lab";
+import {Interfaces} from "../model/Interfaces";
+import {Device} from "../model/Device";
+import {JsonToConf} from "../model/JsonToConf";
 
 export default class ExportDevicesConf extends ExportLabConf {
 
@@ -38,7 +38,7 @@ export default class ExportDevicesConf extends ExportLabConf {
   private createDeviceConf(device: Device) {
     let conf = "";
     for (const key in device) {
-      if (key == 'startups_commands' || key == 'default_command' && device[key]) {
+      if (key == 'startups_commands' && device[key]) {
         device[key].forEach((command: string) => {
           conf += command + "\n";
           conf = this.replaceDeviceName(device, conf);

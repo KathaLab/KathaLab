@@ -1,6 +1,7 @@
 import { app, dialog, ipcMain } from "electron";
 import fs from "fs";
 import { Lab } from "./model/Lab";
+import * as path from "path";
 
 export class electronAPI {
   initialize = async () => {
@@ -77,7 +78,7 @@ export class electronAPI {
 
     ipcMain.handle('fs:save-file', async (event, filePath,fileName, content )=>{
       try {
-        const fullPath = filePath + '\\' + fileName;
+        const fullPath = path.join(filePath, fileName);
         fs.writeFileSync( fullPath , content, "utf-8")
       }catch (e){
         console.warn(e.message);

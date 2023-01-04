@@ -1,7 +1,7 @@
-import {JsonToConf} from "../../model/JsonToConf";
-import {Lab} from "../../model/Lab";
-import {Device} from "../../model/Device";
-import {Interfaces} from "../../model/Interfaces";
+import {Lab} from "../model/Lab";
+import {Interfaces} from "../model/Interfaces";
+import {Device} from "../model/Device";
+import {JsonToConf} from "../model/JsonToConf";
 
 export default class ExportLabConf {
   protected labData: Lab;
