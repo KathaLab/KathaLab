@@ -74,10 +74,9 @@ export const Canvas = ({
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#333333";
     ctx.fillRect(
-      ScrollBarWidth +
-        ((canvasRef.current.width - ScrollBarWidth * 5) * offsetRatio) / 100,
+      4 * ScrollBarWidth + ((canvasRef.current.width - ScrollBarWidth * 5) * offsetRatio) / 100,
       canvasRef.current.height - ScrollBarWidth * 2,
       ((canvasRef.current.width - ScrollBarWidth * 5) * ratio) / 100,
       ScrollBarWidth
@@ -114,11 +113,10 @@ export const Canvas = ({
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#333333";
     ctx.fillRect(
-      canvasRef.current.width - ScrollBarWidth * 2,
-      10 +
-        ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio) / 100,
+      10,
+      10 + ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio) / 100,
       ScrollBarWidth,
       ((canvasRef.current.height - ScrollBarWidth * 5) * ratio) / 100
     );
@@ -165,10 +163,10 @@ export const Canvas = ({
         device.name,
         canvasCenter.current.x + device?.position.x,
         canvasCenter.current.y +
-          device?.position.y -
-          deviceSize.height / 2 +
-          deviceSize.height +
-          20
+        device?.position.y -
+        deviceSize.height / 2 +
+        deviceSize.height +
+        20
       );
     });
 
@@ -246,6 +244,8 @@ export const Canvas = ({
 
   const handleMouseUp: MouseEventHandler = (e) => {
 
+    console.log(e)
+
     if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
       renderJson(topoJson);
 
@@ -289,21 +289,14 @@ export const Canvas = ({
   };
 
   const handleWheel: WheelEventHandler = (e) => {
-    if (isMajPressedRef.current) {
-      canvasCenter.current.x += e.deltaY;
+    canvasCenter.current.y -= e.deltaY;
+    canvasCenter.current.x -= e.deltaX;
 
-      if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
-        selectedDevices.forEach((device) => {
-          device.position.x -= e.deltaY;
-        });
-      }
-    } else {
-      canvasCenter.current.y -= e.deltaY;
-      if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
-        selectedDevices.forEach((device) => {
-          device.position.y += e.deltaY;
-        });
-      }
+    if (actionTypeRef.current === "move" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
+      selectedDevices.forEach((device) => {
+        device.position.y += e.deltaY;
+        device.position.y += e.deltaX;
+      });
     }
 
     renderJson(topoJson);
@@ -341,24 +334,24 @@ export const Canvas = ({
     if (canvasCenter.current) {
       observer.current.observe(canvasRef.current)
     }
-    
+
     // start observing for resize
   }, [canvasCenter, observer]);
 
-  const resize = (changeCenter = false) =>  {
+  const resize = (changeCenter = false) => {
     const rect = canvasRef.current.getBoundingClientRect();
 
     canvasRef.current.width = rect.width;
     canvasRef.current.height = rect.height;
-    
-    if (changeCenter) { 
+
+    if (changeCenter) {
       console.log("change center")
       canvasCenter.current.x = rect.width / 2;
       canvasCenter.current.y = rect.height / 2;
     }
 
     renderJson(topoJson);
-  } 
+  }
 
 
   useEffect(() => renderJson(topoJson), [topoJson, selectedDevices]);
@@ -375,7 +368,6 @@ export const Canvas = ({
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
-      
     ></canvas>
   );
 };

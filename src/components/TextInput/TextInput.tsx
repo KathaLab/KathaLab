@@ -3,7 +3,7 @@ import { useId } from "../../hooks/useId"
 import style from "./TextInput.module.scss";
 
 const textInputTypeValidator = {
-  NUMBER: /[0-9\.]*/,
+  NUMBER: /[0-9.]*/,
   AUTOCOMPLETE: "autocomplete",
   DEFAULT: /.*/,
 }
@@ -45,6 +45,5 @@ export const TextInput = ({ placeholder, className, onChange, value, onBlur, aut
       {autocommplete?.map(item => <option key={item} value={item} />)}
     </datalist>
     }
-
   </>
 };

@@ -19,7 +19,7 @@ export const DeviceCard = ({ onClick, device, color }: ComponentType) => {
   }, [color])
 
   return (
-    <div className={style.deviceCard} onClick={onClick}>
+    <div draggable="true" className={style.deviceCard} onClick={onClick}>
       <img ref={imageRef} alt="img-device" />
     </div>
   );
