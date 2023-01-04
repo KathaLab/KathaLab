@@ -7,8 +7,6 @@ interface CssExports {
   'gridItemLeft': string;
   'gridItemRight': string;
   'gridItemTitle': string;
-  'header': string;
-  'headerTitle': string;
   'label': string;
   'left': string;
   'page': string;

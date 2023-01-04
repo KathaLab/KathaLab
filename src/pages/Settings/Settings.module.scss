@@ -1,43 +1,60 @@
 .page{
   min-height: 100vh;
   background-color: var(--clr-main-grey);
-}
-
-.header {
-  background-color: var(--clr-main-secondary);
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 5.5rem;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  box-shadow: 0 4px 0.5rem 0.1rem rgba(0,0,0,0.1);
 }
-
-.headerTitle {
-  font-weight: bold;
-  font-size: 2rem;
-  color: var(--clr-main-white);
-}
-
 .left {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.parameterGrid {
+.settingsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: var(--clr-main-black);
+  margin: 2rem 0 2rem 0;
+  width: 100%;
+  max-height: 80vh;
+}
+
+.settingsMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 1rem;
+  width: 70%;
+  padding-right: 1rem;
+  margin-top: 2rem;
+}
+
+
+.settingsMenuTitle {
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--clr-main-black);
+}
+
+.settingsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: max-content auto;
+  grid-template-rows: auto;
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
-  padding: 2rem 0 2rem 0;
+  margin: 2rem 0 2rem 0;
+  Overflow-y:scroll;
+  width: 100%;
+  padding-left: 2rem;
 }
 
 .gridItemLeft {
   justify-self: end;
+  justify-self: start;
   align-self: center;
 }
 
@@ -47,10 +64,25 @@
   align-items: center;
 }
 
+.gridItemTitle {
+  grid-area: 1 / 1 / 2 / 3;
+  font-size: 25px;
+}
+
+.gridItemButton {
+  grid-area: 0 / 0 / 2 / 0;
+  background-color: var(--clr-main-primary);
+  color: var(--clr-main-black);
+  height: 2rem;
+  width: 9rem;
+  font-size: 18px;
+  border: none;
+}
+
+
 .label {
   color: var(--clr-main-black);
 }
-
 .select {
   border-color: var(--clr-main-secondary);
   border-width: 2px;
@@ -61,7 +93,6 @@
   background-color: var(--clr-main-lightgrey);
   color: var(--clr-main-black);
 }
-
 .storagePlaceInput {
   border-color: var(--clr-main-secondary);
   border-style: solid;
@@ -73,21 +104,15 @@
   color: var(--clr-main-black);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-   box-shadow: none;
+  box-shadow: none;
 }
-
 .centerDiv {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .btnChooseDir {
   background-color: transparent;
   border: none;
   color: var(--clr-main-primary);
 }
-
-
-
-
