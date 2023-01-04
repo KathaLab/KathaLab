@@ -1,5 +1,5 @@
 .page{
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--clr-main-grey);
 }
 
@@ -27,45 +27,17 @@
   gap: 1rem;
 }
 
-.settingsContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  color: var(--clr-main-black);
-  margin: 2rem 0 2rem 0;
-  width: 100%;
-  max-height: 80vh;
-}
-
-.settingsMenu {
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: 1rem;
-  width: 70%;
-  padding-right: 1rem;
-}
-
-
-.settingsMenuTitle {
-  font-size: 20px;
-  text-decoration: none;
-  color: var(--clr-main-black);
-}
-
-.settingsGrid {
+.parameterGrid {
   display: grid;
-  grid-template-columns: max-content auto;
-  grid-template-rows: auto;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
-  Overflow-y:scroll;
-  width: 100%;
-  padding-left: 2rem;
+  padding: 2rem 0 2rem 0;
 }
 
 .gridItemLeft {
-  justify-self: start;
+  justify-self: end;
   align-self: center;
 }
 
@@ -74,22 +46,6 @@
   align-self: center;
   align-items: center;
 }
-
-.gridItemTitle {
-  grid-area: 1 / 1 / 2 / 3;
-  font-size: 25px;
-}
-
-.gridItemButton {
-  grid-area: 0 / 0 / 2 / 0;
-  background-color: var(--clr-main-primary);
-  color: var(--clr-main-black);
-  height: 2rem;
-  width: 9rem;
-  font-size: 18px;
-  border: none;
-}
-
 
 .label {
   color: var(--clr-main-black);

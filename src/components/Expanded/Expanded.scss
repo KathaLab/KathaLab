@@ -1,26 +1,51 @@
 .expanded {
-    border-bottom: solid 5px var(--clr-main-black);
+    border-bottom: solid 1px var(--clr-main-black);
 
     .head {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 0.2rem 0.5rem;
+        cursor: pointer;
+
+        span {
+            padding: 5px 5px;
+            display: flex;
+            background: transparent;
+            border: none;
+            color: var(--clr-main-black);
+            text-align: center;
+            aspect-ratio: 1;
+
+            span {
+                font-size: 1.5rem;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        &:hover {
+            span {
+                color: var(--clr-main-primary);
+            }
+        }
     }
 
     .list {
         padding-left: .75rem;
+        padding-right: .75rem;
     }
 
     .list[data-expanded=true] {
+        transform: translateY(0);
         margin-top: .5rem;
         position: relative;
         visibility: visible;
-        transform: translateY(0);
     }
 
     .list[data-expanded=false] {
+        transform: translateY(-100%);
         position: absolute;
         visibility: hidden;
-        transform: translateY(-100%);
     }
 }

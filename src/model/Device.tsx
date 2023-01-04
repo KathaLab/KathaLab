@@ -1,17 +1,11 @@
 import {laptop, router} from "./DeviceSvg";
+import {Interfaces} from "./Interfaces";
 
 export type Device = {
-  name: string
+  deviceName: string
   type: DeviceType
   position?: Position
-  memory?: number
-  interfaces?: {
-      ip: string
-      cidr: number 
-      is_up: boolean
-      collision_domain: string
-      bridged: boolean
-  }[]
+  interfaces?: Interfaces[]
   default_command?: string[]
   startups_commands?: string[]
 };
@@ -33,11 +27,15 @@ export const deviceToImage: Record<DeviceType, string> = {
 
 export const devices: Device[] = [
   {
-    name: "",
+    deviceName: "",
     type: DeviceType.PC,
   },
   {
-    name: "",
+    deviceName: "",
     type: DeviceType.Router,
-  }
+    default_command: [
+      "%deviceName%[sysctl]=/proc/sys/net/ipv4/ip_forward=1 \n",
+      "%deviceName%[sysctl]=/proc/sys/net/ipv6/conf/all/forwarding=1 \n"
+    ]
+  },
 ];

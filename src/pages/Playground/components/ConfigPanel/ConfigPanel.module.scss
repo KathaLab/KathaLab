@@ -3,141 +3,125 @@
     display: block;
     height: 100%;
     right: 0;
-    min-width: 25rem;
-    width: 25rem;
+    min-width: 18rem;
+    width: 18rem;
     overflow: auto;
     background-color: var(--clr-main-lightgrey);
     transition: all 0.2s ease-in-out;
-}
 
-.toggleExpand {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1;
-}
-
-.panel[data-expanded=false] {
-    transform: translate(20.5rem);
-    
-    .title {
-        visibility: visible;
-    }
-
-    .container {
-        opacity: 0;
-    }
-}
-
-.panel[data-expanded=true] {
     .toggleExpand {
-        background-color: var(--clr-main-primary);
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        z-index: 1;
+    }
 
-        &:hover {
-            background-color: var(--clr-main-lightgrey);
+    &[data-expanded=false] {
+        transform: translate(15rem);
+
+        .title {
+            visibility: visible;
+        }
+
+        .container {
+            opacity: 0;
+        }
+    }
+
+    &[data-expanded=true] {
+        .toggleExpand {
+            background-color: var(--clr-main-primary);
+
+            &:hover {
+                background-color: var(--clr-main-lightgrey);
+            }
+        }
+    }
+
+    .title {
+        position: absolute;
+        transform-origin: bottom left;
+        transform: rotate(90deg);
+        white-space: nowrap;
+        height: 3rem;
+        line-height: 3rem;
+        font-size: 1rem;
+        color: white;
+        visibility: hidden;
+    }
+}
+
+.container {
+    opacity: 1;
+
+    .type {
+        z-index: 1;
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        border-radius: 1.5rem;
+        background-color: var(--clr-main-primary);
+        color: var(--clr-main-white);
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        line-height: 1rem;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .image {
+        background-color: var(--clr-main-white);
+        padding: 0.5rem 0;
+        min-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            min-width: 8rem;
+            height: 100%;
+        }
+    }
+
+    .labelMenu {
+        font-size: 1rem;
+        transition: 1s;
+        margin-right: .5rem;
+        color: var(--clr-main-black);
+    }
+
+    .inputConfigPanel {
+        width: 100%;
+        margin-bottom: .75rem;
+
+        &.inputDeviceName {
+            width: calc(100% - 1.5rem);
+            margin: .75rem;
+            font-size: 1rem;
+            line-height: 1rem;
         }
     }
 }
 
-.title {
-    position: absolute;
-    transform-origin: bottom left;
-    transform: rotate(90deg);
-    white-space: nowrap;
-    height: 4.5rem;
-    line-height: 4.5rem;
-    font-size: 1.5rem;
-    color: white;
-    visibility: hidden;
-}
-
-.container {
-    opacity: 1;    
-}
-
-.type {
-    z-index: 1;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    border-radius: 1.5rem;
-    background-color: var(--clr-main-primary);
-    color: var(--clr-main-white);
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    line-height: 1rem;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.image {
-    background-color: var(--clr-main-white);
-    min-width: 100%;
-    min-height: 11rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    img {
-        min-width: 150px;
-        height: 100%;
-    }
-} 
-
 .form {
-    padding: 1rem;
+    .test {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: center;
+    }
 
     .labelForm {
-        margin-bottom: .5rem;
+        width: 40%;
+        font-size: .9rem;
         color: var(--clr-main-black);
     }
-}
 
-.inputConfigPanel {
-    width: 100%;
-    background-color: var(--clr-main-white);
-    margin-bottom: 1rem;
-}
-
-.labelMenu {
-    font-size: 1.5rem;
-    transition: 1s;
-}
-
-.ip {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-
-    input {
-        margin-bottom: 0;
+    [data-expanded=true] {
+        min-width: 4.5rem;
     }
 
-    input:last-child {
-        width: 35%;
-        text-transform: uppercase;
+    .inputConfigPanel {
+        width: 60%;
+        margin: 0;
     }
-}
-
-.divSwitch {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    & .labelForm {
-        margin-bottom: 0;
-        margin-right: 1.5rem;
-    }
-
-}
-
-[data-expanded=true] {
-    min-width: 4.5rem;
-    
-
-    & .title {
-        
-    }
-    
 }

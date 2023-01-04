@@ -3,6 +3,7 @@
 interface CssExports {
   'card': string;
   'cardTitle': string;
+  'deleteBtn': string;
   'img': string;
 }
 export const cssExports: CssExports;

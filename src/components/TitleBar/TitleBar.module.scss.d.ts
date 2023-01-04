@@ -8,6 +8,7 @@ interface CssExports {
   'input': string;
   'left': string;
   'separator': string;
+  'title': string;
   'titleBar': string;
 }
 export const cssExports: CssExports;
