@@ -162,7 +162,7 @@ export const Canvas = ({
       ctx.fillStyle = color;
       ctx.font = "16px 'Be Vietnam Pro'";
       ctx.fillText(
-        device.name,
+        device.deviceName,
         canvasCenter.current.x + device?.position.x,
         canvasCenter.current.y +
           device?.position.y -
@@ -176,6 +176,7 @@ export const Canvas = ({
     renderHScrollbars();
     renderVScrollbars();
   };
+
 
   const renderSelection = (x: number, y: number) => {
     const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");

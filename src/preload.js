@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     chooseDirectory: async () => await ipcRenderer.invoke('dialog:open-directory'),
     saveData: async (data) => await ipcRenderer.invoke('save:save', data),
     loadSave: async (filename) => await ipcRenderer.invoke('save:load', filename),
+
+    saveFile : async (filePath, fileName, content) => await ipcRenderer.invoke('fs:save-file', filePath, fileName, content),
     deleteSave: async (id) => await ipcRenderer.invoke('save:delete', id),
 
     maximize: async () => await ipcRenderer.invoke('window:maximize'),

@@ -41,6 +41,12 @@ export class electronAPI {
     });
     ipcMain.handle("save:load", async (event) => {
       try {
+
+        //TODO DELETE THE 3 NEXT LINE ONLY USED FOR TEST
+        if (name){
+          return JSON.parse(fs.readFileSync(app.getAppPath() + `/data/${name}`, "utf-8"));
+        }
+
         const files = fs.readdirSync(app.getAppPath() + `/data`);
 
         const lab: Lab[] = [];
@@ -68,6 +74,16 @@ export class electronAPI {
         console.warn(e);
       }
     });
+
+    ipcMain.handle('fs:save-file', async (event, filePath,fileName, content )=>{
+      try {
+        const fullPath = filePath + '\\' + fileName;
+        fs.writeFileSync( fullPath , content, "utf-8")
+      }catch (e){
+        console.warn(e.message);
+      }
+    })
+
     ipcMain.handle("save:delete", async (_, id) => {
       try {
         fs.unlinkSync(app.getAppPath() + `/data/${id}.json`);
