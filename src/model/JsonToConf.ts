@@ -9,7 +9,6 @@ export enum JsonToConf {
     bridged = "%deviceName%[bridged]=%bridged%",
     collision_domain = "%deviceName%[%interfaceName%]=%collision_domain%",
 
-
     //FOR THE DEVICE.STARTUP
 
     IP_ADDRESS_ADD = "ip address add %ip%/%cidr% dev %interfaceName%",
@@ -18,5 +17,4 @@ export enum JsonToConf {
     IP_ROUTE_DEFAULT = "ip route add %ip%",
     IPV4_FORWARD = "/proc/sys/net/ipv4/ip_forward",
     IPV6_FORWARD = "/proc/sys/net/ipv6/conf/all/forwarding",
-    //STARTUP_COMMAND = "%startup_command%",
 }

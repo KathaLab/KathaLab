@@ -52,10 +52,17 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     },
     {separator: true},
     {label: 'Save', disabled: isDisabled, onClick: onSave},
-    {label: 'Import', disabled: true},
+    {label: 'Import', onClick: () => {
+        handleImport();
+      }
+    },
     {
       label: 'Export', onClick: () => {
-        handleExport(selectedLab)
+        if (selectedLab){
+          handleExport(selectedLab)
+        }else {
+          window.alert("Veuillez ouvrir un lab avant de l'exporter")
+        }
       }
     }
   ];
@@ -104,6 +111,19 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             }
           }
         })
+  }
+
+  const handleImport = async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const directoryPath = await window.electronAPI.chooseDirectory()
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const filesData = await window.electronAPI.readDirectory(directoryPath)
+
+
+    console.log(filesData);
   }
 
   return (
