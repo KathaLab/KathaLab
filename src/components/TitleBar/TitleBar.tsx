@@ -57,12 +57,8 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
       }
     },
     {
-      label: 'Export', onClick: () => {
-        if (selectedLab){
+      label: 'Export', disabled: page !== Pages.Playground, onClick: () => {
           handleExport(selectedLab)
-        }else {
-          window.alert("Veuillez ouvrir un lab avant de l'exporter")
-        }
       }
     }
   ];
