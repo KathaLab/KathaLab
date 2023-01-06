@@ -33,10 +33,10 @@ const App = () => {
   const [page, setPage] = useState<Pages>(Pages.Settings);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [localization, setLocalization] = useState<Language>(String(localStorage.getItem('language')));
+  const [localization, setLocalization] = useState<Language>(localStorage.getItem('language') == null ? Language.EN :  String(localStorage.getItem('language')));
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [theme, setTheme] = useState<themeNames>(localStorage.getItem('theme'));
+  const [theme, setTheme] = useState<themeNames>(localStorage.getItem('theme') == null ? "theme-dark2" : localStorage.getItem('theme'));
   const [snackbarVisibility, setSnackbarVisibility] = useState(false);
   const [labs, setLabs] = useState<Lab[]>([]);
   const [currentLab, setCurrentLab] = useState<Lab>(null);
@@ -76,6 +76,27 @@ const App = () => {
   const [[currentElement], addElement] = useDelayQueue<snackBarMessageType>(
     handleSnackBarMessage
   );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //fetch labs on load
   useEffect(() => {

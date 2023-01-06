@@ -2,8 +2,6 @@
   min-height: 100vh;
   background-color: var(--clr-main-grey);
   display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 .left {
   display: flex;
@@ -18,7 +16,7 @@
   color: var(--clr-main-black);
   margin: 2rem 0 2rem 0;
   width: 100%;
-  max-height: 80vh;
+  height: fit-content;
 }
 
 .settingsMenu {
@@ -47,7 +45,7 @@
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
   margin: 2rem 0 2rem 0;
-  Overflow-y:scroll;
+  Overflow-y:auto;
   width: 100%;
   padding-left: 2rem;
 }
@@ -69,14 +67,17 @@
   font-size: 25px;
 }
 
-.gridItemButton {
-  grid-area: 0 / 0 / 2 / 0;
+.saveButton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   background-color: var(--clr-main-primary);
   color: var(--clr-main-black);
   height: 2rem;
   width: 9rem;
   font-size: 18px;
   border: none;
+  margin: 2rem;
 }
 
 

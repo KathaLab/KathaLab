@@ -11,20 +11,29 @@ export const Settings = () => {
     const {updateContext: updateLocalization, languageDico, language} = useContext(LocalizationContext);
     const {updateContext: updateTheme, theme} = useContext(ThemeContext);
     const [path, setPath] = useState("C:\\Users\\JhonDoe\\Desktop\\katharaConfiguration")
+    const [appParam, setAppParam] = useState({
+        'language': localStorage.getItem('language'),
+        'theme': localStorage.getItem('theme'),
+        'path': localStorage.getItem('path')
+    })
     const openDirectory = async () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        setPath(await window.electronAPI.chooseDirectory());
+        appParam.path = await window.electronAPI.chooseDirectory();
     }
-
     const saveSettings = async () => {
-        await localStorage.setItem('language', language)
-        await localStorage.setItem('theme', theme)
-        await localStorage.setItem('path', path)
-        updateLocalization(language as Language)
-        updateTheme(theme)
+        await localStorage.setItem('language', appParam.language)
+        await localStorage.setItem('theme', appParam.theme)
+        await localStorage.setItem('path', appParam.path)
+        updateLocalization(appParam.language as Language);
+        updateTheme(appParam.theme);
+        setPath(appParam.path);
     }
-
+    const ifParamNotChange = () => {
+        return localStorage.getItem('language') == appParam.language &&
+            localStorage.getItem('theme') == appParam.theme &&
+            localStorage.getItem('path') == appParam.path;
+    }
 
     return <div className={style.page}>
         <div className={style.settingsContainer}>
@@ -40,8 +49,14 @@ export const Settings = () => {
                                                            className={style.label}>{languageDico[LocalizationName.languageParameterLabel]} : </label>
                 </div>
                 <div className={style.gridItemRight}>
-                    <select id="language" name="language" value={language} className={style.select}
-                            onChange={(e) => updateLocalization(e.target.value as Language)}>-
+                    <select id="language" name="language" value={appParam.language} className={style.select}
+                            onChange={async (e) => {
+                                setAppParam({
+                                    language : e.target.value,
+                                    theme : appParam.theme,
+                                    path : appParam.path
+                                })
+                            }}>
                         {
                             Object.values(Language).map((v, id) =>
                                 <option key={id} value={v}>
@@ -50,10 +65,19 @@ export const Settings = () => {
                             )}
                     </select>
                 </div>
-                <div className={style.gridItemLeft}><label htmlFor="theme" className={style.label}>{languageDico[LocalizationName.themeParameterLabel]} : </label></div>
+                <div className={style.gridItemLeft}><label htmlFor="theme"
+                                                           className={style.label}>{languageDico[LocalizationName.themeParameterLabel]} : </label>
+                </div>
                 <div className={style.gridItemRight}>
                     <select id="theme" name="theme" className={style.select}
-                            onChange={(e) => updateTheme(e.target.value)} value={theme}>
+                            onChange={async (e) => {
+                                setAppParam({
+                                    language : appParam.language,
+                                    theme : e.target.value,
+                                    path : appParam.path
+                                })
+                            }}
+                            value={appParam.theme}>
                         {Object.keys(themes).map((key, id) =>
                             <option key={id} value={key}>
                                 {key}
@@ -61,17 +85,27 @@ export const Settings = () => {
                         )}
                     </select>
                 </div>
-                <div className={style.gridItemLeft}><label htmlFor="location" className={style.label}>{languageDico[LocalizationName.storagePlaceLabel]} : </label></div>
-                <div className={style.gridItemRight}>
-                    <input id={"savePath"} onChange={(e) => setPath(e.target.value)} value={localStorage.getItem('path')} name="location"  type={"text"} className={style.storagePlaceInput}/>
-                    <button className={style.btnChooseDir+" material-icons material-symbols-outlined"+ style.gridItemRight} onClick={openDirectory}>folder</button>
+                <div className={style.gridItemLeft}><label htmlFor="location"
+                                                           className={style.label}>{languageDico[LocalizationName.storagePlaceLabel]} : </label>
                 </div>
-                <button className={style.gridItemButton} onClick={saveSettings}>{languageDico[LocalizationName.save]}</button>
+                <div className={style.gridItemRight}>
+                    <input id={"savePath"} onChange={async (e) => {
+                        setAppParam({
+                            language : appParam.language,
+                            theme : appParam.theme,
+                            path : e.target.value
+                        })
+                    }}
+                   value={appParam.path}
+                   name="location" type={"text"} className={style.storagePlaceInput}/>
+                    <button
+                        className={style.btnChooseDir + " material-icons material-symbols-outlined" + style.gridItemRight}
+                        onClick={openDirectory}>folder
+                    </button>
+                </div>
             </div>
-
         </div>
-        <div className={style.gridItemTitle}>{localStorage.getItem("theme")}</div>
-        <div className={style.gridItemTitle}>{localStorage.getItem("language")}</div>
-        <div className={style.gridItemTitle}>{localStorage.getItem("path")}</div>
+        <button className={style.saveButton} onClick={saveSettings}
+                hidden={ifParamNotChange()}>{languageDico[LocalizationName.save]}</button>
     </div>
 }

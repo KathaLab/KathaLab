@@ -3,13 +3,13 @@
 interface CssExports {
   'btnChooseDir': string;
   'centerDiv': string;
-  'gridItemButton': string;
   'gridItemLeft': string;
   'gridItemRight': string;
   'gridItemTitle': string;
   'label': string;
   'left': string;
   'page': string;
+  'saveButton': string;
   'select': string;
   'settingsContainer': string;
   'settingsGrid': string;
