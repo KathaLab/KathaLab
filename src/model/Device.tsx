@@ -7,13 +7,14 @@ export type Device = {
   memory?: number
   interfaces?: {
       ip: string
-      cidr: number 
+      cidr: string 
       is_up: boolean
       collision_domain: string
       bridged: boolean
   }[]
   default_command?: string[]
   startups_commands?: string[]
+  shutdown_commands?: string[]
 };
 
 export enum DeviceType {

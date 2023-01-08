@@ -24,7 +24,7 @@
         }
 
         .container {
-            opacity: 0;
+            visibility: hidden;
         }
     }
 
@@ -52,7 +52,7 @@
 }
 
 .container {
-    opacity: 1;
+    visibility: visible;
 
     .type {
         z-index: 1;
@@ -85,7 +85,7 @@
 
     .labelMenu {
         font-size: 1rem;
-        transition: 1s;
+        // transition: 1s;
         margin-right: .5rem;
         color: var(--clr-main-black);
     }

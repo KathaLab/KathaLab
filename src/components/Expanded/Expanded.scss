@@ -43,7 +43,7 @@
         visibility: visible;
     }
 
-    .list[data-expanded=false] {
+    .list[data-expanded=false] * {
         transform: translateY(-100%);
         position: absolute;
         visibility: hidden;

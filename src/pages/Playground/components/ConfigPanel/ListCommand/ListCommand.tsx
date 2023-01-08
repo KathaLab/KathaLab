@@ -5,12 +5,12 @@ type componentType = {
     list?: string[],
     className: string,
     onChange?: (value: string[]) => void;
+    onBlur?: () => void;
 }
 
-export const ListCommand = ({ list, className, onChange }: componentType) => {
+export const ListCommand = ({ list, className, onChange, onBlur }: componentType) => {
 
     const [values, setValues] = useState<string[]>([...list, ""]);
-
 
     const handleValueChange = (value: string, index: number) => {
         setValues(oldValues => {
@@ -25,16 +25,22 @@ export const ListCommand = ({ list, className, onChange }: componentType) => {
         setValues(oldValues => {
             return [...oldValues].filter((value,i, arr) => value || i === arr.length-1);
         })
+        onBlur()
     }
     useEffect(() => {
         onChange && onChange(values);
     }, [values, onchange])
 
+    useEffect(() => {
+        setValues([...list, ""])
+    }, [list])
 
     return (
         <ul>
             {values.map((command, i) => (
-                <li key={i}><TextInput placeholder={values[i] || 'New command'} value={values[i]} className={className} onBlur={handleBlur} onChange={(value: string) => handleValueChange(value, i)}></TextInput></li>
+                <li key={i}>
+                    <TextInput placeholder={values[i] || 'New command'} value={values[i]} className={className} onBlur={handleBlur} onChange={(value: string) => handleValueChange(value, i)}></TextInput>
+                </li>
             ))}
         </ul>
     )

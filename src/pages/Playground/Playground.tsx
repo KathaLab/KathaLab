@@ -17,11 +17,9 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
-useEffect(() => {
-  console.log(selectedDevices)
-}, [selectedDevices] )
-
-useEffect(() => {setInterval(() => console.log(selectedDevices), 500)}, [])
+  useEffect(() => {
+    console.log(selectedDevices)
+  }, [selectedDevices])
 
   const color = useCssVar("--clr-main-primary");
 
@@ -39,6 +37,10 @@ useEffect(() => {setInterval(() => console.log(selectedDevices), 500)}, [])
       }]
     });
   };
+
+  const updateDevices = () => {
+    setSelectedDevices([...selectedDevices])
+  }
 
   return (
     <div className={style.page}>
@@ -59,7 +61,7 @@ useEffect(() => {setInterval(() => console.log(selectedDevices), 500)}, [])
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
           selectedDevices={selectedDevices}
         ></Canvas>
-        <ConfigPanel device={selectedDevices?.[0]}></ConfigPanel>
+        {selectedDevices?.[0] && <ConfigPanel updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>
     </div>
   );
