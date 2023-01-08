@@ -15,7 +15,7 @@ type componentType = {
   className?: string,
   value?: string,
   onChange?: (params?: string) => void,
-  onBlur?: () => void,
+  onBlur?: (value?: string) => void,
   autocommplete?: string[];
   type?: textInputType
 }
@@ -40,7 +40,7 @@ export const TextInput = ({ placeholder, className, onChange, value, onBlur, aut
 
 
   return <>
-    <input list={id} className={style.input + " " + className} onBlur={onBlur} placeholder={placeholder} onChange={handleChange} ref={inputRef} />
+    <input list={id} className={style.input + " " + className} onBlur={() => onBlur(inputRef.current.value)} placeholder={placeholder} onChange={handleChange} ref={inputRef} />
     {autocommplete && <datalist id={id} >
       {autocommplete?.map(item => <option key={item} value={item} />)}
     </datalist>

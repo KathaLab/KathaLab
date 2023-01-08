@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
@@ -16,6 +16,12 @@ type componentType = {
 export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
+
+useEffect(() => {
+  console.log(selectedDevices)
+}, [selectedDevices] )
+
+useEffect(() => {setInterval(() => console.log(selectedDevices), 500)}, [])
 
   const color = useCssVar("--clr-main-primary");
 
