@@ -7,7 +7,7 @@ export type Device = {
   memory?: number
   interfaces?: {
       ip: string
-      cidr: string 
+      cidr: number 
       is_up: boolean
       collision_domain: string
       bridged: boolean

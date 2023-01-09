@@ -23,8 +23,6 @@ type componentType = {
 
 export const TextInput = ({ placeholder, className, onChange, value, onBlur, autocommplete, type = "DEFAULT" }: componentType) => {
 
-  
-
   const id = "id_" + useId("data-list");
 
   const inputRef = useRef(null);
@@ -41,13 +39,17 @@ export const TextInput = ({ placeholder, className, onChange, value, onBlur, aut
     }
   }
 
-
   return <>
-    <input list={id} className={style.input + " " + className} onBlur={() => onBlur && onBlur(inputRef.current.value)} placeholder={placeholder} onChange={handleChange} ref={inputRef} />
-    {autocommplete && <datalist id={id} >
-      {autocommplete?.map(item => <option key={item} value={item} />)}
-    </datalist>
-    }
+    <input 
+      list={id} 
+      className={style.input + " " + className} 
+      onBlur={() => onBlur && onBlur(inputRef.current.value)} 
+      placeholder={placeholder} 
+      onChange={handleChange} 
+      ref={inputRef} />
 
+    {autocommplete && <datalist id={id}>
+      {autocommplete?.map(item => <option key={item} value={item} />)}
+    </datalist>}
   </>
 };

@@ -8,6 +8,7 @@ import { ListCommand } from './ListCommand/ListCommand';
 import { Device, DeviceType } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
+import { Value } from 'sass';
 
 type ComponentType = {
   device: Device;
@@ -26,31 +27,64 @@ export const ConfigPanel = ({ device, updateDevices }: ComponentType) => {
     if(device?.type) imageRef.current.src = getImg(device.type, color).src;
   }, [device])
 
-  useEffect(() => {console.log(device.name)},[device.name])
-
   const setInterface = () => {
     device.interfaces = device.interfaces || [];
     device.interfaces.push(
       { ip: '',
-        cidr: '',
+        cidr: 0,
         is_up: false,
         collision_domain: '',
         bridged: false
       }
     );
+    updateDevices();
+  }
+
+  const deleteInterface = (index: number) => {
+    device.interfaces.splice(index, 1)
   }
 
   const setStartupsCommands = () => {
     device.startups_commands = device.startups_commands || [];
   }
 
+  const getStartupCommands = (commands: string[]) => {
+    console.log(commands.filter(word => word !== ''))
+    device.startups_commands = commands.filter(word => word !== '')
+  }
+
   const setShutdownCommands = () => {
     device.shutdown_commands = device.shutdown_commands || [];
   }
 
+  const maskToCidr = (mask: string) => {
+    const bin = mask.split('.')
+    
+    const bits = [...bin.map(oct => parseInt(oct, 10).toString(2))].join('')
+    
+    let cidr = 0;
+    while(bits[cidr] === '1') cidr++;
+    return cidr
+  }
+
+  const cidrToMask = (cidr: number) => {
+    const bin = "1".repeat(cidr).padEnd(32, '0')
+
+    const oct1 = parseInt(bin.slice(0, 8),2).toString().padEnd(3, '0')
+    const oct2 = parseInt(bin.slice(8, 16),2).toString().padEnd(3, '0')
+    const oct3 = parseInt(bin.slice(16, 24),2).toString().padEnd(3, '0')
+    const oct4 = parseInt(bin.slice(24, 32),2).toString().padEnd(3, '0')
+  
+    const result = oct1.concat('.', oct2,'.', oct3,'.', oct4)
+    return result
+  }
+
   return (
      <div className={style.panel} data-expanded={expanded}>
-      <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
+      <Button className={style.toggleExpand} 
+        type='icon' 
+        value={expanded ? "navigate_next" : "navigate_before"} 
+        onclick={() => setExpanded(old => !old)}></Button>
 
         <span className={style.title}>Configuration - {device.name}</span>
         <div className={style.container}>
@@ -59,50 +93,81 @@ export const ConfigPanel = ({ device, updateDevices }: ComponentType) => {
             <img ref={imageRef} alt="img-device" />
           </div>
           <div className={style.form}>
-            <TextInput value={device.name} onBlur={(value: string) => {device.name = value, updateDevices()}} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
+            <TextInput value={device.name} 
+              onBlur={(value: string) => { device.name = value, updateDevices()}} 
+              placeholder="Device Name" 
+              className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
             <Expanded title="Interfaces" classTitle={style.labelMenu}>
-      
-            <ul>
-            {device.interfaces?.map((data, i) => (
-              <li key={i}>
-                <Expanded title={"Eth" + i} classTitle={style.labelMenu}>
-                  <div className={style.test}>
-                    <p className={style.labelForm}>Ip address</p>
-                    <TextInput type={"NUMBER"} value={device?.interfaces?.[i]?.ip} placeholder="127.0.0.1" onBlur={(value: string) => device.interfaces[i].ip = value} className={style.inputConfigPanel}></TextInput>
-                  </div>
-                  <div className={style.test}>
-                    <p className={style.labelForm}>CIDR</p>
-                    <TextInput type={"NUMBER"} value={device?.interfaces?.[i]?.cidr} placeholder="32" onBlur={(value: string) => device.interfaces[i].cidr = value} className={style.inputConfigPanel}></TextInput>
-                  </div>
-                  <div className={style.test}>
-                    <p className={style.labelForm}>Mask</p>
-                    <TextInput type={"NUMBER"} value="" className={style.inputConfigPanel}></TextInput>
-                  </div>
-                  <div className={style.test}>
-                    <p className={style.labelForm}>Collision domain</p>
-                    <TextInput autocommplete={['eth 0','eth 1']} placeholder="Autocomplete" className={style.inputConfigPanel}></TextInput>
-                  </div>
-                  <div className={style.test}>
-                    <p className={style.labelForm}>Ip Active</p>
-                    <Switch onChange={() => device.interfaces[i].is_up = !device.interfaces[i].is_up} state={device.interfaces[i].is_up}></Switch>
-                  </div>
-                  <div className={style.test}>
-                    <p className={style.labelForm}>Bridged</p>
-                    <Switch onChange={() => device.interfaces[i].bridged = !device.interfaces[i].bridged} state={device.interfaces[i].bridged}></Switch>
-                  </div>
-                </Expanded>
-              </li>
-              ))}
-            </ul>
+        
+              <ul>
+              {device.interfaces?.map((data, i) => (
+                <li key={i}>
+                  <Expanded title={"Eth" + i} classTitle={style.labelMenu}>
+                    <div className={style.test}>
+                      <p className={style.labelForm}>Ip address</p>
+                      <TextInput type={"NUMBER"} 
+                        value={device?.interfaces?.[i]?.ip} 
+                        placeholder="127.0.0.1"
+                        onBlur={(value: string) => {device.interfaces[i].ip = value, updateDevices()}} 
+                        className={style.inputConfigPanel}></TextInput>
+                    </div>
+                    <div className={style.test}>
+                      <p className={style.labelForm}>CIDR</p>
+                      <TextInput type={"NUMBER"} 
+                        value={device?.interfaces?.[i]?.cidr? device?.interfaces?.[i]?.cidr.toString() : null} 
+                        placeholder="24" 
+                        onBlur={(value: string) => {device.interfaces[i].cidr = Number(value), updateDevices()}} 
+                        className={style.inputConfigPanel}></TextInput>
+                    </div>
+                    <div className={style.test}>
+                      <p className={style.labelForm}>Mask</p>
+                      <TextInput 
+                        type={"NUMBER"}
+                        value={device.interfaces?.[i]?.cidr? cidrToMask(device.interfaces?.[i]?.cidr).toString() : null}
+                        placeholder="255.255.255.000"
+                        onBlur={(value: string) => {device.interfaces[i].cidr = maskToCidr(value), updateDevices()}}
+                        className={style.inputConfigPanel}></TextInput>
+                    </div>
+                    <div className={style.test}>
+                      <p className={style.labelForm}>Collision domain</p>
+                      <TextInput 
+                        autocommplete={['eth 0','eth 1']} 
+                        placeholder="Autocomplete" 
+                        className={style.inputConfigPanel}></TextInput>
+                    </div>
+                    <div className={style.test}>
+                      <p className={style.labelForm}>Ip Active</p>
+                      <Switch 
+                        onChange={() => {device.interfaces[i].is_up = !device.interfaces[i].is_up, updateDevices()}} 
+                        state={device.interfaces[i].is_up}></Switch>
+                    </div>
+                    <div className={style.test}>
+                      <p className={style.labelForm}>Bridged</p>
+                      <Switch 
+                        onChange={() => {device.interfaces[i].bridged = !device.interfaces[i].bridged, updateDevices()}} 
+                        state={device.interfaces[i].bridged}></Switch>
+                    </div>
+                  </Expanded>
+                  <button onClick={() => {deleteInterface(i), updateDevices()}}>Supp</button>
+                </li>
+                ))}
+              </ul>
               <button onClick={setInterface}>new interface</button>
             </Expanded>
             </div>
             <Expanded title="Startup command" classTitle={style.labelMenu}>
-                <ListCommand onBlur={setStartupsCommands} list={device.startups_commands ? device.startups_commands : []} className={style.inputConfigPanel}></ListCommand>
+                <ListCommand 
+                  onBlur={setStartupsCommands} 
+                  list={device.startups_commands ? device.startups_commands : []}
+                  getCommands={(commands: string[]) => getStartupCommands(commands)}
+                  className={style.inputConfigPanel}></ListCommand>
             </Expanded>         
             <Expanded title="Shutdown command" classTitle={style.labelMenu}>
-                <ListCommand onBlur={setShutdownCommands} list={device.shutdown_commands ? device.shutdown_commands : []} className={style.inputConfigPanel}></ListCommand>
-            </Expanded>         
+                <ListCommand 
+                  onBlur={setShutdownCommands}
+                  list={device.shutdown_commands ? device.shutdown_commands : []} 
+                  className={style.inputConfigPanel}></ListCommand>
+            </Expanded> 
         </div>
     </div> 
   )
