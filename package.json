@@ -23,9 +23,15 @@
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
-          "platforms": ["win32", "darwin", "linux"],
+          "platforms": ["win32"],
           "config": {
             "name": "projet_kathara"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": ["darwin", "linux"],
+          "config": {
           }
         }
       ],
