@@ -12,6 +12,10 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
+      - name: generate files
+        run: | 
+              npm run start & sleep 5; 
+              kill -INT %+
       - name: build
         run: npm run make
 
@@ -24,6 +28,10 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
+      - name: generate files
+        run: | 
+              npm run start & sleep 5; 
+              kill -INT %+
       - name: build
         run: npm run make
 
@@ -37,6 +45,8 @@ jobs:
       - name: install dependencies
         run: npm install
       - name: generate files
-        run: npm run start
+        run: | 
+              npm run start & sleep 5; 
+              kill -INT %+
       - name: build
         run: npm run make
