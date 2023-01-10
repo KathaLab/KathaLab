@@ -17,34 +17,30 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
-  useEffect(() => {
-    console.log(selectedDevices)
-  }, [selectedDevices])
-
   const color = useCssVar("--clr-main-primary");
 
   const handleDeviceClick = (device: Device) => {
 
-    let name = "";
+    let deviceName = "";
     let i = 0;
 
-    while (name == "" || lab.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+    while (deviceName == "" || lab.devices.map(d => d.deviceName).includes(deviceName)) deviceName = `${device.type}${i++}`;
 
     setCurrentLab({
       ...lab, devices: [...lab.devices, {
         ...device,
-        name,
+        deviceName,
       }]
     });
   };
 
   const updateDevices = () => {
+    console.log("YOOOOOOO")
     setSelectedDevices([...selectedDevices])
   }
 
   const allCollisionDomain = () => {
     let collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain))
-    console.log(collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx))
     return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
   }
 

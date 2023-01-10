@@ -1,5 +1,5 @@
 import { number } from "prop-types";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useId } from "../../hooks/useId"
 import style from "./TextInput.module.scss";
 
@@ -24,29 +24,30 @@ type componentType = {
 export const TextInput = ({ placeholder, className, onChange, value, onBlur, autocommplete, type = "DEFAULT" }: componentType) => {
 
   const id = "id_" + useId("data-list");
-
-  const inputRef = useRef(null);
+  const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
-    inputRef.current.value = value || "";
+    setInputValue(value || "")
   }, [value])
 
-  const handleChange = () => {
-    const temp = (inputRef.current.value as string).match(textInputTypeValidator[type])?.[0]
-    if (temp !== value) {
-      inputRef.current.value = temp
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = (event.target.value as string).match(textInputTypeValidator[type])?.[0]
+
+    if (temp !== inputValue) {
+      setInputValue(temp)
       onChange?.(temp);
     }
   }
 
   return <>
-    <input 
-      list={id} 
-      className={style.input + " " + className} 
-      onBlur={() => onBlur && onBlur(inputRef.current.value)} 
-      placeholder={placeholder} 
-      onChange={handleChange} 
-      ref={inputRef} />
+    <input
+      value={inputValue}
+      list={id}
+      className={style.input + " " + className}
+      onBlur={(event) => onBlur && onBlur(event.target.value)}
+      placeholder={placeholder}
+      onChange={handleChange}
+    />
 
     {autocommplete && <datalist id={id}>
       {autocommplete?.map((item, index) => <option key={index} value={item} />)}
