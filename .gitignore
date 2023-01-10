@@ -92,6 +92,6 @@ out/
 /yarn.lock
 /package-lock.json
 
-# specific 
+# specific
 /data/*.json
 
