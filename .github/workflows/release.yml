@@ -1,8 +1,5 @@
 name: Release
-on:
-  release:
-    types:
-      - created
+on: [workflow_dispatch]
 
 jobs:
 
@@ -15,6 +12,10 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
+      - name: generate files
+        run: |
+          npm run start & sleep 30
+          kill -INT %+
       - name: publish
         env:
           GITHUB_TOKEN: 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
@@ -29,6 +30,10 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
+      - name: generate files
+        run: |
+          npm run start & sleep 30
+          kill -INT %+
       - name: publish
         env:
           GITHUB_TOKEN: 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
@@ -43,6 +48,11 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
+      - name: generate files
+        run: |
+          Start-Process -FilePath "npm.exe" -ArgumentList "run start" -NoNewWindow -Wait
+          Start-Sleep -Seconds 30
+          Stop-Process -Id (Get-Process -Name "node" -ErrorAction SilentlyContinue).Id -Force
       - name: publish
         env:
           GITHUB_TOKEN: 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
