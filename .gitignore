@@ -83,7 +83,7 @@ typings/
 .dynamodb/
 
 # Webpack
-.webpack/
+#.webpack/
 
 # Electron-Forge
 out/
@@ -92,6 +92,6 @@ out/
 /yarn.lock
 /package-lock.json
 
-# specific 
+# specific
 /data/*.json
 
