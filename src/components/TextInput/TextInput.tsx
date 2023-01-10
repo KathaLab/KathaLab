@@ -3,7 +3,7 @@ import { useId } from "../../hooks/useId"
 import style from "./TextInput.module.scss";
 
 const textInputTypeValidator = {
-  NUMBER: /[0-9\.]*/,
+  NUMBER: /[0-9.]*/,
   AUTOCOMPLETE: "autocomplete",
   DEFAULT: /.*/,
 }
