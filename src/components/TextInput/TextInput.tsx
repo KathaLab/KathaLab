@@ -49,7 +49,7 @@ export const TextInput = ({ placeholder, className, onChange, value, onBlur, aut
       ref={inputRef} />
 
     {autocommplete && <datalist id={id}>
-      {autocommplete?.map(item => <option key={item} value={item} />)}
+      {autocommplete?.map((item, index) => <option key={index} value={item} />)}
     </datalist>}
   </>
 };

@@ -42,6 +42,12 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     setSelectedDevices([...selectedDevices])
   }
 
+  const allCollisionDomain = () => {
+    let collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain))
+    console.log(collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx))
+    return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
+  }
+
   return (
     <div className={style.page}>
       <div className={style.content}>
@@ -61,7 +67,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
           selectedDevices={selectedDevices}
         ></Canvas>
-        {selectedDevices?.[0] && <ConfigPanel updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
+        {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>
     </div>
   );

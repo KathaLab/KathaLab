@@ -9,13 +9,15 @@ import { Device, DeviceType } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
 import { Value } from 'sass';
+import { string } from 'prop-types';
 
 type ComponentType = {
   device: Device;
-  updateDevices: () => void
+  updateDevices: () => void;
+  allCollisionDomain: string[];
 }
 
-export const ConfigPanel = ({ device, updateDevices }: ComponentType) => {
+export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: ComponentType) => {
 
   const [expanded, setExpanded] = useState(false)
 
@@ -33,7 +35,7 @@ export const ConfigPanel = ({ device, updateDevices }: ComponentType) => {
       { ip: '',
         cidr: 0,
         is_up: false,
-        collision_domain: '',
+        collision_domain: "",
         bridged: false
       }
     );
@@ -131,8 +133,10 @@ export const ConfigPanel = ({ device, updateDevices }: ComponentType) => {
                     <div className={style.test}>
                       <p className={style.labelForm}>Collision domain</p>
                       <TextInput 
-                        autocommplete={['eth 0','eth 1']} 
+                        autocommplete={allCollisionDomain}
+                        value={device?.interfaces?.[i]?.collision_domain}
                         placeholder="Autocomplete" 
+                        onBlur={(value: string) => {device.interfaces[i].collision_domain =value, updateDevices()}}
                         className={style.inputConfigPanel}></TextInput>
                     </div>
                     <div className={style.test}>
