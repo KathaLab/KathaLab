@@ -1,6 +1,6 @@
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require("path");
+const ForkTsCheckerWebpackPlugin = import("fork-ts-checker-webpack-plugin");
+const CopyWebpackPlugin = import("copy-webpack-plugin");
+const path = import("path");
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
