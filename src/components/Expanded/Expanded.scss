@@ -32,13 +32,13 @@
     }
 
     .list {
-        padding-left: .75rem;
-        padding-right: .75rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
     .list[data-expanded=true] {
         transform: translateY(0);
-        margin-top: .5rem;
+        margin-top: .25rem;
         position: relative;
         visibility: visible;
     }

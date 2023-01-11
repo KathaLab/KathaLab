@@ -23,11 +23,15 @@
             visibility: visible;
         }
 
-        .container {
+        .hideDeviceForm {
             visibility: hidden;
         }
     }
 
+    .hideDeviceForm {
+        visibility: visible;
+    }
+    
     &[data-expanded=true] {
         .toggleExpand {
             background-color: var(--clr-main-primary);
@@ -49,12 +53,8 @@
         color: white;
         visibility: hidden;
     }
-}
 
-.container {
-    visibility: visible;
-
-    .type {
+    .typeDevice {
         z-index: 1;
         position: absolute;
         top: 0.5rem;
@@ -90,38 +90,36 @@
         color: var(--clr-main-black);
     }
 
-    .inputConfigPanel {
-        width: 100%;
-        margin-bottom: .75rem;
+    .form {
+        .label {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+    
+        .labelForm {
+            width: 40%;
+            font-size: .9rem;
+            color: var(--clr-main-black);
+        }
+    
+        .inputForm {
+            width: 60%;
+            margin: 0;
+        }
 
-        &.inputDeviceName {
-            width: calc(100% - 1.5rem);
+        .inputDeviceName {
+            width: calc(100% - 2rem);
             margin: .75rem;
             font-size: 1rem;
             line-height: 1rem;
         }
+
+        .inputListCommands {
+            width: calc(100%);
+            margin-bottom: .5rem;
+        }
     }
 }
 
-.form {
-    .test {
-        display: flex;
-        margin-bottom: 1rem;
-        align-items: center;
-    }
 
-    .labelForm {
-        width: 40%;
-        font-size: .9rem;
-        color: var(--clr-main-black);
-    }
-
-    [data-expanded=true] {
-        min-width: 4.5rem;
-    }
-
-    .inputConfigPanel {
-        width: 60%;
-        margin: 0;
-    }
-}
