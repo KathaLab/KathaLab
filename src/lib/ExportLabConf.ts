@@ -53,9 +53,6 @@ export default class ExportLabConf {
   private createLabInterfacesConf(itf: Interfaces, device: Device) {
     let conf = "";
     for (const key in itf) {
-      if (key == 'bridged' && itf[key] == false){
-        continue;
-      }
       conf = this.createLabConf(key, conf);
       conf = this.replaceInterfaceInformation(itf, conf);
       conf = this.replaceDeviceName(device, conf);
@@ -66,7 +63,6 @@ export default class ExportLabConf {
 
   private createLabConf(key: string, conf: string, labJson: Lab = undefined) {
     const confKey = key
-
     if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'mail' || confKey == 'collision_domain' || confKey == 'bridged' || confKey == 'description') {
       if (labJson) {
         if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'mail' || key == 'version' || key == 'description') {
@@ -82,7 +78,7 @@ export default class ExportLabConf {
 
   protected replaceInterfaceInformation(itf: Interfaces, conf: string): string {
     for (const key in itf) {
-      if (key == 'interfaceName' || key == 'bridged' || key == 'collision_domain' || key == 'ip' || key == 'cidr') {
+      if (key == 'interfaceName' || key == 'collision_domain' || key == 'ip' || key == 'cidr') {
         conf = conf.replace(`%${key}%`, <string>itf[key]);
       }
     }

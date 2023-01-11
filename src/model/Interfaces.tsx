@@ -7,6 +7,5 @@ export type Interfaces = {
   mask: string
   is_up: boolean
   collision_domain: string
-  bridged: boolean
   routes?: Route[]
 }

@@ -5,6 +5,8 @@ import {ContextMenu} from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
 import ExportLabConf from "../../lib/ExportLabConf";
 import ExportDevicesConf from "../../lib/ExportDevicesConf";
+import * as RegexConst from "../../lib/RegexConst";
+import { v4 as uuidv4 } from "uuid";
 
 type componentType = {
   switchPage: (page: Pages) => void
@@ -52,13 +54,14 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     },
     {separator: true},
     {label: 'Save', disabled: isDisabled, onClick: onSave},
-    {label: 'Import', onClick: () => {
+    {
+      label: 'Import', onClick: () => {
         handleImport();
       }
     },
     {
       label: 'Export', disabled: page !== Pages.Playground, onClick: () => {
-          handleExport(selectedLab)
+        handleExport(selectedLab)
       }
     }
   ];
@@ -110,16 +113,42 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
   }
 
   const handleImport = async () => {
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const directoryPath = await window.electronAPI.chooseDirectory()
 
+    if (!directoryPath){
+      return;
+    }
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const filesData = await window.electronAPI.readDirectory(directoryPath)
+    const labConf: Lab = {canvas: {x: 0, y: 0, zoom: 0}, devices: [], id: "", labName: ""};
 
+    String(filesData['confFile']).split('\n').forEach(line => {
+      labConf.id = uuidv4();
 
-    console.log(filesData);
+      //console.log(Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX)))
+
+      if (Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0]) {
+        console.log("test")
+        labConf.labName = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.name.replace(/['"]/g, '');
+        labConf.author = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.author.replace(/['"]/g, '');
+        labConf.description = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.description.replace(/['"]/g, '');
+        labConf.web = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.web.replace(/['"]/g, '');
+        labConf.version = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.version.replace(/['"]/g, '');
+      }
+      else if(Array.from(line.matchAll(RegexConst.LAB_DEVICE_REGEX))[0]){
+        console.log("")
+      }
+      else {
+        //labConf.other_command?.push(line);
+      }
+      return labConf;
+    })
+   console.log(labConf)
   }
 
   return (
