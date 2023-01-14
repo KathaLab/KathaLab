@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import style from './Switch.scss'
 
 type componentType = {
-    className?: string,
     onChange?: () => void,
     state?: boolean
 }
 
-export const Switch = ({className, onChange, state}: componentType) => {
+export const Switch = ({onChange, state}: componentType) => {
    
     return (
         <label className={style.switch}>
