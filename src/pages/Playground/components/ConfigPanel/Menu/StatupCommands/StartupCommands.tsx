@@ -4,12 +4,10 @@ import { Device } from '../../../../../../model/Device';
 import { Expanded } from '../../../../../../components/Expanded/Expanded'
 import { ListCommand } from '../../ListCommand/ListCommand';
 
-
 type ComponentType = {
     device: Device;
 }
 
-  
 export const StartupCommands = ({device}: ComponentType) => {
    
     const setStartupsCommands = () => {

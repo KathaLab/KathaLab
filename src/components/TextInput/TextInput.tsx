@@ -4,9 +4,10 @@ import { useId } from "../../hooks/useId"
 import style from "./TextInput.module.scss";
 
 const textInputTypeValidator = {
-  NUMBER: /[0-9\.]*/,
+  IP: /[0-9\.]*/,
   AUTOCOMPLETE: "autocomplete",
   DEFAULT: /.*/,
+  NUMBER: /[0-9]*/
 }
 
 export type textInputType = keyof typeof textInputTypeValidator

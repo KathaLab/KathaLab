@@ -4,6 +4,7 @@ import { Device } from '../../../../../../model/Device';
 import { Expanded } from '../../../../../../components/Expanded/Expanded'
 import { TextInput } from '../../../../../../components/TextInput/TextInput';
 import { Switch } from '../../../../../../components/Switch/Switch';
+import { Button } from '../../../../../../components/Button/Button';
 
 
 type ComponentType = {
@@ -41,7 +42,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
                   <Expanded title={"Eth" + i} classTitle={style.labelMenu}>
                     <div className={style.label}>
                       <p className={style.labelForm}>Ip address</p>
-                      <TextInput type={"NUMBER"} 
+                      <TextInput type={"IP"} 
                         value={device?.interfaces?.[i]?.ip} 
                         placeholder="127.0.0.1"
                         onChange={(value: string) => {console.log(device, value); device.interfaces[i].ip = value; updateDevices()}} 
@@ -70,12 +71,18 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
                         onChange={() => {device.interfaces[i].is_up = !device.interfaces[i].is_up; updateDevices()}} 
                         state={device.interfaces[i].is_up}></Switch>
                     </div>
+                    <Button className={style.buttonDelInterface}
+                      type='text'
+                      value='Delete'
+                      onclick={()=> {deleteInterface(i); updateDevices()}}></Button>
                   </Expanded>
-                  <button onClick={() => {deleteInterface(i); updateDevices()}}>Supp</button>
                 </li>
               ))}
             </ul>
-            <button onClick={setInterface}>new interface</button>
+            <Button className={style.buttonAddInterface}
+                    type='text'
+                    value='new interface'
+                    onclick={setInterface}></Button>
           </Expanded>
        </div>
     )

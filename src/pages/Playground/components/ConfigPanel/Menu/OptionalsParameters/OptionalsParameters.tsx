@@ -5,7 +5,6 @@ import { Expanded } from '../../../../../../components/Expanded/Expanded'
 import { TextInput } from '../../../../../../components/TextInput/TextInput';
 import { Switch } from '../../../../../../components/Switch/Switch';
 
-
 type ComponentType = {
     device: Device;
     updateDevices: () => void;
@@ -73,15 +72,15 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
         device.optional_parameters.shell === '' && delete device.optional_parameters.shell
     }
     
-    const setNumTermsl = (value: bigint) => {
+    const setNumTerms = (value: number) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.num_terms = value
-        device.optional_parameters.num_terms === undefined && delete device.optional_parameters.num_terms
+        device.optional_parameters.num_terms === 0 && delete device.optional_parameters.num_terms
     }
 
     return (
         <Expanded title="Optionals parameters" classTitle={style.labelMenu}>
-            <div>
+            <div className={style.menuOptionsParameters}>
                 <div className={style.label}>
                     <p className={style.labelForm}>Bridged</p>
                     <Switch 
@@ -90,7 +89,7 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Port</p>
-                    <TextInput type={"DEFAULT"} 
+                    <TextInput type={"NUMBER"} 
                     value={device?.optional_parameters?.port} 
                     placeholder="82000"
                     onChange={(value) => {setPort(value); updateDevices()}} 
@@ -123,7 +122,9 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
                 <div className={style.label}>
                     <p className={style.labelForm}>Exec</p>
                     <TextInput
+                    value={device?.optional_parameters?.exec}
                     placeholder="" 
+                    onChange={(value) => {setExec(value); updateDevices()}}  
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
@@ -159,12 +160,12 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
                 <div className={style.label}>
                     <p className={style.labelForm}>Num_terms</p>
                     <TextInput
-                    value={device?.optional_parameters?.num_terms?.toString()} 
+                    value={device?.optional_parameters?.num_terms?  device?.optional_parameters?.num_terms.toString() : ""} 
                     placeholder=""
-                    onChange={(value) => {setNumTermsl(BigInt(value)); updateDevices()}}  
+                    onChange={(value) => {setNumTerms(Number(value)); updateDevices()}}  
                     className={style.inputForm}></TextInput>
                 </div>
             </div>
-        </Expanded> 
+        </Expanded>
     )
 };

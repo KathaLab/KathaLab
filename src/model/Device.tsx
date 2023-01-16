@@ -33,7 +33,7 @@ export type OptionalParameters = {
   sysctl?: string,
   env?: string,
   shell?: string,
-  num_terms?:bigint,
+  num_terms?: number,
 }
 
 export type Interface = string;
