@@ -16,10 +16,10 @@ type ComponentType = {
   
 export const Interface = ({device, updateDevices, allCollisionDomain}: ComponentType) => {
    
-    const setInterface = (index: number) => {
+    const setInterface = () => {
         device.interfaces = device.interfaces || [];
         device.interfaces.push(
-            { interfaceName:'Eth' + index,
+            { interfaceName:'',
               ip: '',
               cidr: null,
               is_up: false,
@@ -27,6 +27,10 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
             }
         );
         updateDevices();
+    }
+
+    const setInterfaceName = () => {
+      device.interfaces?.map((data, i) => (device.interfaces[i].interfaceName = 'Eth' + i))
     }
 
     const deleteInterface = (index: number) => {
@@ -75,7 +79,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
                     <Button className={style.buttonDelInterface}
                       type='text'
                       value='Delete'
-                      onclick={()=> {deleteInterface(i); updateDevices()}}></Button>
+                      onclick={()=> {deleteInterface(i); setInterfaceName(); updateDevices()}}></Button>
                   </Expanded>
                 </li>
               ))}
@@ -83,7 +87,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
             <Button className={style.buttonAddInterface}
                     type='text'
                     value='new interface'
-                    onclick={() => setInterface(device.interfaces || device.interfaces?.length === 0 ? device.interfaces?.length : 0)}></Button>
+                    onclick={() => {setInterface(); setInterfaceName()}}></Button>
           </Expanded>
        </div>
     )
