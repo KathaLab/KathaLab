@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./ContextMenu.module.scss";
 
 type option = {
@@ -12,13 +12,22 @@ type option = {
 type componentType = {
   onHide?: () => void;
   options: option[];
+  position?: {
+    x: number;
+    y: number;
+  }
 };
 
-export const ContextMenu = ({ onHide, options }: componentType) => {
+export const ContextMenu = ({ onHide, options, position }: componentType) => {
+
+  useEffect(() => {
+    console.log(position)
+  }, [position])
+
   return (
     <>
       {onHide && <div className={style.background} onClick={onHide}></div>}
-      <ul className={style.menu}>
+      <ul className={style.menu} style={{left: position.x, top: position.y}}>
         {options.map((option, index) => {
           if (option.separator) {
             return <span key={index} className={style.separator}></span>;

@@ -4,6 +4,7 @@ import React, {
   MouseEventHandler,
   KeyboardEventHandler,
   WheelEventHandler,
+  useState,
 } from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
@@ -11,6 +12,7 @@ import { Device, deviceSize } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
 import { MouseButtonType, ScrollBarWidth } from "./canvaHelper";
+import { ContextMenu } from "../../../../components/ContextMenu/ContextMenu";
 
 type ComponentType = {
   topoJson: Lab;
@@ -23,27 +25,37 @@ export const Canvas = ({
   setSelectedDevices,
   selectedDevices,
 }: ComponentType) => {
+  const labOptions = [
+    { label: 'New' },
+    { label: 'Open' },
+    { separator: true },
+    { label: 'Save', disabled: false },
+    { label: 'Import', disabled: true },
+    { label: 'Export', disabled: false },
+  ];
+
   const canvasRef = useRef(null);
   const canvasCenter = useRef({ x: 0, y: 0 });
 
   const mouseDownPosRef = useRef({ x: 0, y: 0 });
   const mouseButtonDownRef = useRef<MouseButtonType>(MouseButtonType.None);
-
+  
   const isMajPressedRef = useRef(false);
-
-  const actionTypeRef = useRef<"move" | "select">("select");
-
+  
+  const actionTypeRef = useRef<"move" | "select" | "scrollX" | "scrollY">("select");
+  
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-main-primary");
-
-  const observer = React.useRef(
+  const [mouseDownEvent, setMouseDownEvent] = useState<MouseEvent>(null);
+  
+  const observer = useRef(
     new ResizeObserver(entries => {
       console.log("resize")
       resize()
     })
-  )
-
-  const renderHScrollbars = () => {
+    )
+    
+    const renderHScrollbars = () => {
     if (!topoJson.devices.length) return;
 
     // most left and most right devices position
@@ -124,7 +136,7 @@ export const Canvas = ({
 
   const lighten = (color: string, diff = 50) => {
     return `#${Math.min(255, parseInt(color.slice(2, 4), 16) + diff).toString(16).padStart(2, "0")}${Math.min(255, parseInt(color.slice(4, 6), 16) + diff).toString(16).padStart(2, "0")}${Math.min(255, parseInt(color.slice(6, 8), 16) + diff).toString(16).padStart(2, '0')}`
-}
+  }
 
   const renderJson = async (json: Lab) => {
     const ctx = canvasRef.current.getContext("2d");
@@ -142,8 +154,8 @@ export const Canvas = ({
           y: rect.height / 2 - canvasCenter.current.y,
         };
 
-        const selected =  selectedDevices.includes(device);
-      const color2 = selected  ? lighten(color, 75) : color ;
+      const selected = selectedDevices.includes(device);
+      const color2 = selected ? lighten(color, 75) : color;
 
       return (async () => {
 
@@ -219,6 +231,7 @@ export const Canvas = ({
 
   const handleMouseDown: MouseEventHandler = (e) => {
     mouseButtonDownRef.current = e.buttons;
+
     renderJson(topoJson);
 
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
@@ -227,10 +240,24 @@ export const Canvas = ({
       canvasRef.current.style.cursor = "default";
     }
 
+    if(mouseButtonDownRef.current === MouseButtonType.RightClick) {
+      console.log("test")
+      setMouseDownEvent(e as any);
+    }else {
+      setMouseDownEvent(null);
+    }
+
     if (e.buttons !== MouseButtonType.LeftClick) return;
 
     const position = pageMousePositionToCanvasPosition(e.pageX, e.pageY);
     mouseDownPosRef.current = position;
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    if(e.pageX - rect.left <= 20) {
+      return actionTypeRef.current = 'scrollY';
+    }else if(e.pageY - rect.top >= rect.height - 20) {
+      return actionTypeRef.current = 'scrollX';
+    }
 
     const [devices] = getDeviceInZone(
       position.x,
@@ -252,8 +279,6 @@ export const Canvas = ({
 
   const handleMouseUp: MouseEventHandler = (e) => {
 
-    console.log(e)
-
     if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
       renderJson(topoJson);
 
@@ -268,6 +293,8 @@ export const Canvas = ({
         )
       );
     }
+
+    actionTypeRef.current = "select";
     canvasRef.current.style.cursor = "default";
     mouseButtonDownRef.current = MouseButtonType.None;
   };
@@ -294,6 +321,18 @@ export const Canvas = ({
       });
       renderJson(topoJson);
     }
+    else if(mouseButtonDownRef.current === MouseButtonType.LeftClick &&
+      (actionTypeRef.current === "scrollX" || actionTypeRef.current === "scrollY")) {
+
+        // TODO: revoir le ration pour bouger la scroll bar plutot que le canvas
+
+        if(actionTypeRef.current === "scrollX") {
+          canvasCenter.current.x -= e.movementX;
+        }else if(actionTypeRef.current === "scrollY") {
+          canvasCenter.current.y -= e.movementY;
+        }
+        renderJson(topoJson);
+      } 
   };
 
   const handleWheel: WheelEventHandler = (e) => {
@@ -362,12 +401,11 @@ export const Canvas = ({
   }
 
   useEffect(() => {
-    const fn = async () =>  renderJson(topoJson)
-    
+    const fn = async () => renderJson(topoJson)
     fn();
   }, [topoJson, selectedDevices]);
 
-  return (
+  return <>
     <canvas
       tabIndex={0}
       ref={canvasRef}
@@ -380,5 +418,6 @@ export const Canvas = ({
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
     ></canvas>
-  );
+    {mouseDownEvent  && <ContextMenu options={labOptions} position={{x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY}}></ContextMenu>}
+  </>
 };
