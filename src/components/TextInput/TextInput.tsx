@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import { number } from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
 import { useId } from "../../hooks/useId"
 import style from "./TextInput.module.scss";
 
 const textInputTypeValidator = {
-  NUMBER: /[0-9.]*/,
+  IP: /[0-9\.]*/,
   AUTOCOMPLETE: "autocomplete",
   DEFAULT: /.*/,
+  NUMBER: /[0-9]*/
 }
 
 export type textInputType = keyof typeof textInputTypeValidator
@@ -15,36 +17,41 @@ type componentType = {
   className?: string,
   value?: string,
   onChange?: (params?: string) => void,
-  onBlur?: () => void,
-  autocommplete?: string[];
+  onBlur?: (value?: string) => void,
+  autocommplete?: string[],
   type?: textInputType
 }
 
 export const TextInput = ({ placeholder, className, onChange, value, onBlur, autocommplete, type = "DEFAULT" }: componentType) => {
 
   const id = "id_" + useId("data-list");
-
-  const inputRef = useRef(null);
+  const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
-    inputRef.current.value = value || ""
+    setInputValue(value || "")
   }, [value])
 
-  const handleChange = () => {
-    const temp = (inputRef.current.value as string).match(textInputTypeValidator[type])?.[0]
-    if (temp !== value) {
-      inputRef.current.value = temp
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = (event.target.value as string).match(textInputTypeValidator[type])?.[0]
+
+    if (temp !== inputValue) {
+      setInputValue(temp)
       onChange?.(temp);
     }
   }
 
-
   return <>
-    <input list={id} className={style.input + " " + className} onBlur={onBlur} placeholder={placeholder} onChange={handleChange} ref={inputRef} />
-    {autocommplete && <datalist id={id} >
-      {autocommplete?.map(item => <option key={item} value={item} />)}
-    </datalist>
-    }
+    <input
+      value={inputValue}
+      list={id}
+      className={style.input + " " + className}
+      onBlur={(event) => onBlur && onBlur(event.target.value)}
+      placeholder={placeholder}
+      onChange={handleChange}
+    />
 
+    {autocommplete && <datalist id={id}>
+      {autocommplete?.map((item, index) => <option key={index} value={item} />)}
+    </datalist>}
   </>
 };
