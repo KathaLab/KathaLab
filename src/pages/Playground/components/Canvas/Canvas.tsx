@@ -25,14 +25,6 @@ export const Canvas = ({
   setSelectedDevices,
   selectedDevices,
 }: ComponentType) => {
-  const labOptions = [
-    { label: 'New' },
-    { label: 'Open' },
-    { separator: true },
-    { label: 'Save', disabled: false },
-    { label: 'Import', disabled: true },
-    { label: 'Export', disabled: false },
-  ];
 
   const canvasRef = useRef(null);
   const canvasCenter = useRef({ x: 0, y: 0 });
@@ -48,8 +40,16 @@ export const Canvas = ({
   const color = useCssVar("--clr-main-primary");
   const [mouseDownEvent, setMouseDownEvent] = useState<MouseEvent>(null);
   
+  const labOptions = [
+    { label: 'New' },
+    { label: 'Duplicate', disabled: !!selectedDevices.length },
+    { separator: true },
+    { label: 'Save', disabled: false },
+    { label: 'Export', disabled: false },
+  ];
+
   const observer = useRef(
-    new ResizeObserver(entries => {
+    new ResizeObserver(() => {
       console.log("resize")
       resize()
     })
@@ -418,6 +418,6 @@ export const Canvas = ({
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
     ></canvas>
-    {mouseDownEvent  && <ContextMenu options={labOptions} position={{x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY}}></ContextMenu>}
+    {mouseDownEvent  && <ContextMenu options={labOptions} position={{x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40}}></ContextMenu>}
   </>
 };
