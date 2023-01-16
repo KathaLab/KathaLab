@@ -12,10 +12,6 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
-      - name: generate files
-        run: |
-          npm run start & sleep 30
-          kill -INT %+
       - name: publish
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
@@ -30,10 +26,6 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
-      - name: generate files
-        run: |
-          npm run start & sleep 30
-          kill -INT %+
       - name: publish
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
@@ -48,11 +40,6 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm install
-      - name: generate files
-        run: |
-          Start-Process -FilePath "npm.exe" -ArgumentList "run start" -NoNewWindow -Wait
-          Start-Sleep -Seconds 30
-          Stop-Process -Id (Get-Process -Name "node" -ErrorAction SilentlyContinue).Id -Force
       - name: publish
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
