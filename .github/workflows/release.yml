@@ -29,8 +29,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
-        npm run publish
-        ls -lR
+          npm run publish
+          ls -lR
 
   # publish_on_mac:
   #   runs-on: macos-latest
