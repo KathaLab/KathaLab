@@ -50,9 +50,9 @@
         }
       ],
       "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
+        {
+          "name": "@electron-forge/plugin-webpack",
+          "config": {
             "mainConfig": "./webpack.main.config.js",
             "devContentSecurityPolicy": "connect-src 'self' https://api.myapp.com/ 'unsafe-eval'",
             "renderer": {
@@ -61,15 +61,12 @@
                 {
                   "html": "./src/index.html",
                   "js": "./src/renderer.ts",
-                  "name": "main_window",
-                  "preload" : {
-                    "js": "./src/preload.ts"
-                  }
+                  "name": "main_window"
                 }
               ]
             }
           }
-        ]
+        }
       ]
     }
   },
