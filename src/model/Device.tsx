@@ -8,6 +8,7 @@ export type Device = {
   interfaces?: Interfaces[]
   default_command?: string[]
   startups_commands?: string[]
+  shutdown_commands?: string[]
   optional_parameters?: OptionalParameters
 };
 
@@ -27,9 +28,9 @@ export type OptionalParameters = {
   sysctl?: string,
   env?: string,
   shell?: string,
-  num_terms?:number,
-
+  num_terms?: number,
 }
+
 export type Interface = string;
 export type Position = { x: number; y: number };
 

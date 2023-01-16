@@ -12,7 +12,6 @@ export const useColoredImage : () => [(imageUrl: string, imageColor: string) => 
     }
 
     const fn = (type: DeviceType, imageColor: string) => {
-
         if (!images?.[type]?.[imageColor]) {
             if(!images?.[type]) images[type] = {}
             images[type][imageColor] = svgToColoredImage(type, imageColor)

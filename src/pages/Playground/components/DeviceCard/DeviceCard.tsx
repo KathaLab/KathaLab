@@ -15,7 +15,7 @@ export const DeviceCard = ({ onClick, device, color }: ComponentType) => {
   const imageRef = useRef(null);
 
   useLayoutEffect(() => {
-    imageRef.current.src = getImg(device.type, color).src;
+    if(device.type) imageRef.current.src = getImg(device.type, color).src;
   }, [color])
 
   return (
