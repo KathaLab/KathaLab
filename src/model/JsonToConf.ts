@@ -4,11 +4,10 @@ export enum JsonToConf {
     labName = "LAB_NAME=",
     description = "LAB_DESCRIPTION=",
     author = "LAB_AUTHOR=",
-    mail = "LAB_MAIL=",
+    email = "LAB_EMAIL=",
     web = "LAB_WEB=",
     bridged = "%deviceName%[bridged]=%bridged%",
     collision_domain = "%deviceName%[%interfaceName%]=%collision_domain%",
-
 
     //FOR THE DEVICE.STARTUP
 
@@ -18,5 +17,4 @@ export enum JsonToConf {
     IP_ROUTE_DEFAULT = "ip route add %ip%",
     IPV4_FORWARD = "/proc/sys/net/ipv4/ip_forward",
     IPV6_FORWARD = "/proc/sys/net/ipv6/conf/all/forwarding",
-    //STARTUP_COMMAND = "%startup_command%",
 }
