@@ -6,7 +6,8 @@ import { electronAPI } from './electronAPI';
 // plugin that tells the Electron app where to look for the Webpack-bundled app code (depending on
 // whether you're running in development or production).
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
-const PRELOAD_PATH = path.join(app.getAppPath() + "/src/preload.js");
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
+// const PRELOAD_PATH = path.join(app.getAppPath() + "/src/preload.js");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -20,7 +21,7 @@ const createWindow = (): void => {
     frame: false,
     webPreferences: {
       contextIsolation: true,
-      preload: PRELOAD_PATH,
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
   // and load the index.html of the app.
