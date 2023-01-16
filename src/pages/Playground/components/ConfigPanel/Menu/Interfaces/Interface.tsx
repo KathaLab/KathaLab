@@ -16,13 +16,14 @@ type ComponentType = {
   
 export const Interface = ({device, updateDevices, allCollisionDomain}: ComponentType) => {
    
-    const setInterface = () => {
+    const setInterface = (index: number) => {
         device.interfaces = device.interfaces || [];
         device.interfaces.push(
-            { ip: '',
-            cidr: null,
-            is_up: false,
-            collision_domain: "",
+            { interfaceName:'Eth' + index,
+              ip: '',
+              cidr: null,
+              is_up: false,
+              collision_domain: "",
             }
         );
         updateDevices();
@@ -82,7 +83,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
             <Button className={style.buttonAddInterface}
                     type='text'
                     value='new interface'
-                    onclick={setInterface}></Button>
+                    onclick={() => setInterface(device.interfaces || device.interfaces?.length === 0 ? device.interfaces?.length : 0)}></Button>
           </Expanded>
        </div>
     )
