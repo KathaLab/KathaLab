@@ -63,9 +63,9 @@ export default class ExportLabConf {
 
   private createLabConf(key: string, conf: string, labJson: Lab = undefined) {
     const confKey = key
-    if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'mail' || confKey == 'collision_domain' || confKey == 'bridged' || confKey == 'description') {
+    if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'email' || confKey == 'collision_domain' || confKey == 'bridged' || confKey == 'description') {
       if (labJson) {
-        if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'mail' || key == 'version' || key == 'description') {
+        if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'email' || key == 'version' || key == 'description') {
           conf += JsonToConf[confKey] + `"${labJson[key]}"` + "\n";
         }
       } else {

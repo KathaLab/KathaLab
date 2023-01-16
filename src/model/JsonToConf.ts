@@ -4,7 +4,7 @@ export enum JsonToConf {
     labName = "LAB_NAME=",
     description = "LAB_DESCRIPTION=",
     author = "LAB_AUTHOR=",
-    mail = "LAB_MAIL=",
+    email = "LAB_EMAIL=",
     web = "LAB_WEB=",
     bridged = "%deviceName%[bridged]=%bridged%",
     collision_domain = "%deviceName%[%interfaceName%]=%collision_domain%",

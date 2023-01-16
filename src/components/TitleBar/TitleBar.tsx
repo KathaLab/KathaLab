@@ -133,12 +133,12 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
       //console.log(Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX)))
 
       if (Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0]) {
-        console.log("test")
-        labConf.labName = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.name.replace(/['"]/g, '');
-        labConf.author = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.author.replace(/['"]/g, '');
-        labConf.description = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.description.replace(/['"]/g, '');
-        labConf.web = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.web.replace(/['"]/g, '');
-        labConf.version = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.version.replace(/['"]/g, '');
+        labConf.labName = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.name.replace(/['"]/g, '').toString();
+        labConf.author = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.author.replace(/['"]/g, '').toString();
+        labConf.description = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.email.replace(/['"]/g, '').toString();
+        labConf.description = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.description.replace(/['"]/g, '').toString();
+        labConf.web = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.web.replace(/['"]/g, '').toString();
+        labConf.version = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.version.replace(/['"]/g, '').toString();
       }
       else if(Array.from(line.matchAll(RegexConst.LAB_DEVICE_REGEX))[0]){
         console.log("")

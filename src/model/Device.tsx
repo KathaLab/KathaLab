@@ -15,6 +15,7 @@ export enum DeviceType {
   PC = "PC",
   Router = "R",
 }
+
 export type OptionalParameters = {
   image?: string,
   mem?: string,
@@ -26,7 +27,7 @@ export type OptionalParameters = {
   sysctl?: string,
   env?: string,
   shell?: string,
-  num_terms?:bigint,
+  num_terms?:number,
 
 }
 export type Interface = string;
