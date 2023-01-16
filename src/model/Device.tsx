@@ -1,16 +1,11 @@
 import {laptop, router} from "./DeviceSvg";
+import {Interfaces} from "./Interfaces";
 
 export type Device = {
   deviceName: string
   type: DeviceType
   position?: Position
-  memory?: number
-  interfaces?: {
-      ip: string
-      cidr: number 
-      is_up: boolean
-      collision_domain: string
-  }[]
+  interfaces?: Interfaces[]
   default_command?: string[]
   startups_commands?: string[]
   shutdown_commands?: string[]

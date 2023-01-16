@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
-import style from "./Playground.module.scss"
-  ;
+import style from "./Playground.module.scss";
 import { Device, devices } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../..//model/Lab";
@@ -35,7 +34,6 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   };
 
   const updateDevices = () => {
-    console.log("YOOOOOOO")
     setSelectedDevices([...selectedDevices])
   }
 

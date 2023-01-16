@@ -177,6 +177,7 @@ export const Canvas = ({
     renderVScrollbars();
   };
 
+
   const renderSelection = (x: number, y: number) => {
     const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
 

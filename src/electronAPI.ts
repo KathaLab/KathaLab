@@ -1,6 +1,7 @@
 import { app, dialog, ipcMain } from "electron";
 import fs from "fs";
 import { Lab } from "./model/Lab";
+import * as path from "path";
 
 export class electronAPI {
   initialize = async () => {
@@ -39,8 +40,14 @@ export class electronAPI {
         console.warn(e);
       }
     });
-    ipcMain.handle("save:load", async (event) => {
+    ipcMain.handle("save:load", async (event, name) => {
       try {
+
+        //TODO DELETE THE 3 NEXT LINE ONLY USED FOR TEST
+        if (name){
+          return JSON.parse(fs.readFileSync(app.getAppPath() + `/data/${name}`, "utf-8"));
+        }
+
         const files = fs.readdirSync(app.getAppPath() + `/data`);
 
         const lab: Lab[] = [];
@@ -68,6 +75,16 @@ export class electronAPI {
         console.warn(e);
       }
     });
+
+    ipcMain.handle('fs:save-file', async (event, filePath,fileName, content )=>{
+      try {
+        const fullPath = path.join(filePath, fileName);
+        fs.writeFileSync( fullPath , content, "utf-8")
+      }catch (e){
+        console.warn(e.message);
+      }
+    })
+
     ipcMain.handle("save:delete", async (_, id) => {
       try {
         fs.unlinkSync(app.getAppPath() + `/data/${id}.json`);
