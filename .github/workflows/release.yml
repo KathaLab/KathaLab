@@ -32,61 +32,61 @@ jobs:
           npm run publish
           ls -lR
 
-  # publish_on_mac:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
+  publish_on_mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
       
-  #     - name: Cache node modules
-  #       id: cache-npm
-  #       uses: actions/cache@v3
-  #       env:
-  #         cache-name: cache-node-modules
-  #       with:
-  #         # npm cache files are stored in `~/.npm` on Linux/macOS
-  #         path: ~/.npm
-  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-build-${{ env.cache-name }}-
-  #           ${{ runner.os }}-build-
-  #           ${{ runner.os }}-
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
-  #     - name: install dependencies
-  #       run: npm install
+      - name: install dependencies
+        run: npm install
 
-  #     - name: publish
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-  #       run: npm run publish
+      - name: publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: npm run publish
 
-  # publish_on_win:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
+  publish_on_win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
         
-  #     - name: Cache node modules
-  #       id: cache-npm
-  #       uses: actions/cache@v3
-  #       env:
-  #         cache-name: cache-node-modules
-  #       with:
-  #         # npm cache files are stored in `~/.npm` on Linux/macOS
-  #         path: ~/.npm
-  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-build-${{ env.cache-name }}-
-  #           ${{ runner.os }}-build-
-  #           ${{ runner.os }}-
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
-  #     - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-  #       name: List the state of node modules
-  #       continue-on-error: true
-  #       run: npm list
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
 
-  #     - name: install dependencies
-  #       run: npm install
+      - name: install dependencies
+        run: npm install
       
-  #     - name: publish
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-  #       run: npm run publish
+      - name: publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: npm run publish
