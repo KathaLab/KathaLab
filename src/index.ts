@@ -6,6 +6,7 @@ import { electronAPI } from './electronAPI';
 // plugin that tells the Electron app where to look for the Webpack-bundled app code (depending on
 // whether you're running in development or production).
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const SPLASH_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 // const PRELOAD_PATH = path.join(app.getAppPath() + "/src/preload.js");
 
@@ -15,19 +16,43 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let loader = false
+
 const createWindow = (): void => {
+  
+  const display = () => {
+    splash.destroy();
+    mainWindow.maximize();
+    mainWindow.show();
+  }
+
+  setTimeout(() => {
+    if(loader) display()
+    loader = true;
+  }, 10000)
+
+  // create a new `splash`-Window 
+  const splash = new BrowserWindow({ width: 810, height: 610, transparent: true, frame: false, alwaysOnTop: true });
+  splash.loadURL(SPLASH_WEBPACK_ENTRY);
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     frame: false,
+    show: false,
     webPreferences: {
       contextIsolation: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
   // and load the index.html of the app.
-  mainWindow.maximize();
-  mainWindow.show();
+  // if main window is ready to show, then destroy the splash window and show up the main window
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  mainWindow.once('ready-to-show', () => {
+    if(loader) display()
+    loader = true;
+  });
+
 
   ipcMain.handle("window:close", async () => {
     mainWindow.close();
