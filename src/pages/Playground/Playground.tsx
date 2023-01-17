@@ -4,7 +4,7 @@ import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
 import style from "./Playground.module.scss"
   ;
-import { Device, devices } from "../../model/Device";
+import { Device, devices, DeviceType } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../..//model/Lab";
 
@@ -32,7 +32,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   }
 
   const handleDeviceClick = (device: Device) => {
-
+    if(!device) return;
     let name = "";
     let i = 0;
 
@@ -46,14 +46,18 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   };
 
+  const handleNew = (type: DeviceType) => {
+    handleDeviceClick(devices.find(device => device.type === type))
+  }
+
   const handleSelectionDuplicate = () => {
-    const newDevices = [];
+    const newDevices: Device[] = [];
 
     for (const device of selectedDevices) {
       let name = "";
       let i = 0;
 
-      while (name == "" || lab.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+      while (name == "" || [...lab.devices, ...newDevices].map(d => d.name).includes(name)) name = `${device.type}${i++}`;
 
       newDevices.push({
         ...JSON.parse(JSON.stringify(device)),
@@ -67,7 +71,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   }
 
   return (
-    <div className={style.page}>
+    <div className={style.page} onMouseDown={console.log} onMouseUp={console.log}>
       <div className={style.content}>
         <ul className={style.list}>
           {devices.map((device, i) => (
@@ -82,6 +86,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         </ul>
         <Canvas
           onSave={handleSave}
+          onNew={handleNew}
           onDuplicate={handleSelectionDuplicate}
           topoJson={lab}
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}

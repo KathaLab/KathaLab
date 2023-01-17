@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
-import { Device, deviceSize } from "../../../../model/Device";
+import { Device, deviceSize, DeviceType } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
 import { MouseButtonType, ScrollBarWidth } from "./canvaHelper";
@@ -20,6 +20,7 @@ type ComponentType = {
   selectedDevices: Device[];
   onSave: () => void;
   onDuplicate: () => void;
+  onNew: (type: DeviceType) => void;
 };
 
 export const Canvas = ({
@@ -27,7 +28,8 @@ export const Canvas = ({
   setSelectedDevices,
   selectedDevices,
   onSave,
-  onDuplicate
+  onDuplicate,
+  onNew
 }: ComponentType) => {
 
   const canvasRef = useRef(null);
@@ -35,21 +37,28 @@ export const Canvas = ({
 
   const mouseDownPosRef = useRef({ x: 0, y: 0 });
   const mouseButtonDownRef = useRef<MouseButtonType>(MouseButtonType.None);
-  
+
   const isMajPressedRef = useRef(false);
-  
+
   const actionTypeRef = useRef<"move" | "select" | "scrollX" | "scrollY">("select");
-  
+
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-main-primary");
   const [mouseDownEvent, setMouseDownEvent] = useState<MouseEvent>(null);
-  
+
   const labOptions = [
-    { label: 'New' },
+    {
+      label: 'New', options: Object.entries(DeviceType).map(([name, type]) => {
+        return {
+          label: name,
+          onClick: () => onNew(type)
+        }
+      })
+    },
     { label: 'Duplicate', disabled: !selectedDevices.length, onClick: onDuplicate },
     { separator: true },
-    { label: 'Save', onClick: onSave},
-    { label: 'Export'},
+    { label: 'Save', onClick: onSave },
+    { label: 'Export' },
   ];
 
   const observer = useRef(
@@ -57,12 +66,12 @@ export const Canvas = ({
       console.log("resize")
       resize()
     })
-    )
-    
-  const renderHScrollbars = () => {
+  )
+
+  const getHSData = () => {
     if (!topoJson.devices.length) return;
 
-    // most left and most right devices position
+
     const mostLeftDevicePosition =
       topoJson.devices?.reduce((prev, curr) => {
         return curr.position.x < prev.position.x ? curr : prev;
@@ -84,8 +93,25 @@ export const Canvas = ({
     const innerWidth = viewportRight - viewportLeft;
     const outerWidth = mostRight - mostLeft;
 
-    const ratio = (100 * innerWidth) / outerWidth;
     const offsetRatio = (100 * (viewportLeft - mostLeft)) / outerWidth;
+    const ratio = (100 * innerWidth) / outerWidth
+
+    return {
+      ratio,
+      innerWidth,
+      outerWidth,
+      offsetRatio,
+      viewportLeft,
+      viewportRight,
+      mostLeft, mostRight
+    }
+  }
+
+  const renderHScrollbars = () => {
+    if (!topoJson.devices.length) return;
+
+    const { ratio, offsetRatio } = getHSData();
+
 
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
@@ -99,10 +125,10 @@ export const Canvas = ({
     );
   };
 
-  const renderVScrollbars = () => {
+
+  const getVSData = () => {
     if (!topoJson.devices.length) return;
 
-    // most left and most right devices position
     const mostTopDevicePosition =
       topoJson.devices?.reduce((prev, curr) => {
         return curr.position.y < prev.position.y ? curr : prev;
@@ -125,6 +151,22 @@ export const Canvas = ({
 
     const ratio = (100 * innerWidth) / outerWidth;
     const offsetRatio = (100 * (viewportTop - mostTop)) / outerWidth;
+
+    return {
+      ratio,
+      innerWidth,
+      outerWidth,
+      offsetRatio,
+      viewportTop,
+      viewportBottom,
+      mostTop, mostBottom
+    }
+  }
+
+  const renderVScrollbars = () => {
+    if (!topoJson.devices.length) return;
+
+    const {ratio, offsetRatio} = getVSData()
 
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
@@ -244,10 +286,10 @@ export const Canvas = ({
       canvasRef.current.style.cursor = "default";
     }
 
-    if(mouseButtonDownRef.current === MouseButtonType.RightClick) {
+    if (mouseButtonDownRef.current === MouseButtonType.RightClick) {
       console.log("test")
       setMouseDownEvent(e as any);
-    }else {
+    } else {
       setMouseDownEvent(null);
     }
 
@@ -257,9 +299,9 @@ export const Canvas = ({
     mouseDownPosRef.current = position;
 
     const rect = canvasRef.current.getBoundingClientRect();
-    if(e.pageX - rect.left <= 20) {
+    if (e.pageX - rect.left <= 20) {
       return actionTypeRef.current = 'scrollY';
-    }else if(e.pageY - rect.top >= rect.height - 20) {
+    } else if (e.pageY - rect.top >= rect.height - 20) {
       return actionTypeRef.current = 'scrollX';
     }
 
@@ -325,18 +367,18 @@ export const Canvas = ({
       });
       renderJson(topoJson);
     }
-    else if(mouseButtonDownRef.current === MouseButtonType.LeftClick &&
+    else if (mouseButtonDownRef.current === MouseButtonType.LeftClick &&
       (actionTypeRef.current === "scrollX" || actionTypeRef.current === "scrollY")) {
 
-        // TODO: revoir le ration pour bouger la scroll bar plutot que le canvas
+      // TODO: revoir le ration pour bouger la scroll bar plutot que le canvas
 
-        if(actionTypeRef.current === "scrollX") {
-          canvasCenter.current.x -= e.movementX;
-        }else if(actionTypeRef.current === "scrollY") {
-          canvasCenter.current.y -= e.movementY;
-        }
-        renderJson(topoJson);
-      } 
+      if (actionTypeRef.current === "scrollX") {
+        canvasCenter.current.x -= e.movementX;
+      } else if (actionTypeRef.current === "scrollY") {
+        canvasCenter.current.y -= e.movementY;
+      }
+      renderJson(topoJson);
+    }
   };
 
   const handleWheel: WheelEventHandler = (e) => {
@@ -390,7 +432,7 @@ export const Canvas = ({
   }, [canvasCenter, observer]);
 
   const resize = (changeCenter = false) => {
-    if(!canvasRef.current) return;
+    if (!canvasRef.current) return;
     const rect = canvasRef.current.getBoundingClientRect();
 
     canvasRef.current.width = rect.width;
@@ -422,6 +464,6 @@ export const Canvas = ({
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
     ></canvas>
-    {mouseDownEvent  && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40}}></ContextMenu>}
+    {mouseDownEvent && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
   </>
 };
