@@ -18,12 +18,16 @@ type ComponentType = {
   topoJson: Lab;
   setSelectedDevices: (devices: Device[]) => void;
   selectedDevices: Device[];
+  onSave: () => void;
+  onDuplicate: () => void;
 };
 
 export const Canvas = ({
   topoJson,
   setSelectedDevices,
   selectedDevices,
+  onSave,
+  onDuplicate
 }: ComponentType) => {
 
   const canvasRef = useRef(null);
@@ -42,10 +46,10 @@ export const Canvas = ({
   
   const labOptions = [
     { label: 'New' },
-    { label: 'Duplicate', disabled: !!selectedDevices.length },
+    { label: 'Duplicate', disabled: !selectedDevices.length, onClick: onDuplicate },
     { separator: true },
-    { label: 'Save', disabled: false },
-    { label: 'Export', disabled: false },
+    { label: 'Save', onClick: onSave},
+    { label: 'Export'},
   ];
 
   const observer = useRef(
@@ -55,7 +59,7 @@ export const Canvas = ({
     })
     )
     
-    const renderHScrollbars = () => {
+  const renderHScrollbars = () => {
     if (!topoJson.devices.length) return;
 
     // most left and most right devices position
@@ -386,13 +390,13 @@ export const Canvas = ({
   }, [canvasCenter, observer]);
 
   const resize = (changeCenter = false) => {
+    if(!canvasRef.current) return;
     const rect = canvasRef.current.getBoundingClientRect();
 
     canvasRef.current.width = rect.width;
     canvasRef.current.height = rect.height;
 
     if (changeCenter) {
-      console.log("change center")
       canvasCenter.current.x = rect.width / 2;
       canvasCenter.current.y = rect.height / 2;
     }
@@ -418,6 +422,6 @@ export const Canvas = ({
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
     ></canvas>
-    {mouseDownEvent  && <ContextMenu options={labOptions} position={{x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40}}></ContextMenu>}
+    {mouseDownEvent  && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40}}></ContextMenu>}
   </>
 };
