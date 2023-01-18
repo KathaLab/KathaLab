@@ -30,7 +30,7 @@ export enum Pages {
 }
 
 const App = () => {
-  const [page, setPage] = useState<Pages>(Pages.Settings);
+  const [page, setPage] = useState<Pages>(Pages.Gallery);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [localization, setLocalization] = useState<Language>(localStorage.getItem('language') == null ? Language.EN :  String(localStorage.getItem('language')));
@@ -76,27 +76,6 @@ const App = () => {
   const [[currentElement], addElement] = useDelayQueue<snackBarMessageType>(
     handleSnackBarMessage
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   //fetch labs on load
   useEffect(() => {
@@ -155,7 +134,7 @@ const App = () => {
               setSelectedLab={setLab}
               labs={labs}
               selectedLab={currentLab}
-              onChange={(name) => setCurrentLab(JSON.parse(JSON.stringify({ ...currentLab, name })))}
+              onChange={(name) => setCurrentLab({ ...currentLab, labName: name })}
             ></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (

@@ -15,7 +15,6 @@ export const StartupCommands = ({device}: ComponentType) => {
     }
 
     const getStartupCommands = (commands: string[]) => {
-        console.log(commands.filter(word => word !== ''))
         device.startups_commands = commands.filter(word => word !== '')
     }
 
