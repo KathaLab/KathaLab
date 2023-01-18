@@ -117,10 +117,10 @@ const lab: Lab[] = [];
     });
     ipcMain.handle("fs:read-directory", async (_, directoryPath) => {
 
-      const filesData: { "confFile": string, "startupFiles":string[], "shutdownFiles":string[] } = {
+      const filesData: { "confFile"?: string, "startupFiles"?: [{deviceName: string, fileData: string}], "shutdownFiles"?:[{deviceName : string, fileData: string}] } = {
         confFile: "",
-        startupFiles: [],
-        shutdownFiles: []
+        startupFiles: [{deviceName:'', fileData:''}],
+        shutdownFiles: [{deviceName:'', fileData:''}]
       }
 
       const readFile = (filePath: string):string => {
@@ -132,13 +132,17 @@ const lab: Lab[] = [];
 
         filesNames.forEach(fileName => {
             if (path.extname(fileName) == ".conf"){
-              filesData["confFile"] = readFile(path.join(directoryPath, fileName));
+              filesData.confFile = readFile(path.join(directoryPath, fileName));
             }
             if (path.extname(fileName) == ".startup"){
-              filesData["startupFiles"].push(readFile(path.join(directoryPath, fileName)));
+                const deviceName = path.basename(fileName, '.startup').toUpperCase();
+                const fileData = readFile(path.join(directoryPath, fileName));
+              filesData.startupFiles.push({'deviceName': deviceName, 'fileData':fileData});
             }
             if (path.extname(fileName) == ".shutdown"){
-              filesData["shutdownFiles"].push(readFile(path.join(directoryPath, fileName)));
+                const deviceName = path.basename(fileName, '.startup').toUpperCase();
+                const fileData = readFile(path.join(directoryPath, fileName));
+              filesData.shutdownFiles.push({'deviceName': deviceName, 'fileData':fileData});
             }
           })
         return filesData
