@@ -1,12 +1,15 @@
 import { app, dialog, ipcMain } from "electron";
+import child_process from 'child_process'
 import fs from "fs";
 import { Lab } from "./model/Lab";
 import * as path from "path";
 import os from "os";
 
+
 export class electronAPI {
 
   dataFolder = app.getPath("userData")
+  exec = child_process.exec
 
   constructor() {
     if (!fs.existsSync(path.join(this.dataFolder, `data`))) {
@@ -148,7 +151,18 @@ export class electronAPI {
         return filesData
       } catch (err) {
         console.warn(err)
-        this.error(_.sender, "An error occured while trying to read the folder "+ directoryPath);
+        this.error(_.sender, "An error occured while trying to read the folder " + directoryPath);
+      }
+    })
+
+    ipcMain.handle("cmd:ping", async (_) => {
+      try {
+        this.exec('ping 0.0.0.0', (error, stdout, stderr) => {
+          console.log(stdout)
+        });
+      } catch (err) {
+        console.warn(err)
+        this.error(_.sender, "Error whyle searching for ");
       }
     })
   };

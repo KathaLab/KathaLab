@@ -19,6 +19,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     getHomeDirectory : async() => await ipcRenderer.invoke('os:getHomeDirectory'),  
 
+    test : async() => await ipcRenderer.invoke('cmd:ping'),
+
     removeListener: (channel: any) => {
         ipcRenderer.removeAllListeners(channel)
     },
