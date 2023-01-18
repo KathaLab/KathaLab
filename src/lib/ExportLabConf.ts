@@ -1,7 +1,7 @@
 import {Lab} from "../model/Lab";
 import {Interfaces} from "../model/Interfaces";
 import {Device} from "../model/Device";
-import {JsonToConf} from "../model/JsonToConf";
+import {ModelToKatharaConf} from "./ModelToKatharaConf";
 
 export default class ExportLabConf {
   protected labData: Lab;
@@ -12,7 +12,6 @@ export default class ExportLabConf {
 
   public exportGlobalLabConf() {
 
-    const labConf: { [labName: string]: string } = {}
     let conf = "";
     const devices = this.getDevices();
 
@@ -31,8 +30,7 @@ export default class ExportLabConf {
         }
       })
     })
-    labConf[this.getLabName()] = conf
-    return labConf
+    return conf
   }
 
   private createLabDevicesConf(device: Device) {
@@ -66,10 +64,10 @@ export default class ExportLabConf {
     if (confKey !== undefined && confKey == 'labName' || confKey == 'web' || confKey == 'author' || confKey == 'email' || confKey == 'collision_domain' || confKey == 'bridged' || confKey == 'description') {
       if (labJson) {
         if (key !== undefined && key == 'labName' || key == 'web' || key == 'author' || key == 'email' || key == 'version' || key == 'description') {
-          conf += JsonToConf[confKey] + `"${labJson[key]}"` + "\n";
+          conf += ModelToKatharaConf[confKey] + `"${labJson[key]}"` + "\n";
         }
       } else {
-        conf += JsonToConf[confKey] + "\n";
+        conf += ModelToKatharaConf[confKey] + "\n";
       }
     }
 

@@ -2,7 +2,7 @@ import ExportLabConf from "./ExportLabConf";
 import {Lab} from "../model/Lab";
 import {Interfaces} from "../model/Interfaces";
 import {Device} from "../model/Device";
-import {JsonToConf} from "../model/JsonToConf";
+import {ModelToKatharaConf} from "./ModelToKatharaConf";
 
 export default class ExportDevicesConf extends ExportLabConf {
 
@@ -52,10 +52,10 @@ export default class ExportDevicesConf extends ExportLabConf {
     let conf = "";
     for (const key in itf) {
       if (key == 'ip' && itf['ip'] != undefined && itf['cidr'] != undefined) {
-        conf += JsonToConf['IP_ADDRESS_ADD'] + "\n"
+        conf += ModelToKatharaConf['IP_ADDRESS_ADD'] + "\n"
       }
       if (key == 'is_up' && itf[key] == true && itf['cidr'] != undefined){
-        conf += JsonToConf['IP_UP'] + "\n"
+        conf += ModelToKatharaConf['IP_UP'] + "\n"
       }
       conf = this.replaceInterfaceInformation(itf, conf);
     }

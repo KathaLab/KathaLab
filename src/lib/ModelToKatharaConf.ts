@@ -1,12 +1,25 @@
-export enum JsonToConf {
+export enum ModelToKatharaConf {
 
     // FOR THE LAB.CONF
     labName = "LAB_NAME=",
     description = "LAB_DESCRIPTION=",
     author = "LAB_AUTHOR=",
     email = "LAB_EMAIL=",
+    version = "LAB_VERSION=",
     web = "LAB_WEB=",
+
+    image = "%deviceName%[image]=%image%",
+    memory = "%deviceName%[memory]=%memory%",
+    cpus = "%deviceName%[cpus]=%cpus%",
+    port = "%deviceName%[port]=%port%",
     bridged = "%deviceName%[bridged]=%bridged%",
+    ipv6 = "%deviceName%[ipv6]=%ipv6%",
+    exec = "%deviceName%[exec]=%exec%",
+    sysctl = "%deviceName%[sysctl]=%sysctl%",
+    env = "%deviceName%[env]=%env%",
+    shell = "%deviceName%[shell]=%shell%",
+    num_terms = "%deviceName%[num_terms]=%num_terms%",
+
     collision_domain = "%deviceName%[%interfaceName%]=%collision_domain%",
 
     //FOR THE DEVICE.STARTUP

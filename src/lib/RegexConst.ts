@@ -7,6 +7,7 @@ export const LAB_EMAIL_REGEX = /lab_email ?= ?(?<email>.{0,64})/gi;
 export const LAB_WEB_REGEX = /lab_web ?= ?(?<web>.{0,128})/gi;
 export const LAB_VERSION_REGEX = /lab_version ?= ?(?<version>.{0,32})/gi;
 
+export const LAB_DEVICE_NAME_REGEX = /(?<deviceName>\w{1,32})\[\w+]=.*;?/gm;
 export const LAB_DEVICE_BRIDGED_REGEX = /\w{1,32}\[bridged]=(?<bridged>\w+)/gi;
 export const LAB_DEVICE_IMAGE_REGEX = /\w{1,32}\[image]=(?<image>.)/gi;
 export const LAB_DEVICE_MEMORY_REGEX = /\w{1,32}\[memory]=(?<memory>.)/gi;
@@ -29,7 +30,7 @@ export const LAB_DEVICE_INTERFACE_CIDR_REGEX = /ip +address +add +\d{1,3}\.\d{1,
 export const LAB_DEVICE_INTERFACE_DEFAULT_ROUTE_REGEX =/a/gi;
 export const LAB_DEVICE_INTERFACE_CUSTOM_ROUTE_REGEX = /a/gi;
 
-export const LAB_DEVICE_NAME_REGEX = /(?<deviceName>\w{1,32})\[\w+]=.*;?/gm;
+export const IP_REGEX = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gi;
 
 
 

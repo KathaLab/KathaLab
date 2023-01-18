@@ -51,7 +51,7 @@ export const devices: Device[] = [
     type: DeviceType.Router,
     default_command: [
       "%deviceName%[sysctl]=/proc/sys/net/ipv4/ip_forward=1 \n",
-      "%deviceName%[sysctl]=/proc/sys/net/ipv6/conf/all/forwarding=1 \n"
+      "%deviceName%[sysctl]=/proc/sys/net/ipv6/conf/all/forwarding=1"
     ]
   },
 ];

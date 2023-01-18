@@ -5,7 +5,7 @@ import {Interfaces} from "../model/Interfaces";
 
 export default class ImportConf {
 
-    public importGlobalLabConf(lab: Lab, line: string) {
+    public importLabConf(lab: Lab, line: string) {
         let isLabConf = false;
 
         this.getLabConf(lab, line)? isLabConf = true: isLabConf;
@@ -25,7 +25,7 @@ export default class ImportConf {
         return lab
     }
 
-    public importGlobalDevicesConf(device: Device, line: string) {
+    public importDevicesConf(device: Device, line: string) {
         const interfaceName =
             Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_FROM_IP_ADD))[0]?.filter((interfaceName) => { return interfaceName != undefined})[1]
             ?? Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_AND_IP_IS_UP_REGEX))[0]?.filter((interfaceName) => { return interfaceName != undefined})[1]

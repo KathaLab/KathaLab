@@ -3,12 +3,12 @@ import {Lab} from '../../model/Lab'
 import {Pages} from '../../app'
 import {ContextMenu} from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
-import ExportLabConf from "../../lib/ExportLabConf";
+import ExportConf from "../../lib/exportConf";
 import ExportDevicesConf from "../../lib/ExportDevicesConf";
-import * as RegexConst from "../../lib/RegexConst";
 import {v4 as uuidv4} from "uuid";
-import {Device, DeviceType} from "../../model/Device";
+import {DeviceType} from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
+import {electronAPI} from "../../electronAPI";
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -57,7 +57,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         {separator: true},
         {label: 'Save', disabled: isDisabled, onClick: onSave},
         {
-            label: 'Import', onClick: () => {
+            label: 'Import',disabled: page == Pages.Playground,  onClick: () => {
                 handleImport();
             }
         },
@@ -88,27 +88,36 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
 
     const handleExport = async (lab: Lab) => {
 
-        const labConf = new ExportLabConf(lab).exportGlobalLabConf();
-        const devicesConf = new ExportDevicesConf(lab).exportGlobalDevicesConf()
+        const exportConf = new ExportConf();
+        const labExported =  exportConf.exportLabConf(lab);
+        const deviceExportedStartup = exportConf.exportStartupConf(lab);
+        const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
 
         //Creating lab.conf and all device.startup
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await window.electronAPI.chooseDirectory()
             .then((filePath: string) => {
-                if (filePath && labConf && devicesConf) {
-                    for (const labName in labConf) {
-                        const fileName = "lab.conf";
-
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        window.electronAPI.saveFile(filePath, fileName, labConf[labName]);
+                if (filePath && labExported && lab.devices) {
+                    const fileName = "lab.conf";
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    window.electronAPI.saveFile(filePath, fileName, labExported);
+                    if (deviceExportedStartup){
+                        for (const deviceName in deviceExportedStartup){
+                            const fileName = deviceName + '.startup';
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            window.electronAPI.saveFile(filePath, fileName, deviceExportedStartup[deviceName])
+                        }
                     }
-                    for (const deviceName in devicesConf) {
-                        const fileName = deviceName + ".startup";
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        window.electronAPI.saveFile(filePath, fileName, devicesConf[deviceName])
+                    if (deviceExportedShutdown){
+                        for (const deviceName in deviceExportedShutdown){
+                            const fileName = deviceName + '.shutdown';
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            window.electronAPI.saveFile(filePath, fileName, deviceExportedShutdown[deviceName])
+                        }
                     }
                 }
             })
@@ -131,7 +140,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         labConf.id = uuidv4();
 
         String(filesData.confFile).split('\n').forEach(line => {
-            labConf = importConf.importGlobalLabConf(labConf, line)
+            labConf = importConf.importLabConf(labConf, line)
         })
 
         filesData.startupFiles.filter((elem:{deviceName:string, fileData: string}) => { return  elem.deviceName != '' && elem.fileData != ''}).forEach((startupFile: { deviceName: string, fileData: string }) => {
@@ -144,7 +153,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
                 labConf.devices.push(device)
             }
             fileData.split('\n').forEach(line => {
-                importConf.importGlobalDevicesConf(device, line);
+                importConf.importDevicesConf(device, line);
             })
         });
 
@@ -166,10 +175,10 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await window.electronAPI.saveData(labConf);
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await window.electronAPI.loadSave();
-
     }
 
     return (
