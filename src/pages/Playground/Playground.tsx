@@ -19,7 +19,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const color = useCssVar("--clr-main-primary");
 
   const handleSave = async () => {
-    if (lab.name === "") lab.name = "Untitled";
+    if (lab.labName === "") lab.labName = "Untitled";
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -55,7 +55,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
       let deviceName = "";
       let i = 0;
 
-      while (deviceName == "" || [...lab.devices, ...newDevices].map(d => d.name).includes(deviceName)) name = `${device.type}${i++}`;
+      while (deviceName == "" || [...lab.devices, ...newDevices].map(d => d.deviceName).includes(deviceName)) deviceName = `${device.type}${i++}`;
 
       newDevices.push({
         ...JSON.parse(JSON.stringify(device)),

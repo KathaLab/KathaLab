@@ -8,8 +8,7 @@ import {Language, LocalizationName} from "../../localization";
 export const Settings = () => {
     const {updateContext: updateLocalization, languageDico, language} = useContext(LocalizationContext);
     const {updateContext: updateTheme, theme} = useContext(ThemeContext);
-    const [homeDir, setHomeDir] = useState(null);
-    const [path, setPath] = useState(homeDir)
+    const [path, setPath] = useState(null)
 
     useEffect(() => {
         (async () => setPath(appParam.path ?? `${await homeDirectory()}\\Kathalab`))();
@@ -97,7 +96,7 @@ export const Settings = () => {
                             value={appParam.theme}>
                         {Object.keys(themes).map((key, id) =>
                             <option key={id} value={key}>
-                                {key}
+                                {key.split('-')[1]}
                             </option>
                         )}
                     </select>

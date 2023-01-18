@@ -965,13 +965,16 @@ exports.electronAPI = void 0;
 var electron_1 = __webpack_require__(/*! electron */ "electron");
 var fs_1 = __importDefault(__webpack_require__(/*! fs */ "fs"));
 var path = __importStar(__webpack_require__(/*! path */ "path"));
+var os_1 = __importDefault(__webpack_require__(/*! os */ "os"));
 var electronAPI = /** @class */ (function () {
     function electronAPI() {
         var _this = this;
+        this.dataFolder = electron_1.app.getPath("userData");
         this.initialize = function () { return __awaiter(_this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                electron_1.ipcMain.handle("dialog:open-file", function () { return __awaiter(_this, void 0, void 0, function () {
+                electron_1.ipcMain.handle("dialog:open-file", function (event) { return __awaiter(_this, void 0, void 0, function () {
+                    var _this = this;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0: return [4 /*yield*/, electron_1.dialog
@@ -982,13 +985,15 @@ var electronAPI = /** @class */ (function () {
                                     return response.filePaths[0];
                                 })
                                     .catch(function (err) {
-                                    console.warn(err.message);
+                                    console.error(err);
+                                    _this.error(event.sender, "An error occured while trying to open the file explorer");
                                 })];
                             case 1: return [2 /*return*/, _a.sent()];
                         }
                     });
                 }); });
-                electron_1.ipcMain.handle("dialog:open-directory", function () { return __awaiter(_this, void 0, void 0, function () {
+                electron_1.ipcMain.handle("dialog:open-directory", function (event) { return __awaiter(_this, void 0, void 0, function () {
+                    var _this = this;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0: return [4 /*yield*/, electron_1.dialog
@@ -999,7 +1004,8 @@ var electronAPI = /** @class */ (function () {
                                     return response.filePaths[0];
                                 })
                                     .catch(function (err) {
-                                    console.warn(err.message);
+                                    console.error(err);
+                                    _this.error(event.sender, "An error occured while trying to open the file explorer");
                                 })];
                             case 1: return [2 /*return*/, _a.sent()];
                         }
@@ -1008,39 +1014,39 @@ var electronAPI = /** @class */ (function () {
                 electron_1.ipcMain.handle("save:save", function (_, obj) { return __awaiter(_this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         try {
-                            fs_1.default.writeFileSync(electron_1.app.getAppPath() + "/data/".concat(obj.id, ".json"), JSON.stringify(obj), "utf-8");
+                            fs_1.default.writeFileSync(path.join(this.dataFolder, "data/".concat(obj.id, ".json")), JSON.stringify(obj), "utf-8");
+                            this.success(_.sender, "Lab successfully saved");
                         }
                         catch (e) {
-                            console.warn(e);
+                            console.error(e);
+                            this.error(_.sender, "An error occured while saving the lab");
                         }
                         return [2 /*return*/];
                     });
                 }); });
                 electron_1.ipcMain.handle("save:load", function (event, name) { return __awaiter(_this, void 0, void 0, function () {
                     var files, lab_1;
+                    var _this = this;
                     return __generator(this, function (_a) {
                         try {
-                            //TODO DELETE THE 3 NEXT LINE ONLY USED FOR TEST
-                            if (name) {
-                                return [2 /*return*/, JSON.parse(fs_1.default.readFileSync(electron_1.app.getAppPath() + "/data/".concat(name), "utf-8"))];
-                            }
-                            files = fs_1.default.readdirSync(electron_1.app.getAppPath() + "/data");
+                            files = fs_1.default.readdirSync(path.join(this.dataFolder, "data"));
                             lab_1 = [];
                             files
                                 .map(function (fileName) { return ({
                                 name: fileName,
                                 time: fs_1.default
-                                    .statSync("".concat(electron_1.app.getAppPath(), "/data/").concat(fileName))
+                                    .statSync(path.join(_this.dataFolder, "data", fileName))
                                     .mtime.getTime(),
                             }); })
                                 .sort(function (a, b) { return b.time - a.time; })
                                 .forEach(function (file) {
-                                lab_1.push(JSON.parse(fs_1.default.readFileSync(electron_1.app.getAppPath() + "/data/".concat(file.name), "utf-8")));
+                                lab_1.push(JSON.parse(fs_1.default.readFileSync(path.join(_this.dataFolder, "data", file.name), "utf-8")));
                             });
                             event.sender.send("save:load", lab_1);
                         }
                         catch (e) {
-                            console.warn(e);
+                            console.error(e);
+                            this.error(event.sender, "An error occured while loading the labs");
                         }
                         return [2 /*return*/];
                     });
@@ -1061,12 +1067,19 @@ var electronAPI = /** @class */ (function () {
                 electron_1.ipcMain.handle("save:delete", function (_, id) { return __awaiter(_this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         try {
-                            fs_1.default.unlinkSync(electron_1.app.getAppPath() + "/data/".concat(id, ".json"));
+                            fs_1.default.unlinkSync(path.join(this.dataFolder, "data", "".concat(id, ".json")));
+                            this.success(_.sender, "Lab successfully deleted");
                         }
                         catch (e) {
-                            console.warn(e);
+                            console.error(e);
+                            this.error(_.sender, "An error occured while deleting the lab");
                         }
                         return [2 /*return*/];
+                    });
+                }); });
+                electron_1.ipcMain.handle("os:getHomeDirectory", function () { return __awaiter(_this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        return [2 /*return*/, os_1.default.homedir()];
                     });
                 }); });
                 electron_1.ipcMain.handle("fs:read-directory", function (_, directoryPath) { return __awaiter(_this, void 0, void 0, function () {
@@ -1074,8 +1087,8 @@ var electronAPI = /** @class */ (function () {
                     return __generator(this, function (_a) {
                         filesData = {
                             confFile: "",
-                            startupFiles: [],
-                            shutdownFiles: []
+                            startupFiles: [{ deviceName: '', fileData: '' }],
+                            shutdownFiles: [{ deviceName: '', fileData: '' }]
                         };
                         readFile = function (filePath) {
                             return fs_1.default.readFileSync(filePath, "utf-8");
@@ -1084,13 +1097,17 @@ var electronAPI = /** @class */ (function () {
                             filesNames = fs_1.default.readdirSync(directoryPath);
                             filesNames.forEach(function (fileName) {
                                 if (path.extname(fileName) == ".conf") {
-                                    filesData["confFile"] = readFile(path.join(directoryPath, fileName));
+                                    filesData.confFile = readFile(path.join(directoryPath, fileName));
                                 }
                                 if (path.extname(fileName) == ".startup") {
-                                    filesData["startupFiles"].push(readFile(path.join(directoryPath, fileName)));
+                                    var deviceName = path.basename(fileName, '.startup').toUpperCase();
+                                    var fileData = readFile(path.join(directoryPath, fileName));
+                                    filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
                                 if (path.extname(fileName) == ".shutdown") {
-                                    filesData["shutdownFiles"].push(readFile(path.join(directoryPath, fileName)));
+                                    var deviceName = path.basename(fileName, '.startup').toUpperCase();
+                                    var fileData = readFile(path.join(directoryPath, fileName));
+                                    filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
                             });
                             return [2 /*return*/, filesData];
@@ -1104,7 +1121,16 @@ var electronAPI = /** @class */ (function () {
                 return [2 /*return*/];
             });
         }); };
+        if (!fs_1.default.existsSync(path.join(this.dataFolder, "data"))) {
+            fs_1.default.mkdirSync(path.join(this.dataFolder, "data"));
+        }
     }
+    electronAPI.prototype.error = function (sender, message) {
+        sender.send("snack:add", { message: message, icon: "error", duration: 3000 });
+    };
+    electronAPI.prototype.success = function (sender, message) {
+        sender.send("snack:add", { message: message, icon: "done", duration: 3000 });
+    };
     return electronAPI;
 }());
 exports.electronAPI = electronAPI;
@@ -1287,6 +1313,17 @@ module.exports = require("net");
 
 /***/ }),
 
+/***/ "os":
+/*!*********************!*\
+  !*** external "os" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("os");
+
+/***/ }),
+
 /***/ "path":
 /*!***********************!*\
   !*** external "path" ***!
@@ -1345,6 +1382,11 @@ module.exports = require("util");
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat */
+/******/ 	
+/******/ 	if (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + "/native_modules/";
 /******/ 	
 /************************************************************************/
 /******/ 	
