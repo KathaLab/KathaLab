@@ -73,12 +73,12 @@ const updateDevices = () => {
   }
 
   const allCollisionDomain = () => {
-    let collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain))
+    const collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain))
     return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
   }
 
   return (
-    <div className={style.page} onMouseDown={console.log} onMouseUp={console.log}>
+    <div className={style.page}>
       <div className={style.content}>
         <ul className={style.list}>
           {devices.map((device, i) => (

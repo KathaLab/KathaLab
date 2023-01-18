@@ -1114,6 +1114,7 @@ var electronAPI = /** @class */ (function () {
                         }
                         catch (err) {
                             console.warn(err);
+                            this.error(_.sender, "An error occured while trying to read the folder " + directoryPath);
                         }
                         return [2 /*return*/];
                     });
@@ -1382,11 +1383,6 @@ module.exports = require("util");
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + "/native_modules/";
 /******/ 	
 /************************************************************************/
 /******/ 	

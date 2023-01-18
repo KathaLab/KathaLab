@@ -48,7 +48,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
                       <TextInput type={"IP"} 
                         value={device?.interfaces?.[i]?.ip} 
                         placeholder="127.0.0.1"
-                        onChange={(value: string) => {console.log(device, value); device.interfaces[i].ip = value; updateDevices()}} 
+                        onChange={(value: string) => {device.interfaces[i].ip = value; updateDevices()}} 
                         className={style.inputForm}></TextInput>
                     </div>
                     <div className={style.label}>

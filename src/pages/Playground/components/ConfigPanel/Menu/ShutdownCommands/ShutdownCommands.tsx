@@ -15,7 +15,6 @@ export const ShutdownCommands = ({device}: ComponentType) => {
     }
 
     const getShutdownCommands = (commands: string[]) => {
-        console.log(commands.filter(word => word !== ''))
         device.shutdown_commands = commands.filter(word => word !== '')
     }
 

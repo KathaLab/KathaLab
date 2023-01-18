@@ -1,6 +1,6 @@
-import {app, dialog, ipcMain} from "electron";
+import { app, dialog, ipcMain } from "electron";
 import fs from "fs";
-import {Lab} from "./model/Lab";
+import { Lab } from "./model/Lab";
 import * as path from "path";
 import os from "os";
 
@@ -66,7 +66,7 @@ export class electronAPI {
       try {
         const files = fs.readdirSync(path.join(this.dataFolder, `data`));
 
-const lab: Lab[] = [];
+        const lab: Lab[] = [];
 
         files
           .map((fileName) => ({
@@ -117,13 +117,13 @@ const lab: Lab[] = [];
     });
     ipcMain.handle("fs:read-directory", async (_, directoryPath) => {
 
-      const filesData: { "confFile"?: string, "startupFiles"?: [{deviceName: string, fileData: string}], "shutdownFiles"?:[{deviceName : string, fileData: string}] } = {
+      const filesData: { "confFile"?: string, "startupFiles"?: [{ deviceName: string, fileData: string }], "shutdownFiles"?: [{ deviceName: string, fileData: string }] } = {
         confFile: "",
-        startupFiles: [{deviceName:'', fileData:''}],
-        shutdownFiles: [{deviceName:'', fileData:''}]
+        startupFiles: [{ deviceName: '', fileData: '' }],
+        shutdownFiles: [{ deviceName: '', fileData: '' }]
       }
 
-      const readFile = (filePath: string):string => {
+      const readFile = (filePath: string): string => {
         return fs.readFileSync(filePath, "utf-8")
       }
 
@@ -131,23 +131,24 @@ const lab: Lab[] = [];
         const filesNames = fs.readdirSync(directoryPath)
 
         filesNames.forEach(fileName => {
-            if (path.extname(fileName) == ".conf"){
-              filesData.confFile = readFile(path.join(directoryPath, fileName));
-            }
-            if (path.extname(fileName) == ".startup"){
-                const deviceName = path.basename(fileName, '.startup').toUpperCase();
-                const fileData = readFile(path.join(directoryPath, fileName));
-              filesData.startupFiles.push({'deviceName': deviceName, 'fileData':fileData});
-            }
-            if (path.extname(fileName) == ".shutdown"){
-                const deviceName = path.basename(fileName, '.startup').toUpperCase();
-                const fileData = readFile(path.join(directoryPath, fileName));
-              filesData.shutdownFiles.push({'deviceName': deviceName, 'fileData':fileData});
-            }
-          })
+          if (path.extname(fileName) == ".conf") {
+            filesData.confFile = readFile(path.join(directoryPath, fileName));
+          }
+          if (path.extname(fileName) == ".startup") {
+            const deviceName = path.basename(fileName, '.startup').toUpperCase();
+            const fileData = readFile(path.join(directoryPath, fileName));
+            filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
+          }
+          if (path.extname(fileName) == ".shutdown") {
+            const deviceName = path.basename(fileName, '.startup').toUpperCase();
+            const fileData = readFile(path.join(directoryPath, fileName));
+            filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
+          }
+        })
         return filesData
       } catch (err) {
         console.warn(err)
+        this.error(_.sender, "An error occured while trying to read the folder "+ directoryPath);
       }
     })
   };
