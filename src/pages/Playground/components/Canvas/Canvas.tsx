@@ -16,11 +16,12 @@ import { ContextMenu } from "../../../../components/ContextMenu/ContextMenu";
 
 type ComponentType = {
   topoJson: Lab;
-  setSelectedDevices: (devices: Device[]) => void;
-  selectedDevices: Device[];
-  onSave: () => void;
-  onDuplicate: () => void;
-  onNew: (type: DeviceType) => void;
+  setSelectedDevices?: (devices: Device[]) => void;
+  selectedDevices?: Device[];
+  onSave?: () => void;
+  onDuplicate?: () => void;
+  onNew?: (type: DeviceType, pos?: { x: number, y: number }) => void;
+  interactive: boolean
 };
 
 export const Canvas = ({
@@ -29,7 +30,8 @@ export const Canvas = ({
   selectedDevices,
   onSave,
   onDuplicate,
-  onNew
+  onNew,
+  interactive = true,
 }: ComponentType) => {
 
   const canvasRef = useRef(null);
@@ -55,7 +57,7 @@ export const Canvas = ({
         }
       })
     },
-    { label: 'Duplicate', disabled: !selectedDevices.length, onClick: onDuplicate },
+    { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
     { label: 'Save', onClick: onSave },
     { label: 'Export' },
@@ -108,7 +110,8 @@ export const Canvas = ({
   }
 
   const renderHScrollbars = () => {
-    if (!topoJson.devices.length) return;
+    if (!interactive) return
+    if (!topoJson?.devices.length) return;
 
     const { ratio, offsetRatio } = getHSData();
 
@@ -124,7 +127,6 @@ export const Canvas = ({
       ScrollBarWidth
     );
   };
-
 
   const getVSData = () => {
     if (!topoJson.devices.length) return;
@@ -164,9 +166,10 @@ export const Canvas = ({
   }
 
   const renderVScrollbars = () => {
+    if (!interactive) return
     if (!topoJson.devices.length) return;
 
-    const {ratio, offsetRatio} = getVSData()
+    const { ratio, offsetRatio } = getVSData()
 
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
@@ -192,15 +195,15 @@ export const Canvas = ({
 
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-    // render devices
-    await Promise.all(json.devices.map((device) => {
+      // render devices
+    json.devices && await Promise.all(json.devices.map((device) => {
       if (!device.position)
         device.position = device?.position || {
           x: rect.width / 2 - canvasCenter.current.x,
           y: rect.height / 2 - canvasCenter.current.y,
         };
 
-      const selected = selectedDevices.includes(device);
+      const selected = selectedDevices?.includes(device);
       const color2 = selected ? lighten(color, 75) : color;
 
       return (async () => {
@@ -276,6 +279,7 @@ export const Canvas = ({
   //#region mouse events
 
   const handleMouseDown: MouseEventHandler = (e) => {
+    if (!interactive) return
     mouseButtonDownRef.current = e.buttons;
 
     renderJson(topoJson);
@@ -324,6 +328,7 @@ export const Canvas = ({
   };
 
   const handleMouseUp: MouseEventHandler = (e) => {
+    if (!interactive) return
 
     if (actionTypeRef.current === "select" && mouseButtonDownRef.current === MouseButtonType.LeftClick) {
       renderJson(topoJson);
@@ -346,6 +351,8 @@ export const Canvas = ({
   };
 
   const handleMouseMove: MouseEventHandler = async (e) => {
+    if (!interactive) return
+
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
       canvasCenter.current.x += e.movementX;
       canvasCenter.current.y += e.movementY;
@@ -382,6 +389,8 @@ export const Canvas = ({
   };
 
   const handleWheel: WheelEventHandler = (e) => {
+    if (!interactive) return
+
     canvasCenter.current.y -= e.deltaY;
     canvasCenter.current.x -= e.deltaX;
 
@@ -400,6 +409,8 @@ export const Canvas = ({
   //#region keyboard events
 
   const handleKeyDown: KeyboardEventHandler = (e) => {
+    if (!interactive) return
+
     if (e.key === "Shift") {
       isMajPressedRef.current = true;
     }
@@ -415,6 +426,8 @@ export const Canvas = ({
   };
 
   const handleKeyUp: KeyboardEventHandler = (e) => {
+    if (!interactive) return
+
     if (e.key === "Shift") {
       isMajPressedRef.current = false;
     }
@@ -451,6 +464,66 @@ export const Canvas = ({
     fn();
   }, [topoJson, selectedDevices]);
 
+  useEffect(() => {
+    if (!interactive) {
+      const mostLeftDevicePosition =
+        topoJson.devices?.reduce((prev, curr) => {
+          return curr.position.x < prev.position.x ? curr : prev;
+        })?.position?.x -
+        deviceSize.width / 2;
+
+      const mostRightDevicePosition =
+        topoJson.devices?.reduce((prev, curr) => {
+          return curr.position.x > prev.position.x ? curr : prev;
+        })?.position?.x +
+        deviceSize.width / 2;
+
+
+      const mostTopDevicePosition =
+        topoJson.devices?.reduce((prev, curr) => {
+          return curr.position.y < prev.position.y ? curr : prev;
+        }).position.y -
+        deviceSize.height / 2;
+
+      const mostBottomDevicePosition =
+        topoJson.devices?.reduce((prev, curr) => {
+          return curr.position.y > prev.position.y ? curr : prev;
+        }).position.y + deviceSize.height;
+
+      const x = (mostLeftDevicePosition + mostRightDevicePosition) / 2
+      const y = (mostTopDevicePosition + mostBottomDevicePosition) / 2
+
+
+      canvasCenter.current.x = canvasCenter.current.x - x
+      canvasCenter.current.y = canvasCenter.current.y - y
+      renderJson(topoJson);
+
+    }
+  }, [interactive])
+
+
+
+
+
+
+  function dragOver(e: any) {
+    e.preventDefault();
+  }
+
+  function dragEnter(e: any) {
+    e.preventDefault();
+  }
+
+  function dragDrop(e: any) {
+    if (!interactive) return
+
+    const device: Device | null = e.dataTransfer.getData('device') ? JSON.parse(e.dataTransfer.getData('device')) : null;
+    if (device) {
+      const pos = pageMousePositionToCanvasPosition(e.clientX, e.clientY)
+      onNew(device.type, pos)
+    }
+  }
+
   return <>
     <canvas
       tabIndex={0}
@@ -463,6 +536,9 @@ export const Canvas = ({
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
       onWheel={handleWheel}
+      onDragOver={dragOver}
+      onDragEnter={dragEnter}
+      onDrop={dragDrop}
     ></canvas>
     {mouseDownEvent && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
   </>

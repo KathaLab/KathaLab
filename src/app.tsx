@@ -39,7 +39,7 @@ const App = () => {
 
   const setLab = (lab: Lab) => {
     setCurrentLab(
-      JSON.parse(JSON.stringify(lab)) || {
+      lab || {
         name: "",
         id: uuidv4(),
         devices: [],
@@ -83,12 +83,21 @@ const App = () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    window.electronAPI.receive("snack:add", (_: unknown, snackMessage: snackBarMessageType) => {
+      addElement(snackMessage)
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     window.electronAPI.loadSave();
 
     return () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.electronAPI.removeListener("snack:add");
     };
   }, []);
 

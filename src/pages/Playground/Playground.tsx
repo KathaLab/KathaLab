@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
-import style from "./Playground.module.scss"
-  ;
+import style from "./Playground.module.scss";
 import { Device, devices, DeviceType } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../..//model/Lab";
@@ -20,7 +19,6 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const color = useCssVar("--clr-main-primary");
 
   const handleSave = async () => {
-    console.log(lab)
     if (lab.name === "") lab.name = "Untitled";
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -32,7 +30,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   }
 
   const handleDeviceClick = (device: Device) => {
-    if(!device) return;
+    if (!device) return;
     let name = "";
     let i = 0;
 
@@ -46,8 +44,8 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   };
 
-  const handleNew = (type: DeviceType) => {
-    handleDeviceClick(devices.find(device => device.type === type))
+  const handleNew = (type: DeviceType, pos?: {x: number, y: number}) => {
+    handleDeviceClick({...devices.find(device => device.type === type), position: pos})
   }
 
   const handleSelectionDuplicate = () => {
@@ -85,6 +83,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           ))}
         </ul>
         <Canvas
+          interactive={true}
           onSave={handleSave}
           onNew={handleNew}
           onDuplicate={handleSelectionDuplicate}
