@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
@@ -31,15 +31,15 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const handleDeviceClick = (device: Device) => {
     if (!device) return;
-    let name = "";
+    let deviceName = "";
     let i = 0;
 
-    while (name == "" || lab.devices.map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+    while (deviceName == "" || lab.devices.map(d => d.deviceName).includes(deviceName)) deviceName = `${device.type}${i++}`;
 
     setCurrentLab({
       ...lab, devices: [...lab.devices, {
         ...device,
-        name,
+        deviceName,
       }]
     });
   };
@@ -52,20 +52,29 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     const newDevices: Device[] = [];
 
     for (const device of selectedDevices) {
-      let name = "";
+      let deviceName = "";
       let i = 0;
 
-      while (name == "" || [...lab.devices, ...newDevices].map(d => d.name).includes(name)) name = `${device.type}${i++}`;
+      while (deviceName == "" || [...lab.devices, ...newDevices].map(d => d.name).includes(deviceName)) name = `${device.type}${i++}`;
 
       newDevices.push({
         ...JSON.parse(JSON.stringify(device)),
-        name,
+        deviceName,
       })
     }
 
     setCurrentLab({
       ...lab, devices: [...lab.devices, ...newDevices]
     });
+    }
+
+const updateDevices = () => {
+    setSelectedDevices([...selectedDevices])
+  }
+
+  const allCollisionDomain = () => {
+    let collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain))
+    return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
   }
 
   return (
@@ -91,7 +100,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
           selectedDevices={selectedDevices}
         ></Canvas>
-        <ConfigPanel device={selectedDevices?.[0]}></ConfigPanel>
+        {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>
     </div>
   );

@@ -1,63 +1,69 @@
-import React, { useState, useContext} from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef} from 'react'
 import style from './ConfigPanel.module.scss'
 import { Button } from '../../../../components/Button/Button'
 import { TextInput, textInputType } from "../../../../components/TextInput/TextInput";
 import { Switch } from "../../../../components/Switch/Switch";
 import { Expanded } from '../../../../components/Expanded/Expanded';
 import { ListCommand } from './ListCommand/ListCommand';
-import { Device } from "../../../../model/Device";
+import { Device, DeviceType, OptionalParameters } from "../../../../model/Device";
+import { useColoredImage } from "../../../../hooks/useColoredImage";
+import { useCssVar } from "../../../../hooks/useCssVar";
+import { Interface } from './Menu/Interfaces/Interface';
+import { StartupCommands } from './Menu/StatupCommands/StartupCommands';
+import { ShutdownCommands } from './Menu/ShutdownCommands/ShutdownCommands';
+import { OptionalsParameters } from './Menu/OptionalsParameters/OptionalsParameters';
 
 type ComponentType = {
-  device: Device
+  device: Device;
+  updateDevices: () => void;
+  allCollisionDomain: string[];
 }
 
-export const ConfigPanel = ({ device }: ComponentType) => {
+export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: ComponentType) => {
 
   const [expanded, setExpanded] = useState(false)
 
-  return (
-    device && <div className={style.panel} data-expanded={expanded}>
-      <Button className={style.toggleExpand} type='icon' value={expanded ? "navigate_next" : "navigate_before"} onclick={() => setExpanded(old => !old)}></Button>
+  const [getImg] = useColoredImage();
+  const color = useCssVar("--clr-main-primary");
+  const imageRef = useRef(null);
+  
+  useLayoutEffect(() => {
+    if(device?.type) imageRef.current.src = getImg(device.type, color).src;
+  }, [device])
 
-        <span className={style.title}>Configuration - {device.name}</span>
-        <div className={style.container}>
-          <p className={style.type}>{device.type}</p>
-          <div className={style.image}>
-            <img src="/assets/laptop.svg" alt="img-device" />
-          </div>
-          <div className={style.form}>
-            <TextInput value={device.name} placeholder="Device Name" className={style.inputConfigPanel + " " + style.inputDeviceName}></TextInput>
-            <Expanded title="Interface" classTitle={style.labelMenu}>
-              <div className={style.test}>
-                <p className={style.labelForm}>Ip address</p>
-                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
-              </div>
-              <div className={style.test}>
-                <p className={style.labelForm}>CIDR</p>
-                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
-              </div>
-              <div className={style.test}>
-                <p className={style.labelForm}>Mask</p>
-                <TextInput type={"NUMBER"} placeholder="" className={style.inputConfigPanel}></TextInput>
-              </div>
-              <div className={style.test}>
-                <p className={style.labelForm}>Collision domain</p>
-                <TextInput autocommplete={['eth 0','eth 1']} placeholder="Autocomplete" className={style.inputConfigPanel}></TextInput>
-              </div>
-              <div className={style.test}>
-                <p className={style.labelForm}>Ip Active</p>
-                <Switch></Switch>
-              </div>
-              <div className={style.test}>
-                <p className={style.labelForm}>Gateway</p>
-                <Switch></Switch>
-              </div>
-            </Expanded>
-          </div>
-          <Expanded title="Startup command" classTitle={style.labelMenu}>
-            <ListCommand list={['cmd 1','cmd 2']} className={style.inputConfigPanel}></ListCommand>
-          </Expanded>
+  return (
+    <div className={style.panel} data-expanded={expanded}>
+      <Button className={style.toggleExpand}
+        type='icon' 
+        value={expanded ? "navigate_next" : "navigate_before"} 
+        onclick={() => setExpanded(old => !old)}></Button>
+
+      <span className={style.title}>Configuration - {device.deviceName}</span>
+      <div className={style.hideDeviceForm}>
+        <p className={style.typeDevice}>{Object.entries(DeviceType).filter(t=>t[1]==device.type)[0]?.[0]}</p>
+        <div className={style.image}>
+          <img ref={imageRef} alt="img-device" />
         </div>
-    </div>
+        <div className={style.form}>
+          <TextInput value={device.deviceName} 
+            onChange={(value: string) => { device.deviceName = value; updateDevices()}} 
+            placeholder="Device Name" 
+            className={style.inputDeviceName}></TextInput>
+
+          {/* INTERFACES */}
+          <Interface device={device} updateDevices={updateDevices} allCollisionDomain={allCollisionDomain}></Interface>
+
+          {/* STARTUP COMMANDS */}
+          <StartupCommands device={device}></StartupCommands>
+
+          {/* SHUTDOWN COMMANDS */}
+          <ShutdownCommands device={device}></ShutdownCommands>
+
+          {/* OPTIONALS PARAMETERS */}
+          <OptionalsParameters device={device} updateDevices={updateDevices}></OptionalsParameters>
+        </div>
+      </div>
+    </div> 
   )
 }
+

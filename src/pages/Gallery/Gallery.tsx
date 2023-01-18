@@ -23,7 +23,7 @@ export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: comp
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
-    setLabList(labs.filter(lab => lab.name.toLowerCase().includes(value.toLowerCase())));
+    setLabList(labs.filter(lab => lab.labName.toLowerCase().includes(value.toLowerCase())));
   } 
 
   return <div className={style.container}>
@@ -33,7 +33,7 @@ export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: comp
     <div className={style.cardList}>
       {
         labList.map((lab, index) => {
-          return <CardGallery lab={lab} name={lab.name} key={index} onClick={() => {switchPage(Pages.Playground); setSelectedLab(labList.find((l) => lab.id === l.id))}} onDelete={() => handleDelete(lab.id)}></CardGallery>
+          return <CardGallery lab={lab} name={lab.labName} key={index} onClick={() => {switchPage(Pages.Playground); setSelectedLab(labList.find((l) => lab.id === l.id))}} onDelete={() => handleDelete(lab.id)}></CardGallery>
         })
       }
       <button className={style.btnCreateTopology} onClick={() => {setSelectedLab(undefined); switchPage(Pages.Playground) }}>+</button>

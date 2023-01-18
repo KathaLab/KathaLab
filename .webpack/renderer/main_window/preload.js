@@ -1,0 +1,67 @@
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/preload.ts":
+/*!************************!*\
+  !*** ./src/preload.ts ***!
+  \************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+eval("\r\n// // See the Electron documentation for details on how to use preload scripts:\r\n// // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts\r\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\r\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\r\n    return new (P || (P = Promise))(function (resolve, reject) {\r\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\r\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\r\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\r\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\r\n    });\r\n};\r\nvar __generator = (this && this.__generator) || function (thisArg, body) {\r\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\r\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\r\n    function verb(n) { return function (v) { return step([n, v]); }; }\r\n    function step(op) {\r\n        if (f) throw new TypeError(\"Generator is already executing.\");\r\n        while (_) try {\r\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\r\n            if (y = 0, t) op = [op[0] & 2, t.value];\r\n            switch (op[0]) {\r\n                case 0: case 1: t = op; break;\r\n                case 4: _.label++; return { value: op[1], done: false };\r\n                case 5: _.label++; y = op[1]; op = [0]; continue;\r\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\r\n                default:\r\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\r\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\r\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\r\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\r\n                    if (t[2]) _.ops.pop();\r\n                    _.trys.pop(); continue;\r\n            }\r\n            op = body.call(thisArg, _);\r\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\r\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\r\n    }\r\n};\r\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\r\nvar electron_1 = __webpack_require__(/*! electron */ \"electron\");\r\nelectron_1.contextBridge.exposeInMainWorld('electronAPI', {\r\n    chooseFile: function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('dialog:open-file')];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    chooseDirectory: function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('dialog:open-directory')];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    saveData: function (data) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('save:save', data)];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    loadSave: function (filename) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('save:load', filename)];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    readDirectory: function (directoryPath) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('fs:read-directory', directoryPath)];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    saveFile: function (filePath, fileName, content) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('fs:save-file', filePath, fileName, content)];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    deleteSave: function (id) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('save:delete', id)];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    maximize: function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('window:maximize')];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    minimize: function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('window:minimize')];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    close: function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {\r\n        switch (_a.label) {\r\n            case 0: return [4 /*yield*/, electron_1.ipcRenderer.invoke('window:close')];\r\n            case 1: return [2 /*return*/, _a.sent()];\r\n        }\r\n    }); }); },\r\n    removeListener: function (channel) {\r\n        electron_1.ipcRenderer.removeAllListeners(channel);\r\n    },\r\n    receive: function (channel, func) {\r\n        electron_1.ipcRenderer.on(channel, func);\r\n    }\r\n});\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvcHJlbG9hZC50cy5qcyIsIm1hcHBpbmdzIjoiO0FBQUEsK0VBQStFO0FBQy9FLG1GQUFtRjs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFbkYsaUVBQXNEO0FBRXRELHdCQUFhLENBQUMsaUJBQWlCLENBQUMsYUFBYSxFQUFFO0lBQzNDLFVBQVUsRUFBRTs7b0JBQVkscUJBQU0sc0JBQVcsQ0FBQyxNQUFNLENBQUMsa0JBQWtCLENBQUM7b0JBQTVDLCtCQUE0Qzs7YUFBQTtJQUNwRSxlQUFlLEVBQUU7O29CQUFZLHFCQUFNLHNCQUFXLENBQUMsTUFBTSxDQUFDLHVCQUF1QixDQUFDO29CQUFqRCwrQkFBaUQ7O2FBQUE7SUFDOUUsUUFBUSxFQUFFLFVBQU8sSUFBUzs7b0JBQUsscUJBQU0sc0JBQVcsQ0FBQyxNQUFNLENBQUMsV0FBVyxFQUFFLElBQUksQ0FBQztvQkFBM0MsK0JBQTJDOzthQUFBO0lBQzFFLFFBQVEsRUFBRSxVQUFPLFFBQWE7O29CQUFLLHFCQUFNLHNCQUFXLENBQUMsTUFBTSxDQUFDLFdBQVcsRUFBRSxRQUFRLENBQUM7b0JBQS9DLCtCQUErQzs7YUFBQTtJQUVsRixhQUFhLEVBQUUsVUFBTyxhQUFrQjs7b0JBQU0scUJBQU0sc0JBQVcsQ0FBQyxNQUFNLENBQUMsbUJBQW1CLEVBQUUsYUFBYSxDQUFDO29CQUE1RCwrQkFBNEQ7O2FBQUE7SUFDMUcsUUFBUSxFQUFHLFVBQU8sUUFBYSxFQUFFLFFBQWEsRUFBRSxPQUFZOztvQkFBSyxxQkFBTSxzQkFBVyxDQUFDLE1BQU0sQ0FBQyxjQUFjLEVBQUUsUUFBUSxFQUFFLFFBQVEsRUFBRSxPQUFPLENBQUM7b0JBQXJFLCtCQUFxRTs7YUFBQTtJQUN0SSxVQUFVLEVBQUUsVUFBTyxFQUFPOztvQkFBSyxxQkFBTSxzQkFBVyxDQUFDLE1BQU0sQ0FBQyxhQUFhLEVBQUUsRUFBRSxDQUFDO29CQUEzQywrQkFBMkM7O2FBQUE7SUFFMUUsUUFBUSxFQUFFOztvQkFBWSxxQkFBTSxzQkFBVyxDQUFDLE1BQU0sQ0FBQyxpQkFBaUIsQ0FBQztvQkFBM0MsK0JBQTJDOzthQUFBO0lBQ2pFLFFBQVEsRUFBRTs7b0JBQVkscUJBQU0sc0JBQVcsQ0FBQyxNQUFNLENBQUMsaUJBQWlCLENBQUM7b0JBQTNDLCtCQUEyQzs7YUFBQTtJQUNqRSxLQUFLLEVBQUU7O29CQUFZLHFCQUFNLHNCQUFXLENBQUMsTUFBTSxDQUFDLGNBQWMsQ0FBQztvQkFBeEMsK0JBQXdDOzthQUFBO0lBRTNELGNBQWMsRUFBRSxVQUFDLE9BQVk7UUFDekIsc0JBQVcsQ0FBQyxrQkFBa0IsQ0FBQyxPQUFPLENBQUM7SUFDM0MsQ0FBQztJQUVELE9BQU8sRUFBRSxVQUFDLE9BQVksRUFBRSxJQUFTO1FBQzdCLHNCQUFXLENBQUMsRUFBRSxDQUFDLE9BQU8sRUFBRSxJQUFJLENBQUMsQ0FBQztJQUNsQyxDQUFDO0NBQ0osQ0FBQyIsInNvdXJjZXMiOlsid2VicGFjazovL3Byb2pldC1rYXRoYXJhLy4vc3JjL3ByZWxvYWQudHM/MDU2YSJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyAvLyBTZWUgdGhlIEVsZWN0cm9uIGRvY3VtZW50YXRpb24gZm9yIGRldGFpbHMgb24gaG93IHRvIHVzZSBwcmVsb2FkIHNjcmlwdHM6XHJcbi8vIC8vIGh0dHBzOi8vd3d3LmVsZWN0cm9uanMub3JnL2RvY3MvbGF0ZXN0L3R1dG9yaWFsL3Byb2Nlc3MtbW9kZWwjcHJlbG9hZC1zY3JpcHRzXHJcblxyXG5pbXBvcnQgeyBjb250ZXh0QnJpZGdlLCBpcGNSZW5kZXJlciB9IGZyb20gJ2VsZWN0cm9uJztcclxuXHJcbmNvbnRleHRCcmlkZ2UuZXhwb3NlSW5NYWluV29ybGQoJ2VsZWN0cm9uQVBJJywge1xyXG4gICAgY2hvb3NlRmlsZTogYXN5bmMgKCkgPT4gYXdhaXQgaXBjUmVuZGVyZXIuaW52b2tlKCdkaWFsb2c6b3Blbi1maWxlJyksXHJcbiAgICBjaG9vc2VEaXJlY3Rvcnk6IGFzeW5jICgpID0+IGF3YWl0IGlwY1JlbmRlcmVyLmludm9rZSgnZGlhbG9nOm9wZW4tZGlyZWN0b3J5JyksXHJcbiAgICBzYXZlRGF0YTogYXN5bmMgKGRhdGE6IGFueSkgPT4gYXdhaXQgaXBjUmVuZGVyZXIuaW52b2tlKCdzYXZlOnNhdmUnLCBkYXRhKSxcclxuICAgIGxvYWRTYXZlOiBhc3luYyAoZmlsZW5hbWU6IGFueSkgPT4gYXdhaXQgaXBjUmVuZGVyZXIuaW52b2tlKCdzYXZlOmxvYWQnLCBmaWxlbmFtZSksXHJcblxyXG4gICAgcmVhZERpcmVjdG9yeTogYXN5bmMgKGRpcmVjdG9yeVBhdGg6IGFueSkgID0+IGF3YWl0IGlwY1JlbmRlcmVyLmludm9rZSgnZnM6cmVhZC1kaXJlY3RvcnknLCBkaXJlY3RvcnlQYXRoKSxcclxuICAgIHNhdmVGaWxlIDogYXN5bmMgKGZpbGVQYXRoOiBhbnksIGZpbGVOYW1lOiBhbnksIGNvbnRlbnQ6IGFueSkgPT4gYXdhaXQgaXBjUmVuZGVyZXIuaW52b2tlKCdmczpzYXZlLWZpbGUnLCBmaWxlUGF0aCwgZmlsZU5hbWUsIGNvbnRlbnQpLFxyXG4gICAgZGVsZXRlU2F2ZTogYXN5bmMgKGlkOiBhbnkpID0+IGF3YWl0IGlwY1JlbmRlcmVyLmludm9rZSgnc2F2ZTpkZWxldGUnLCBpZCksXHJcblxyXG4gICAgbWF4aW1pemU6IGFzeW5jICgpID0+IGF3YWl0IGlwY1JlbmRlcmVyLmludm9rZSgnd2luZG93Om1heGltaXplJyksXHJcbiAgICBtaW5pbWl6ZTogYXN5bmMgKCkgPT4gYXdhaXQgaXBjUmVuZGVyZXIuaW52b2tlKCd3aW5kb3c6bWluaW1pemUnKSxcclxuICAgIGNsb3NlOiBhc3luYyAoKSA9PiBhd2FpdCBpcGNSZW5kZXJlci5pbnZva2UoJ3dpbmRvdzpjbG9zZScpLFxyXG5cclxuICAgIHJlbW92ZUxpc3RlbmVyOiAoY2hhbm5lbDogYW55KSA9PiB7XHJcbiAgICAgICAgaXBjUmVuZGVyZXIucmVtb3ZlQWxsTGlzdGVuZXJzKGNoYW5uZWwpXHJcbiAgICB9LFxyXG5cclxuICAgIHJlY2VpdmU6IChjaGFubmVsOiBhbnksIGZ1bmM6IGFueSkgPT4ge1xyXG4gICAgICAgIGlwY1JlbmRlcmVyLm9uKGNoYW5uZWwsIGZ1bmMpO1xyXG4gICAgfVxyXG59KSJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./src/preload.ts\n");
+
+/***/ }),
+
+/***/ "electron":
+/*!***************************!*\
+  !*** external "electron" ***!
+  \***************************/
+/***/ ((module) => {
+
+module.exports = require("electron");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/preload.ts");
+/******/ 	
+/******/ })()
+;

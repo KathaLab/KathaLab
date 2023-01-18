@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx . && stylelint ./**/*.scss"
+    "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
   "author": {
@@ -23,23 +23,30 @@
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
+          "platforms": ["win32"],
           "config": {
             "name": "projet_kathara"
           }
         },
         {
           "name": "@electron-forge/maker-zip",
+          "platforms": ["darwin", "linux"],
+          "config": {
+          }
+        }
+      ],
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
           "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
+            "win32"
+          ],
+          "config": {
+            "repository": {
+              "owner": "xernois",
+              "name": "projet-kathara"
+            }
+          }
         }
       ],
       "plugins": [
@@ -54,7 +61,15 @@
                 {
                   "html": "./src/index.html",
                   "js": "./src/renderer.ts",
-                  "name": "main_window"
+                  "name": "main_window",
+                  "preload" : {
+                    "js": "./src/preload.ts"
+                  }
+                },
+                {
+                  "html": "./src/splash.html",
+                  "js": "./src/renderer.ts",
+                  "name": "splash"
                 }
               ]
             }
@@ -70,6 +85,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.66",
     "@electron-forge/maker-zip": "^6.0.0-beta.66",
     "@electron-forge/plugin-webpack": "6.0.0-beta.66",
+    "@electron-forge/publisher-github": "6.0.0-beta.66",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/resize-observer-browser": "^0.1.7",
@@ -77,7 +93,7 @@
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "css-loader": "^6.7.1",
-    "electron": "21.0.1",
+    "electron": "^22.0.0",
     "eslint": "^8.0.1",
     "eslint-plugin-import": "^2.25.0",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
@@ -91,11 +107,13 @@
   },
   "dependencies": {
     "@types/uuid": "^8.3.4",
+    "assert": "^2.0.0",
+    "browserify": "^17.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-modules-typescript-loader": "^4.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "fs-extra": "^10.1.0",
-    "path-browserify": "^1.0.1",
+    "os-browserify": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.55.0",

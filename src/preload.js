@@ -9,11 +9,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
     chooseDirectory: async () => await ipcRenderer.invoke('dialog:open-directory'),
     saveData: async (data) => await ipcRenderer.invoke('save:save', data),
     loadSave: async (filename) => await ipcRenderer.invoke('save:load', filename),
+
+    readDirectory: async (directoryPath)  => await ipcRenderer.invoke('fs:read-directory', directoryPath),
+    saveFile : async (filePath, fileName, content) => await ipcRenderer.invoke('fs:save-file', filePath, fileName, content),
     deleteSave: async (id) => await ipcRenderer.invoke('save:delete', id),
 
     maximize: async () => await ipcRenderer.invoke('window:maximize'),
     minimize: async () => await ipcRenderer.invoke('window:minimize'),
     close: async () => await ipcRenderer.invoke('window:close'),
+
+    getHomeDirectory : async() => await ipcRenderer.invoke('os:getHomeDirectory'),
 
     removeListener: (channel) => {
         ipcRenderer.removeAllListeners(channel)

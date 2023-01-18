@@ -5,13 +5,16 @@ interface CssExports {
   'centerDiv': string;
   'gridItemLeft': string;
   'gridItemRight': string;
-  'header': string;
-  'headerTitle': string;
+  'gridItemTitle': string;
   'label': string;
   'left': string;
   'page': string;
-  'parameterGrid': string;
+  'saveButton': string;
   'select': string;
+  'settingsContainer': string;
+  'settingsGrid': string;
+  'settingsMenu': string;
+  'settingsMenuTitle': string;
   'storagePlaceInput': string;
 }
 export const cssExports: CssExports;

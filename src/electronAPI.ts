@@ -1,7 +1,8 @@
-import { app, dialog, ipcMain } from "electron";
+import {app, dialog, ipcMain} from "electron";
 import fs from "fs";
-import { Lab } from "./model/Lab";
-import path from "path"
+import {Lab} from "./model/Lab";
+import * as path from "path";
+import os from "os";
 
 export class electronAPI {
 
@@ -48,6 +49,7 @@ export class electronAPI {
           this.error(event.sender, "An error occured while trying to open the file explorer");
         });
     });
+
     ipcMain.handle("save:save", async (_, obj) => {
       try {
         fs.writeFileSync(path.join(this.dataFolder, `data/${obj.id}.json`),
@@ -60,11 +62,11 @@ export class electronAPI {
         this.error(_.sender, "An error occured while saving the lab");
       }
     });
-    ipcMain.handle("save:load", async (event) => {
+    ipcMain.handle("save:load", async (event, name) => {
       try {
         const files = fs.readdirSync(path.join(this.dataFolder, `data`));
 
-        const lab: Lab[] = [];
+const lab: Lab[] = [];
 
         files
           .map((fileName) => ({
@@ -84,12 +86,23 @@ export class electronAPI {
               )
             );
           });
+
         event.sender.send("save:load", lab);
       } catch (e) {
         console.error(e)
         this.error(event.sender, "An error occured while loading the labs");
       }
     });
+
+    ipcMain.handle('fs:save-file', async (event, filePath, fileName, content) => {
+      try {
+        const fullPath = path.join(filePath, fileName);
+        fs.writeFileSync(fullPath, content, "utf-8")
+      } catch (e) {
+        console.warn(e.message);
+      }
+    })
+
     ipcMain.handle("save:delete", async (_, id) => {
       try {
         fs.unlinkSync(path.join(this.dataFolder, `data`, `${id}.json`));
@@ -99,5 +112,39 @@ export class electronAPI {
         this.error(_.sender, "An error occured while deleting the lab");
       }
     });
+    ipcMain.handle("os:getHomeDirectory", async () => {
+      return os.homedir();
+    });
+    ipcMain.handle("fs:read-directory", async (_, directoryPath) => {
+
+      const filesData: { "confFile": string, "startupFiles":string[], "shutdownFiles":string[] } = {
+        confFile: "",
+        startupFiles: [],
+        shutdownFiles: []
+      }
+
+      const readFile = (filePath: string):string => {
+        return fs.readFileSync(filePath, "utf-8")
+      }
+
+      try {
+        const filesNames = fs.readdirSync(directoryPath)
+
+        filesNames.forEach(fileName => {
+            if (path.extname(fileName) == ".conf"){
+              filesData["confFile"] = readFile(path.join(directoryPath, fileName));
+            }
+            if (path.extname(fileName) == ".startup"){
+              filesData["startupFiles"].push(readFile(path.join(directoryPath, fileName)));
+            }
+            if (path.extname(fileName) == ".shutdown"){
+              filesData["shutdownFiles"].push(readFile(path.join(directoryPath, fileName)));
+            }
+          })
+        return filesData
+      } catch (err) {
+        console.warn(err)
+      }
+    })
   };
 }

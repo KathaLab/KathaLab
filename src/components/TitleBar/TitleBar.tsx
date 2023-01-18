@@ -1,95 +1,186 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Lab } from '../../model/Lab'
-import { Pages } from '../../app'
-import { ContextMenu } from '../ContextMenu/ContextMenu'
+import React, {useEffect, useRef, useState} from 'react'
+import {Lab} from '../../model/Lab'
+import {Pages} from '../../app'
+import {ContextMenu} from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
+import ExportLabConf from "../../lib/ExportLabConf";
+import ExportDevicesConf from "../../lib/ExportDevicesConf";
+import * as RegexConst from "../../lib/RegexConst";
+import { v4 as uuidv4 } from "uuid";
 
 type componentType = {
-    switchPage: (page: Pages) => void
-    setSelectedLab: (lab: Lab) => void
-    selectedLab: Lab
-    onSave: () => void
-    page: Pages
-    labs: Lab[]
-    onChange: (title: string) => void
+  switchPage: (page: Pages) => void
+  setSelectedLab: (lab: Lab) => void
+  selectedLab: Lab
+  onSave: () => void
+  page: Pages
+  labs: Lab[]
+  onChange: (title: string) => void
 }
 
-export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selectedLab, onChange }: componentType) => {
+export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, selectedLab, onChange}: componentType) => {
 
-    const [labExpanded, setLabExpanded] = useState(false);
-    const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
+  const [labExpanded, setLabExpanded] = useState(false);
+  const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
 
-    const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    const handleLabClick = () => setLabExpanded(x => !x);
-    
-    useEffect(() => {
-        setIsTitleEditable(page !== Pages.Playground)
-        inputRef.current.value = page !== Pages.Playground ? "KathaLab" : selectedLab.name;
-    }, [selectedLab, page])
+  const handleLabClick = () => setLabExpanded(x => !x);
 
-    const labOptions = [
-        { label: 'New', onClick: () => { setSelectedLab(undefined); switchPage(Pages.Playground); setLabExpanded(false); } },
-        {
-            label: 'Open', options: labs.map(lab => {
-                return {
-                    label: lab.name || 'Untitled',
-                    onClick: () => {
-                        setSelectedLab({...lab});
-                        setLabExpanded(false);
-                        switchPage(Pages.Playground);
-                    }
-                }
-            })
-        },
-        { separator: true },
-        { label: 'Save', disabled: isDisabled, onClick: onSave },
-        { label: 'Import', disabled: true },
-        { label: 'Export', disabled: isDisabled },
-    ];
+  useEffect(() => {
+    setIsTitleEditable(page !== Pages.Playground)
+    inputRef.current.value = page !== Pages.Playground ? "KathaLab" : selectedLab.labName;
+  }, [selectedLab, page])
 
-    const handleMinimimze = () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        window.electronAPI.minimize();
+  const labOptions = [
+    {
+      label: 'New', onClick: () => {
+        setSelectedLab(undefined);
+        switchPage(Pages.Playground);
+        setLabExpanded(false);
+      }
+    },
+    {
+      label: 'Open', options: labs.map(lab => {
+        return {
+          label: lab.labName || 'Untitled',
+          onClick: () => {
+            setSelectedLab({...lab});
+            setLabExpanded(false);
+            switchPage(Pages.Playground);
+          }
+        }
+      })
+    },
+    {separator: true},
+    {label: 'Save', disabled: isDisabled, onClick: onSave},
+    {
+      label: 'Import', onClick: () => {
+        handleImport();
+      }
+    },
+    {
+      label: 'Export', disabled: page !== Pages.Playground, onClick: () => {
+        handleExport(selectedLab)
+      }
+    }
+  ];
+
+  const handleMinimimze = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.minimize();
+  }
+
+  const handleMaximize = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.maximize();
+  }
+
+  const handleClose = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.close();
+  }
+
+  const handleExport = async (lab: Lab) => {
+
+    const labConf = new ExportLabConf(lab).exportGlobalLabConf();
+    const devicesConf = new ExportDevicesConf(lab).exportGlobalDevicesConf()
+
+    //Creating lab.conf and all device.startup
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await window.electronAPI.chooseDirectory()
+        .then((filePath: string) => {
+          if (filePath && labConf && devicesConf) {
+            for (const labName in labConf) {
+              const fileName = "lab.conf";
+
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              window.electronAPI.saveFile(filePath, fileName, labConf[labName]);
+            }
+            for (const deviceName in devicesConf) {
+              const fileName = deviceName + ".startup";
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              window.electronAPI.saveFile(filePath, fileName, devicesConf[deviceName])
+            }
+          }
+        })
+  }
+
+  const handleImport = async () => {
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const directoryPath = await window.electronAPI.chooseDirectory()
+
+    if (!directoryPath){
+      return;
     }
 
-    const handleMaximize = () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        window.electronAPI.maximize();
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const filesData = await window.electronAPI.readDirectory(directoryPath)
+    const labConf: Lab = {canvas: {x: 0, y: 0, zoom: 0}, devices: [], id: "", labName: ""};
 
-    const handleClose = () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        window.electronAPI.close();
-    }
+    String(filesData['confFile']).split('\n').forEach(line => {
+      labConf.id = uuidv4();
 
-    return (
-        <div className={styles.titleBar}>
-            <div className={styles.left}>
-                <span className={styles.backBtn + ' material-icons material-icons-outlined' + " " + styles.clickable} onClick={() => switchPage(Pages.Gallery)}>apps</span>
-                <div>
-                    <span className={styles.separator}>|</span>
-                    <span className={styles.clickable + " " + (labExpanded ? styles.clicked : "")} onClick={handleLabClick}>Lab</span>
-                    {labExpanded && <ContextMenu options={labOptions} onHide={() => setLabExpanded(false)}></ContextMenu>}
-                    <span className={styles.clickable + " "} onClick={() => switchPage(Pages.Settings)}>Settings</span>
-                </div>
-            </div>
-            <input
-                disabled={isDisabled}
-                className={styles.input + " " + styles.clickable + " " + (isDisabled ? styles.title : "")}
-                type="text"
-                onChange={(e) => onChange(e.target.value)}
-                placeholder="Untitled"
-                ref={inputRef}
-            />
-            <ul className={styles.btnList}>
-                <li className={'material-icons material-icons-outlined ' + styles.clickable} onClick={handleMinimimze}>remove</li>
-                <li className={'material-icons material-icons-outlined ' + styles.clickable} onClick={handleMaximize}>check_box_outline_blank</li>
-                <li className={'material-icons material-icons-outlined ' + styles.clickable} onClick={handleClose}>close</li>
-            </ul>
+      //console.log(Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX)))
+
+      if (Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0]) {
+        labConf.labName = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.name.replace(/['"]/g, '').toString();
+        labConf.author = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.author.replace(/['"]/g, '').toString();
+        labConf.description = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.email.replace(/['"]/g, '').toString();
+        labConf.description = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.description.replace(/['"]/g, '').toString();
+        labConf.web = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.web.replace(/['"]/g, '').toString();
+        labConf.version = Array.from(line.matchAll(RegexConst.LAB_CONF_REGEX))[0].groups.version.replace(/['"]/g, '').toString();
+      }
+      else if(Array.from(line.matchAll(RegexConst.LAB_DEVICE_REGEX))[0]){
+        console.log("")
+      }
+      else {
+        //labConf.other_command?.push(line);
+      }
+      return labConf;
+    })
+   console.log(labConf)
+  }
+
+  return (
+      <div className={styles.titleBar}>
+        <div className={styles.left}>
+          <span className={styles.backBtn + ' material-icons material-icons-outlined' + " " + styles.clickable}
+                onClick={() => switchPage(Pages.Gallery)}>apps</span>
+          <div>
+            <span className={styles.separator}>|</span>
+            <span className={styles.clickable + " " + (labExpanded ? styles.clicked : "")}
+                  onClick={handleLabClick}>Lab</span>
+            {labExpanded && <ContextMenu options={labOptions} onHide={() => setLabExpanded(false)}></ContextMenu>}
+            <span className={styles.clickable + " "} onClick={() => switchPage(Pages.Settings)}>Settings</span>
+          </div>
         </div>
-    )
+        <input
+            disabled={isDisabled}
+            className={styles.input + " " + styles.clickable + " " + (isDisabled ? styles.title : "")}
+            type="text"
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Untitled"
+            ref={inputRef}
+        />
+        <ul className={styles.btnList}>
+          <li className={'material-icons material-icons-outlined ' + styles.clickable}
+              onClick={handleMinimimze}>remove
+          </li>
+          <li className={'material-icons material-icons-outlined ' + styles.clickable}
+              onClick={handleMaximize}>check_box_outline_blank
+          </li>
+          <li className={'material-icons material-icons-outlined ' + styles.clickable} onClick={handleClose}>close</li>
+        </ul>
+      </div>
+  )
 }

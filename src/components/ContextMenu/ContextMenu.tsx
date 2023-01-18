@@ -33,7 +33,7 @@ export const ContextMenu = ({ onHide, options, position }: componentType) => {
               key={index}
               className={option.disabled ? style.disabled : ""}
               onClick={() => {
-                if (!option.onClick) return;
+                if (!option.onClick || option.disabled) return;
                 option?.onClick?.();
                 onHide();
               }}
