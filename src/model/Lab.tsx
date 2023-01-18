@@ -14,4 +14,5 @@ export interface Lab {
         y: number
         zoom: number
     }
+
 }
