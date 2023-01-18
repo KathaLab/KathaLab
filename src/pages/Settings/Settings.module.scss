@@ -1,39 +1,6 @@
 .page{
   min-height: 100vh;
-  background-color: var(--clr-main-grey);
-  display: flex;
-}
-.left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.settingsContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  color: var(--clr-main-black);
-  margin: 2rem 0 2rem 0;
-  width: 100%;
-  height: fit-content;
-}
-
-.settingsMenu {
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: 1rem;
-  width: fit-content;
-  padding-right: 1rem;
-  margin-top: 2rem;
-}
-
-
-.settingsMenuTitle {
-  font-size: 20px;
-  text-decoration: none;
-  color: var(--clr-main-black);
+  background-color: var(--clr-page-bg);
 }
 
 .settingsGrid {
@@ -82,28 +49,27 @@
 
 
 .label {
-  color: var(--clr-main-black);
+    color: var(--clr-settings-text);
 }
 .select {
-  border-color: var(--clr-main-secondary);
+  border-color: var(--clr-settings-border);
   border-width: 2px;
   width: 10rem;
   font-size: 1rem;
   padding: 0.1rem;
   border-radius: 0.2rem;
-  background-color: var(--clr-main-lightgrey);
-  color: var(--clr-main-black);
+  background-color: var(--clr-input-bg);
+  color: var(--clr-input-text);
 }
 .storagePlaceInput {
-  border-color: var(--clr-main-secondary);
+  border-color: var(--clr-settings-border);
   border-style: solid;
   width: 20rem;
   font-size: 1rem;
   border-radius: 0.2rem;
-  background-color: var(--clr-main-lightgrey);
-  color: var(--clr-main-black);
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
+  background-color: var(--clr-input-bg);
+  color: var(--clr-input-text);
+  box-shadow: none;
   box-shadow: none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -116,5 +82,5 @@
 .btnChooseDir {
   background-color: transparent;
   border: none;
-  color: var(--clr-main-primary);
+  color: var(--clr-settings-icon);
 }

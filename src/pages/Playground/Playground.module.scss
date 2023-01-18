@@ -1,13 +1,8 @@
-.titre {
-  color: var(--accent);
-  background: var(--background);
-}
-
 .page {
   display: flex;
   height: 100%;
   flex-direction: column;
-  background-color: var(--clr-main-grey);
+  background-color: var(--clr-playground-bg);
   overflow: hidden;
 }
 
@@ -18,7 +13,7 @@
   position: relative;
 
   .list {
-    background-color: var(--clr-main-lightgrey);
+    background-color: var(--clr-lsitDevice-bg);
     flex-direction: column;
     display: flex;
     padding: 1rem;

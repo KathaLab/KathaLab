@@ -1,5 +1,5 @@
 .container {
-  background-color: var(--clr-main-lightgrey);
+  background-color: var(--clr-page-bg);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,25 +14,15 @@
   grid-auto-flow: row;
 }
 
-.galleryExplication {
-  text-align: center;
-  padding: 3rem 0;
-  line-height: 8rem;
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--clr-main-primary);
-  background-color: var(--clr-main-grey);
-}
-
 .btnCreateTopology {
   width: 16rem;
   aspect-ratio: 1;
   border: none;
   font-size: 11rem;
   font-weight: 200;
-  color: var(--clr-main-primary);
+  color: var(--clr-action-bg-default);
   border-radius: 0.5rem;
-  background-color: var(--clr-main-grey);
+  background-color: var(--clr-cg-bg);
   transition: 0.2s;
 
   &:hover {
@@ -46,7 +36,7 @@
 }
 
 .searchInput {
-  background: var(--clr-main-grey);
+  background: var(--clr-input-bg);
   border: none;
   padding: 0.5rem 1rem;
   margin: 2rem;
@@ -56,9 +46,11 @@
   color: #aaa;
 
   &:focus,
+  &:hover,
   &:active {
-    outline: 2px solid var(--clr-main-primary);
+    outline: 1px solid var(--clr-action-focus-default);
   }
+  
   &:hover {
     cursor: pointer;
   }

@@ -20,9 +20,7 @@ type ComponentType = {
 }
 
 export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: ComponentType) => {
-
-  const [expanded, setExpanded] = useState(false)
-
+  const [expanded, setExpanded] = useState(false);
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-main-primary");
   const imageRef = useRef(null);

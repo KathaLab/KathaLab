@@ -1,6 +1,6 @@
 .snackbar {
-    background-color: var(--clr-main-secondary);
-    color: var(--clr-main-white);
+    background-color: var(--clr-snackbar-bg);
+    color: var(--clr-snackbar-text);
     text-align: center;
     border-radius: .25rem;
     position: fixed;
