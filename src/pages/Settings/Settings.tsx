@@ -1,26 +1,42 @@
-import React, {useContext, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import {Pages} from "../../app";
 import LocalizationContext from "../../context/LocalizationContext";
 import ThemeContext from "../../context/ThemeContext";
 import themes  from "../../theme/_theme.scss";
 import style from "./Settings.module.scss"
-import { Button } from "../../components/Button/Button";
 import {Language, LocalizationName} from "../../localization";
-
 export const Settings = () => {
     const {updateContext: updateLocalization, languageDico, language} = useContext(LocalizationContext);
     const {updateContext: updateTheme, theme} = useContext(ThemeContext);
-    const [path, setPath] = useState("C:\\Users\\JhonDoe\\Desktop\\katharaConfiguration")
+    const [homeDir, setHomeDir] = useState(null);
+    const [path, setPath] = useState(homeDir)
+
+    useEffect(() => {
+        (async () => setPath(appParam.path ?? `${await homeDirectory()}\\Kathalab`))();
+        (async () => setAppParam({
+            language : localStorage.getItem('language') ?? language,
+            theme : localStorage.getItem('theme') ?? theme,
+            path : localStorage.getItem('path') ?? `${await homeDirectory()}\\Kathalab`
+        }))();
+    }, [])
+
     const [appParam, setAppParam] = useState({
-        'language': localStorage.getItem('language'),
-        'theme': localStorage.getItem('theme'),
-        'path': localStorage.getItem('path')
+        'language': localStorage.getItem('language') ?? language,
+        'theme': localStorage.getItem('theme') ?? theme,
+        'path': localStorage.getItem('path') ?? path
     })
+
     const openDirectory = async () => {
+        let path = "";
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        appParam.path = await window.electronAPI.chooseDirectory();
+        path = await window.electronAPI.chooseDirectory();
+        appParam.path = path;
+        setPath(path);
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const homeDirectory = async () => {return await window.electronAPI.getHomeDirectory();}
     const saveSettings = async () => {
         await localStorage.setItem('language', appParam.language)
         await localStorage.setItem('theme', appParam.theme)
@@ -28,6 +44,7 @@ export const Settings = () => {
         updateLocalization(appParam.language as Language);
         updateTheme(appParam.theme);
         setPath(appParam.path);
+        window.location.reload();
     }
     const ifParamNotChange = () => {
         return localStorage.getItem('language') == appParam.language &&
@@ -90,6 +107,7 @@ export const Settings = () => {
                 </div>
                 <div className={style.gridItemRight}>
                     <input id={"savePath"} onChange={async (e) => {
+                        setPath(e.target.value)
                         setAppParam({
                             language : appParam.language,
                             theme : appParam.theme,
