@@ -30,7 +30,7 @@ export enum Pages {
 }
 
 const App = () => {
-  const [page, setPage] = useState<Pages>(Pages.Settings);
+  const [page, setPage] = useState<Pages>(Pages.Gallery);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [localization, setLocalization] = useState<Language>(localStorage.getItem('language') == null ? Language.EN :  String(localStorage.getItem('language')));

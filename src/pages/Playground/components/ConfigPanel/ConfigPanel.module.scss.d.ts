@@ -5,6 +5,7 @@ interface CssExports {
   'buttonDelInterface': string;
   'form': string;
   'hideDeviceForm': string;
+  'iconWarning': string;
   'image': string;
   'inputDeviceName': string;
   'inputForm': string;

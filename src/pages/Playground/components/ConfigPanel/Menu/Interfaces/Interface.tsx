@@ -5,14 +5,16 @@ import { Expanded } from '../../../../../../components/Expanded/Expanded'
 import { TextInput } from '../../../../../../components/TextInput/TextInput';
 import { Switch } from '../../../../../../components/Switch/Switch';
 import { Button } from '../../../../../../components/Button/Button';
+import { Tooltip } from '../../../../../../components/Tooltip/Tooltip';
 
 type ComponentType = {
     device: Device;
     updateDevices: () => void;
     allCollisionDomain: string[];
+    validation: (value: string) => boolean;
 }
 
-export const Interface = ({device, updateDevices, allCollisionDomain}: ComponentType) => {
+export const Interface = ({device, updateDevices, allCollisionDomain, validation}: ComponentType) => {
    
     const setInterface = () => {
         device.interfaces = device.interfaces || [];
@@ -50,6 +52,12 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
                         placeholder="127.0.0.1"
                         onChange={(value: string) => {console.log(device, value); device.interfaces[i].ip = value; updateDevices()}} 
                         className={style.inputForm}></TextInput>
+                        
+                      {validation("ip") &&
+                        <Tooltip message="Ip invalide">
+                          <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
+                        </Tooltip>
+                      }
                     </div>
                     <div className={style.label}>
                       <p className={style.labelForm}>CIDR</p>

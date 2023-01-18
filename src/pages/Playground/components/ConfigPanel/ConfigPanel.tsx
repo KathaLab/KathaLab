@@ -29,6 +29,10 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
     if(device?.type) imageRef.current.src = getImg(device.type, color).src;
   }, [device])
 
+  const validation = (value: string) => {
+    return true
+  }
+
   return (
     <div className={style.panel} data-expanded={expanded}>
       <Button className={style.toggleExpand}
@@ -49,7 +53,7 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
             className={style.inputDeviceName}></TextInput>
 
           {/* INTERFACES */}
-          <Interface device={device} updateDevices={updateDevices} allCollisionDomain={allCollisionDomain}></Interface>
+          <Interface device={device} updateDevices={updateDevices} allCollisionDomain={allCollisionDomain} validation={validation}></Interface>
 
           {/* STARTUP COMMANDS */}
           <StartupCommands device={device}></StartupCommands>

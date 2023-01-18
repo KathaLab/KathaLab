@@ -1,6 +1,6 @@
 // Colors used
 $clr-blue-primary: #559bc9;
-$clr-red: #FF0000;
+$clr-red: #ff4343;
 $clr-white: #ffffff;
 $clr-white-1: #ffffffd9;
 $clr-white-2: #ebebeb;
@@ -77,13 +77,19 @@ $themes: (
     clr-settings-border: $clr-grey-4,
     clr-settings-icon: $clr-blue-primary,
 
+    //Tooltip
+    clr-tooltip-bg: $clr-grey-3,
+    clr-tooltip-text: $clr-white-1,
+
+    clr-warning: #ebaa3b,
+
     //others
     clr-separator: $clr-grey-4,
     clr-separator-2: $clr-white-1,
     clr-cardDevice-bg: $clr-grey-1,
 
     clr-playground-bg: $clr-grey-1,
-    clr-lsitDevice-bg: $clr-grey-2,
+    clr-listDevice-bg: $clr-grey-2,
 
     //old 
     clr-main-primary: $clr-blue-primary,

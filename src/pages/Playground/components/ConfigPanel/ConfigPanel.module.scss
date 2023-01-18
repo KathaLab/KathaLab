@@ -120,6 +120,7 @@
             width: 40%;
             font-size: .9rem;
             color: var(--clr-panel-text);
+            margin-right: 10px;
         }
 
         .inputForm {
@@ -144,6 +145,11 @@
                 margin-top: 0rem;
                 margin-bottom: 1rem;
             }
+        }
+
+        .iconWarning {
+            color: var(--clr-warning);
+            margin-left: 10px;
         }
     }
 
