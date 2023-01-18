@@ -77,27 +77,6 @@ const App = () => {
     handleSnackBarMessage
   );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   //fetch labs on load
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

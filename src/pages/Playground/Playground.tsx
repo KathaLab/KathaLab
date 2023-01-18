@@ -5,7 +5,9 @@ import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
 import style from "./Playground.module.scss";
 import { Device, devices, DeviceType } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
-import { Lab } from "../..//model/Lab";
+import { Lab } from "../../model/Lab";
+import ExportLabConf from "../../lib/ExportLabConf";
+import ExportDevicesConf from "../../lib/ExportDevicesConf";
 
 type componentType = {
   lab?: Lab;
@@ -44,8 +46,8 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   };
 
-  const handleNew = (type: DeviceType, pos?: {x: number, y: number}) => {
-    handleDeviceClick({...devices.find(device => device.type === type), position: pos})
+  const handleNew = (type: DeviceType, pos?: { x: number, y: number }) => {
+    handleDeviceClick({ ...devices.find(device => device.type === type), position: pos })
   }
 
   const handleSelectionDuplicate = () => {
@@ -66,9 +68,38 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     setCurrentLab({
       ...lab, devices: [...lab.devices, ...newDevices]
     });
-    }
+  }
 
-const updateDevices = () => {
+
+  const handleExport = async () => {
+
+    const labConf = new ExportLabConf(lab).exportGlobalLabConf();
+    const devicesConf = new ExportDevicesConf(lab).exportGlobalDevicesConf()
+
+    //Creating lab.conf and all device.startup
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await window.electronAPI.chooseDirectory()
+      .then((filePath: string) => {
+        if (filePath && labConf && devicesConf) {
+          for (const labName in labConf) {
+            const fileName = "lab.conf";
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window.electronAPI.saveFile(filePath, fileName, labConf[labName]);
+          }
+          for (const deviceName in devicesConf) {
+            const fileName = deviceName + ".startup";
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window.electronAPI.saveFile(filePath, fileName, devicesConf[deviceName])
+          }
+        }
+      })
+  }
+
+  const updateDevices = () => {
     setSelectedDevices([...selectedDevices])
   }
 
@@ -99,6 +130,7 @@ const updateDevices = () => {
           topoJson={lab}
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
           selectedDevices={selectedDevices}
+          onExport={handleExport}
         ></Canvas>
         {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>

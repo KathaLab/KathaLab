@@ -5,7 +5,6 @@ import React, {
   KeyboardEventHandler,
   WheelEventHandler,
   useState,
-  Children,
 } from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
@@ -22,6 +21,7 @@ type ComponentType = {
   onSave?: () => void;
   onDuplicate?: () => void;
   onNew?: (type: DeviceType, pos?: { x: number, y: number }) => void;
+  onExport?: () => void;
   interactive: boolean
 };
 
@@ -32,6 +32,7 @@ export const Canvas = ({
   onSave,
   onDuplicate,
   onNew,
+  onExport,
   interactive = true,
 }: ComponentType) => {
 
@@ -61,7 +62,7 @@ export const Canvas = ({
     { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
     { label: 'Save', onClick: onSave },
-    { label: 'Export' },
+    { label: 'Export', onClick: onExport },
   ];
 
   const observer = useRef(
