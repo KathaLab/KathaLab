@@ -8,6 +8,25 @@
     overflow: auto;
     background-color: var(--clr-main-lightgrey);
     transition: all 0.2s ease-in-out;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+
+        &-track {
+            background-color: transparent;
+        }
+
+        &-thumb {
+            border-radius: 4px;
+            background-color: var(--clr-main-primary);
+        }
+
+        &-thumb:hover {
+            background-color: var(--clr-main-primary);
+        }
+    }
 
     .toggleExpand {
         position: absolute;
@@ -23,9 +42,13 @@
             visibility: visible;
         }
 
-        .container {
-            opacity: 0;
+        .hideDeviceForm {
+            visibility: hidden;
         }
+    }
+
+    .hideDeviceForm {
+        visibility: visible;
     }
 
     &[data-expanded=true] {
@@ -49,12 +72,8 @@
         color: white;
         visibility: hidden;
     }
-}
 
-.container {
-    opacity: 1;
-
-    .type {
+    .typeDevice {
         z-index: 1;
         position: absolute;
         top: 0.5rem;
@@ -65,7 +84,7 @@
         padding: 0.5rem 1rem;
         font-size: 1rem;
         line-height: 1rem;
-        text-transform: uppercase;
+        text-transform: capitalize;
         font-weight: bold;
     }
 
@@ -85,43 +104,85 @@
 
     .labelMenu {
         font-size: 1rem;
-        transition: 1s;
+        // transition: 1s;
         margin-right: .5rem;
         color: var(--clr-main-black);
     }
 
-    .inputConfigPanel {
-        width: 100%;
-        margin-bottom: .75rem;
 
-        &.inputDeviceName {
-            width: calc(100% - 1.5rem);
+    .form {
+        .label {
+            display: flex;
+            margin-top: 0rem;
+            align-items: center;
+
+            +.label {
+                margin-top: 1rem;
+            }
+        }
+
+        .labelForm {
+            width: 40%;
+            font-size: .9rem;
+            color: var(--clr-main-black);
+        }
+
+        .inputForm {
+            width: 60%;
+            margin: 0;
+        }
+
+        .inputDeviceName {
+            width: calc(100% - 2rem);
             margin: .75rem;
             font-size: 1rem;
             line-height: 1rem;
         }
-    }
-}
 
-.form {
-    .test {
-        display: flex;
-        margin-bottom: 1rem;
-        align-items: center;
-    }
+        .inputListCommands {
+            width: calc(100%);
+            margin-bottom: .5rem;
+        }
 
-    .labelForm {
-        width: 40%;
-        font-size: .9rem;
-        color: var(--clr-main-black);
+        .menuOptionsParameters {
+            div {
+                margin-top: 0rem;
+                margin-bottom: 1rem;
+            }
+        }
     }
 
-    [data-expanded=true] {
-        min-width: 4.5rem;
+    .buttonAddInterface {
+        text-transform: capitalize;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        height:  calc(1.5rem + 6px);
+        line-height: 1.5rem;
+        font-size: .75rem;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        width: 100%;
+        background-color: var(--clr-main-grey);
+
+        &:hover {
+            background-color: var(--clr-main-primary);
+        }
     }
 
-    .inputConfigPanel {
-        width: 60%;
-        margin: 0;
+    .buttonDelInterface {
+        text-transform: capitalize;
+        margin-bottom: 0.5rem;
+        margin-top: 0.5rem;
+        height: calc(1.5rem + 4px);
+        line-height: 1.25rem;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-size: .75rem;
+        width: 100%;
+        background-color: var(--clr-main-grey);
+
+        &:hover {
+            background-color: #FF0000;
+        }
     }
 }

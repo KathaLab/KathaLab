@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     saveData: async (data) => await ipcRenderer.invoke('save:save', data),
     loadSave: async (filename) => await ipcRenderer.invoke('save:load', filename),
 
+    readDirectory: async (directoryPath)  => await ipcRenderer.invoke('fs:read-directory', directoryPath),
     saveFile : async (filePath, fileName, content) => await ipcRenderer.invoke('fs:save-file', filePath, fileName, content),
     deleteSave: async (id) => await ipcRenderer.invoke('save:delete', id),
 

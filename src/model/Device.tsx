@@ -8,11 +8,27 @@ export type Device = {
   interfaces?: Interfaces[]
   default_command?: string[]
   startups_commands?: string[]
+  shutdown_commands?: string[]
+  optional_parameters?: OptionalParameters
 };
 
 export enum DeviceType {
   PC = "PC",
   Router = "R",
+}
+
+export type OptionalParameters = {
+  image?: string,
+  mem?: string,
+  cpus?: string,
+  port?: string,
+  bridged?: boolean,
+  ipv6?: boolean,
+  exec?: string,
+  sysctl?: string,
+  env?: string,
+  shell?: string,
+  num_terms?: number,
 }
 
 export type Interface = string;

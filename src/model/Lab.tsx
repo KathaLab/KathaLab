@@ -4,9 +4,9 @@ export interface Lab {
     id: string
     labName: string
     description?: string
-    version?: string 
+    version?: string
     author?: string
-    mail?: string
+    email?: string
     web?: string
     devices: Device[]
     canvas : {
