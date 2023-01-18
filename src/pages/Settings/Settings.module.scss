@@ -61,6 +61,12 @@
   font-size: 25px;
 }
 
+select {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .saveButton {
   position: absolute;
   bottom: 0;
@@ -76,6 +82,7 @@
 
   &:hover {
     background-color: var(--clr-action-hover-default);
+    cursor: pointer;
   }
 }
 
@@ -119,4 +126,8 @@
   background-color: transparent;
   border: none;
   color: var(--clr-settings-icon);
+
+  &:hover{
+    cursor: pointer;
+  }
 }
