@@ -108,12 +108,21 @@ const App = () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    window.electronAPI.receive("snack:add", (_: unknown, snackMessage: snackBarMessageType) => {
+      addElement(snackMessage)
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     window.electronAPI.loadSave();
 
     return () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.electronAPI.removeListener("snack:add");
     };
   }, []);
 
@@ -129,29 +138,29 @@ const App = () => {
   };
 
   return (
-      <main className={themes[theme]}>
-        <localizationContext.Provider
-            value={{
-              language: localization,
-              languageDico: LanguageToLocalization[localization],
-              updateContext: setLocalization,
-            }}
-        >
-          <themeContext.Provider value={{ theme, updateContext: setTheme }}>
-            <SnackBarContext.Provider value={{ updateContext: addElement }}>
-              <TitleBar
-                  switchPage={setPage}
-                  page={page}
-                  onSave={handleSave}
-                  setSelectedLab={setLab}
-                  labs={labs}
-                  selectedLab={currentLab}
-                  onChange={(labName) => setCurrentLab({ ...currentLab, labName })}
-              ></TitleBar>
-              <div className="pageWrapper">
-                {page == Pages.Gallery ? (
-                    <Gallery
-                        handleDelete={handleDelete}
+    <main className={themes[theme]}>
+      <localizationContext.Provider
+        value={{
+          language: localization,
+          languageDico: LanguageToLocalization[localization],
+          updateContext: setLocalization,
+        }}
+      >
+        <themeContext.Provider value={{ theme, updateContext: setTheme }}>
+          <SnackBarContext.Provider value={{ updateContext: addElement }}>
+            <TitleBar
+              switchPage={setPage}
+              page={page}
+              onSave={handleSave}
+              setSelectedLab={setLab}
+              labs={labs}
+              selectedLab={currentLab}
+              onChange={(name) => setCurrentLab(JSON.parse(JSON.stringify({ ...currentLab, name })))}
+            ></TitleBar>
+            <div className="pageWrapper">
+              {page == Pages.Gallery ? (
+                <Gallery
+                  handleDelete={handleDelete}
                         switchPage={setPage}
                         labs={labs}
                         setSelectedLab={setLab}
