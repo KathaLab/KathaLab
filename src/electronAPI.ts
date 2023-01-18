@@ -2,6 +2,7 @@ import {app, dialog, ipcMain} from "electron";
 import fs from "fs";
 import {Lab} from "./model/Lab";
 import * as path from "path";
+import os from "os";
 
 export class electronAPI {
   initialize = async () => {
@@ -94,7 +95,9 @@ export class electronAPI {
         console.warn(e);
       }
     });
-
+    ipcMain.handle("os:getHomeDirectory", async () => {
+      return os.homedir();
+    });
     ipcMain.handle("fs:read-directory", async (_, directoryPath) => {
 
       const filesData: { "confFile": string, "startupFiles":string[], "shutdownFiles":string[] } = {

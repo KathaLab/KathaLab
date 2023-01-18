@@ -30,9 +30,13 @@ export enum Pages {
 }
 
 const App = () => {
-  const [page, setPage] = useState<Pages>(Pages.Gallery);
-  const [localization, setLocalization] = useState<Language>(Language.EN);
-  const [theme, setTheme] = useState<themeNames>("theme-dark2");
+  const [page, setPage] = useState<Pages>(Pages.Settings);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const [localization, setLocalization] = useState<Language>(localStorage.getItem('language') == null ? Language.EN :  String(localStorage.getItem('language')));
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const [theme, setTheme] = useState<themeNames>(localStorage.getItem('theme') == null ? "theme-dark2" : localStorage.getItem('theme'));
   const [snackbarVisibility, setSnackbarVisibility] = useState(false);
   const [labs, setLabs] = useState<Lab[]>([]);
   const [currentLab, setCurrentLab] = useState<Lab>(null);
@@ -73,6 +77,27 @@ const App = () => {
     handleSnackBarMessage
   );
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //fetch labs on load
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -104,44 +129,44 @@ const App = () => {
   };
 
   return (
-    <main className={themes[theme]}>
-      <localizationContext.Provider
-        value={{
-          language: localization,
-          languageDico: LanguageToLocalization[localization],
-          updateContext: setLocalization,
-        }}
-      >
-        <themeContext.Provider value={{ theme, updateContext: setTheme }}>
-          <SnackBarContext.Provider value={{ updateContext: addElement }}>
-            <TitleBar
-              switchPage={setPage}
-              page={page}
-              onSave={handleSave}
-              setSelectedLab={setLab}
-              labs={labs}
-              selectedLab={currentLab}
-              onChange={(labName) => setCurrentLab({ ...currentLab, labName })}
-            ></TitleBar>
-            <div className="pageWrapper">
-              {page == Pages.Gallery ? (
-                <Gallery
-                  handleDelete={handleDelete}
+      <main className={themes[theme]}>
+        <localizationContext.Provider
+            value={{
+              language: localization,
+              languageDico: LanguageToLocalization[localization],
+              updateContext: setLocalization,
+            }}
+        >
+          <themeContext.Provider value={{ theme, updateContext: setTheme }}>
+            <SnackBarContext.Provider value={{ updateContext: addElement }}>
+              <TitleBar
                   switchPage={setPage}
-                  labs={labs}
+                  page={page}
+                  onSave={handleSave}
                   setSelectedLab={setLab}
-                />
-              ) : page == Pages.Playground ? (
-                <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
-              ) : page == Pages.Settings ? (
-                <Settings />
-              ) : null}
-            </div>
-            <SnackBar visibility={snackbarVisibility} {...currentElement} />
-          </SnackBarContext.Provider>
-        </themeContext.Provider>
-      </localizationContext.Provider>
-    </main>
+                  labs={labs}
+                  selectedLab={currentLab}
+                  onChange={(labName) => setCurrentLab({ ...currentLab, labName })}
+              ></TitleBar>
+              <div className="pageWrapper">
+                {page == Pages.Gallery ? (
+                    <Gallery
+                        handleDelete={handleDelete}
+                        switchPage={setPage}
+                        labs={labs}
+                        setSelectedLab={setLab}
+                    />
+                ) : page == Pages.Playground ? (
+                    <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
+                ) : page == Pages.Settings ? (
+                    <Settings />
+                ) : null}
+              </div>
+              <SnackBar visibility={snackbarVisibility} {...currentElement} />
+            </SnackBarContext.Provider>
+          </themeContext.Provider>
+        </localizationContext.Provider>
+      </main>
   );
 };
 
