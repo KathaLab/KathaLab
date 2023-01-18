@@ -36,8 +36,8 @@ export class electronAPI {
           this.error(event.sender, "An error occured while trying to open the file explorer");
         });
     });
-    ipcMain.handle("dialog:open-directory", async (event) => {
-      return await dialog
+    ipcMain.handle("dialog:open-directory", (event) => {
+      return dialog
         .showOpenDialog({
           properties: ["createDirectory", "openDirectory"],
         })

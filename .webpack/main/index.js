@@ -992,25 +992,19 @@ var electronAPI = /** @class */ (function () {
                         }
                     });
                 }); });
-                electron_1.ipcMain.handle("dialog:open-directory", function (event) { return __awaiter(_this, void 0, void 0, function () {
-                    var _this = this;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0: return [4 /*yield*/, electron_1.dialog
-                                    .showOpenDialog({
-                                    properties: ["createDirectory", "openDirectory"],
-                                })
-                                    .then(function (response) {
-                                    return response.filePaths[0];
-                                })
-                                    .catch(function (err) {
-                                    console.error(err);
-                                    _this.error(event.sender, "An error occured while trying to open the file explorer");
-                                })];
-                            case 1: return [2 /*return*/, _a.sent()];
-                        }
+                electron_1.ipcMain.handle("dialog:open-directory", function (event) {
+                    return electron_1.dialog
+                        .showOpenDialog({
+                        properties: ["createDirectory", "openDirectory"],
+                    })
+                        .then(function (response) {
+                        return response.filePaths[0];
+                    })
+                        .catch(function (err) {
+                        console.error(err);
+                        _this.error(event.sender, "An error occured while trying to open the file explorer");
                     });
-                }); });
+                });
                 electron_1.ipcMain.handle("save:save", function (_, obj) { return __awaiter(_this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         try {
@@ -1213,7 +1207,7 @@ var createWindow = function () {
         show: false,
         webPreferences: {
             contextIsolation: true,
-            preload: 'D:\\dev\\pt\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
+            preload: 'D:\\dev\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
         },
     });
     // and load the index.html of the app.

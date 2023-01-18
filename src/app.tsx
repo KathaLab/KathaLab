@@ -134,7 +134,7 @@ const App = () => {
               setSelectedLab={setLab}
               labs={labs}
               selectedLab={currentLab}
-              onChange={(name) => setCurrentLab(JSON.parse(JSON.stringify({ ...currentLab, name })))}
+              onChange={(name) => setCurrentLab({ ...currentLab, labName: name })}
             ></TitleBar>
             <div className="pageWrapper">
               {page == Pages.Gallery ? (
