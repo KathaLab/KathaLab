@@ -3,8 +3,8 @@
     display: block;
     height: 100%;
     right: 0;
-    min-width: 18rem;
-    width: 18rem;
+    min-width: 20rem;
+    width: 20rem;
     overflow: auto;
     background-color: var(--clr-panel-bg);
     transition: all 0.2s ease-in-out;
@@ -36,19 +36,15 @@
     }
 
     &[data-expanded=false] {
-        transform: translate(15rem);
+        transform: translate(17rem);
 
         .title {
-            visibility: visible;
+           visibility: visible;
         }
 
         .hideDeviceForm {
-            visibility: hidden;
+           display: none;
         }
-    }
-
-    .hideDeviceForm {
-        visibility: visible;
     }
 
     &[data-expanded=true] {
@@ -109,7 +105,6 @@
         color: var(--clr-panel-title);
     }
 
-
     .form {
         .label {
             display: flex;
@@ -156,7 +151,7 @@
         text-transform: capitalize;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
-        height:  calc(1.5rem + 6px);
+        height: calc(1.5rem + 6px);
         line-height: 1.5rem;
         font-size: .75rem;
         padding-top: 3px;

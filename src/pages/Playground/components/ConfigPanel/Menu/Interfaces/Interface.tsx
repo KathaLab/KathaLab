@@ -54,7 +54,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
                     <div className={style.label}>
                       <p className={style.labelForm}>CIDR</p>
                       <TextInput type={"NUMBER"} 
-                        value={device?.interfaces?.[i]?.cidr?.toString()} 
+                        value={device.interfaces[i].cidr? device.interfaces[i].cidr.toString() : ""} 
                         placeholder="24" 
                         onChange={(value: string) => {device.interfaces[i].cidr = Number(value); updateDevices()}} 
                         className={style.inputForm}></TextInput>
