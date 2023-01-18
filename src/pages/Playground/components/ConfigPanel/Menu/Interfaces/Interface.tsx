@@ -6,14 +6,12 @@ import { TextInput } from '../../../../../../components/TextInput/TextInput';
 import { Switch } from '../../../../../../components/Switch/Switch';
 import { Button } from '../../../../../../components/Button/Button';
 
-
 type ComponentType = {
     device: Device;
     updateDevices: () => void;
     allCollisionDomain: string[];
 }
 
-  
 export const Interface = ({device, updateDevices, allCollisionDomain}: ComponentType) => {
    
     const setInterface = () => {
@@ -30,7 +28,7 @@ export const Interface = ({device, updateDevices, allCollisionDomain}: Component
     }
 
     const setInterfaceName = () => {
-      device.interfaces?.map((data, i) => (device.interfaces[i].interfaceName = 'Eth' + i))
+      device.interfaces?.map((data, i) => (device.interfaces[i].interfaceName = 'eth' + i))
     }
 
     const deleteInterface = (index: number) => {

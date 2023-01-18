@@ -6,9 +6,9 @@
     min-width: 18rem;
     width: 18rem;
     overflow: auto;
-    background-color: var(--clr-main-lightgrey);
+    background-color: var(--clr-panel-bg);
     transition: all 0.2s ease-in-out;
-    overflow-y: scroll;
+    overflow-y: overlay;
     overflow-x: hidden;
 
     &::-webkit-scrollbar {
@@ -20,11 +20,11 @@
 
         &-thumb {
             border-radius: 4px;
-            background-color: var(--clr-main-primary);
+            background-color: var(--clr-scrollbar-bg);
         }
 
         &-thumb:hover {
-            background-color: var(--clr-main-primary);
+            background-color: var(--clr-scrollbar-hover);
         }
     }
 
@@ -53,10 +53,10 @@
 
     &[data-expanded=true] {
         .toggleExpand {
-            background-color: var(--clr-main-primary);
+            background-color: var(--clr-action-bg-default);
 
             &:hover {
-                background-color: var(--clr-main-lightgrey);
+                background-color: var(--clr-input-bg);
             }
         }
     }
@@ -69,7 +69,7 @@
         height: 3rem;
         line-height: 3rem;
         font-size: 1rem;
-        color: white;
+        color: var(--clr-panel-title);
         visibility: hidden;
     }
 
@@ -79,8 +79,8 @@
         top: 0.5rem;
         right: 0.5rem;
         border-radius: 1.5rem;
-        background-color: var(--clr-main-primary);
-        color: var(--clr-main-white);
+        background-color: var(--clr-action-bg-default);
+        color: var(--clr-action-text-default);
         padding: 0.5rem 1rem;
         font-size: 1rem;
         line-height: 1rem;
@@ -89,7 +89,7 @@
     }
 
     .image {
-        background-color: var(--clr-main-white);
+        background-color: var(--clr-panel-image-bg);
         padding: 0.5rem 0;
         min-width: 100%;
         display: flex;
@@ -106,7 +106,7 @@
         font-size: 1rem;
         // transition: 1s;
         margin-right: .5rem;
-        color: var(--clr-main-black);
+        color: var(--clr-panel-title);
     }
 
 
@@ -124,7 +124,7 @@
         .labelForm {
             width: 40%;
             font-size: .9rem;
-            color: var(--clr-main-black);
+            color: var(--clr-panel-text);
         }
 
         .inputForm {
@@ -162,10 +162,10 @@
         padding-top: 3px;
         padding-bottom: 3px;
         width: 100%;
-        background-color: var(--clr-main-grey);
+        background-color: var(--clr-input-bg);
 
         &:hover {
-            background-color: var(--clr-main-primary);
+            background-color: var(--clr-action-hover-default);
         }
     }
 
@@ -179,10 +179,10 @@
         padding-bottom: 2px;
         font-size: .75rem;
         width: 100%;
-        background-color: var(--clr-main-grey);
+        background-color: var(--clr-input-bg);
 
         &:hover {
-            background-color: #FF0000;
+            background-color: var(--clr-action-bg-red);
         }
     }
 }

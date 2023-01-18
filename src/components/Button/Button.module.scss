@@ -4,7 +4,7 @@
     cursor: pointer;
     background: transparent;
     border: none;
-    color: var(--clr-main-black);
+    color: var(--clr-action-icon-default);
     text-align: center;
     aspect-ratio: 1;
     transition: .2s;
@@ -16,7 +16,7 @@
     }
 
     &:hover {
-        background-color: var(--clr-main-primary);
+        background-color: var(--clr-action-hover-default);
     }
 }
 
@@ -26,8 +26,8 @@
     height: 2.5rem;
     line-height: 2.5rem;
     font-size: 1.25rem;
-    background-color: var(--clr-main-primary);
-    color: var(--clr-main-white);
+    background-color: var(--clr-action-bg-default);
+    color: var(--clr-action-text-default);
     border: none;
     padding: 0 1rem;
     text-align: center;

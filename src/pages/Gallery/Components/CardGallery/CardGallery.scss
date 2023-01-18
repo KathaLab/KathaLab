@@ -2,7 +2,7 @@
     width: 16rem;
     height: 16rem;
     border-radius:.5rem;
-    background-color: var(--clr-main-grey);
+    background-color: var(--clr-cg-bg);
     position: relative;
     transition: transform .2s;
     cursor: pointer;
@@ -28,8 +28,8 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: var(--clr-light-grey);
-    color: var(--clr-white);
+    background-color: var(--clr-cg-title);
+    color: var(--clr-cg-text);
     height: 3rem;
     line-height: 3rem;
     font-size: 1rem;
@@ -53,9 +53,9 @@
     width: 2rem;
     top: -0.5rem;
     right: -0.5rem;
-    background-color: red;
+    background-color: var(--clr-action-bg-red);
     text-align: center;
-    color: #FFF;
+    color: var(--clr-action-icon-default);
     font-weight: bold;
     border-radius: 50%;
     isolation: isolate;

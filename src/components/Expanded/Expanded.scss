@@ -1,5 +1,5 @@
 .expanded {
-    border-bottom: solid 1px var(--clr-main-black);
+    border-bottom: solid 1px var(--clr-separator-2);
 
     .head {
         display: flex;
@@ -13,7 +13,7 @@
             display: flex;
             background: transparent;
             border: none;
-            color: var(--clr-main-black);
+            color: var(--clr-action-icon-default);
             text-align: center;
             aspect-ratio: 1;
 
@@ -26,7 +26,7 @@
 
         &:hover {
             span {
-                color: var(--clr-main-primary);
+                color: var(--clr-action-hover-default);
             }
         }
     }

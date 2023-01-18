@@ -1,3 +1,18 @@
+// Colors used
+$clr-blue-primary: #559bc9;
+$clr-red: #FF0000;
+$clr-white: #ffffff;
+$clr-white-1: #ffffffd9;
+$clr-white-2: #ebebeb;
+$clr-white-3: #ffffff1a;
+$clr-black: #000000;
+$clr-grey-1: #1e1e1e;
+$clr-grey-2: #252525;
+$clr-grey-3: #202020;
+$clr-grey-4: #333333;
+$clr-grey-5: #aaaaaa;
+
+// Themes
 $themes: (
   light: (
     clr-main-primary: #5A587C,
@@ -13,17 +28,65 @@ $themes: (
     clr-title-color: #aaa
   ),
   dark2: (
-    clr-main-primary: #559bc9,
-    clr-main-orange: #ffffff,
-    clr-main-white: #ffffff,
-    clr-white: #ffffff,
-    clr-main-black: #ffffffd9,
-    clr-main-secondary: #333333, 
-    clr-main-grey: #1e1e1e,
-    clr-main-lightgrey: #252526, 
-    clr-light-grey: #333333,
-    clr-dark-grey: #ebebeb,
-    clr-title-color: #aaa
+    //new
+    //buttons
+    clr-action-bg-default: $clr-blue-primary,
+    clr-action-bg-red: $clr-red,
+    clr-action-icon-default: $clr-white-1,
+    clr-action-text-default:  $clr-white-1,
+    clr-action-hover-default: $clr-blue-primary,
+    clr-action-focus-default: $clr-blue-primary,
+    clr-action-bg-1: $clr-grey-2,
+
+    //backgrounds
+    clr-bg-white: $clr-white-1,
+
+    //snackbar
+    clr-snackbar-bg: $clr-grey-4,
+    clr-snackbar-text: $clr-white,
+
+    //inputs
+    clr-input-bg: $clr-grey-1,
+    clr-input-text: $clr-white-1,
+    clr-input-placeholder: $clr-grey-5,
+
+    //title bar
+    clr-tb-title: $clr-grey-5,
+    clr-tb-action-hover: $clr-white-3,
+
+    //Card Gallery
+    clr-cg-bg: $clr-grey-1,
+    clr-cg-title: $clr-grey-4,
+    clr-cg-text: $clr-white-1,
+
+    //Gallery
+    clr-page-bg: $clr-grey-2,
+    
+    //Panel
+    clr-panel-bg: $clr-grey-2,
+    clr-panel-title: $clr-white-1,
+    clr-panel-text: $clr-white-1,
+    clr-panel-image-bg: $clr-grey-3,
+
+    //Scrollbar
+    clr-scrollbar-bg: $clr-blue-primary,
+    clr-scrollbar-hover: $clr-blue-primary,
+
+    //Settings
+    clr-settings-text: $clr-white-1,
+    clr-settings-border: $clr-grey-4,
+    clr-settings-icon: $clr-blue-primary,
+
+    //others
+    clr-separator: $clr-grey-4,
+    clr-separator-2: $clr-white-1,
+    clr-cardDevice-bg: $clr-grey-1,
+
+    clr-playground-bg: $clr-grey-1,
+    clr-lsitDevice-bg: $clr-grey-2,
+
+    //old 
+    clr-main-primary: $clr-blue-primary,
   ),
   dark: (
     clr-main-primary: #dd733c,

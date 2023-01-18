@@ -4,7 +4,6 @@ interface CssExports {
   'btnCreateTopology': string;
   'cardList': string;
   'container': string;
-  'galleryExplication': string;
   'search': string;
   'searchInput': string;
 }

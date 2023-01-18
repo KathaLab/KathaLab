@@ -5,10 +5,7 @@ interface CssExports {
   'centerDiv': string;
   'gridItemLeft': string;
   'gridItemRight': string;
-  'header': string;
-  'headerTitle': string;
   'label': string;
-  'left': string;
   'page': string;
   'parameterGrid': string;
   'select': string;

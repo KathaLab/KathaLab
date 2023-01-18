@@ -5,7 +5,7 @@
   align-items: center;
   height: 2.5rem;
   background-color: #333;
-  color: var(--clr-title-color);
+  color: var(--clr-tb-title);
   font-size: 0.75rem;
   font-weight: 300;
   -webkit-app-region: drag;
@@ -15,8 +15,8 @@
   text-align: center;
   justify-self: center;
   background: transparent;
-  border: 1px solid var(--clr-title-color);
-  color: var(--clr-title-color);
+  border: 1px solid var(--clr-tb-title);
+  color: var(--clr-tb-title);
   border-radius: 5px;
   padding: 0.25rem 0.5rem;
   min-width: clamp(5rem, 20vw, 20rem);
@@ -24,7 +24,7 @@
   &:active,
   &:focus,
   &:hover {
-    border: 1px solid var(--clr-main-primary);
+    border: 1px solid var(--clr-action-focus-default);
     outline: none;
   }
 
@@ -48,12 +48,12 @@
     font-size: 1rem;
 
     &:hover {
-      background-color: var(--clr-main-primary);
-      color: white;
+      background-color: var(--clr-action-hover-default);
+      color: var(--clr-action-icon-default);
     }
 
     &:last-child:hover {
-      background-color: red;
+      background-color: var(--clr-action-bg-red);
     }
   }
 }
@@ -86,13 +86,13 @@
 
 .clicked,
 .separator ~ span:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--clr-tb-action-hover);
 }
 
 .backBtn {
   transition: color 0.1s;
   &:hover {
-    color: var(--clr-main-primary);
+    color: var(--clr-action-hover-default);
   }
 }
 
