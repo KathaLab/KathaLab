@@ -31,5 +31,5 @@ export const LAB_DEVICE_INTERFACE_CUSTOM_ROUTE_REGEX = /a/gi;
 
 export const LAB_DEVICE_NAME_REGEX = /(?<deviceName>\w{1,32})\[\w+]=.*;?/gm;
 
-
-
+export const DEVICE_IP = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g
+export const DEVICE_CIDR = /^(?:(?:3[0-2]|2[0-9]|1[0-9]|[0-9]?))$/g;

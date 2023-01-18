@@ -1,13 +1,22 @@
 .container {
     position: relative;
+
+    &:hover .toolTip {
+        opacity: 1;
+        top: 100%;
+        pointer-events: all;
+    }
 }
 
 .toolTip {
+    pointer-events: none;
+    transition: all .3s;
+    opacity: 0;
     position: absolute;
     right: 0;
-    top: 100%;
+    top: 70%;
     height: 1.25rem;
-    width: fit-content;
+    width: max-content;
     padding: 0 5px;
     font-size: .75rem;
     line-height: 1.25rem;

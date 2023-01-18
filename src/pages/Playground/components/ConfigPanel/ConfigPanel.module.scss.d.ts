@@ -17,6 +17,7 @@ interface CssExports {
   'panel': string;
   'title': string;
   'toggleExpand': string;
+  'toolType': string;
   'typeDevice': string;
 }
 export const cssExports: CssExports;
