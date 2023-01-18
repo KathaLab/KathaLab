@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     minimize: async () => await ipcRenderer.invoke('window:minimize'),
     close: async () => await ipcRenderer.invoke('window:close'),
 
+    getHomeDirectory : async() => await ipcRenderer.invoke('os:getHomeDirectory'),
+
     removeListener: (channel) => {
         ipcRenderer.removeAllListeners(channel)
     },

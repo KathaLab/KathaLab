@@ -5,4 +5,4 @@ export enum MouseButtonType {
   None = 0,
 }
 
-export const ScrollBarWidth = 5;
+export const ScrollBarWidth = 7;

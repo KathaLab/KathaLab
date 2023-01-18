@@ -18,9 +18,14 @@ export const DeviceCard = ({ onClick, device, color }: ComponentType) => {
     if(device.type) imageRef.current.src = getImg(device.type, color).src;
   }, [color])
 
+
+  const dragStart = (e: any) => {
+    e.dataTransfer.setData('device', JSON.stringify(device))
+  }
+
   return (
     <div className={style.deviceCard} onClick={onClick}>
-      <img ref={imageRef} alt="img-device" />
+      <img draggable="true" ref={imageRef} alt="img-device" onDragStart={dragStart} />
     </div>
   );
 };

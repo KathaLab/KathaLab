@@ -19,7 +19,7 @@ export enum DeviceType {
 
 export type OptionalParameters = {
   image?: string,
-  mem?: string,
+  memory?: string,
   cpus?: string,
   port?: string,
   bridged?: boolean,

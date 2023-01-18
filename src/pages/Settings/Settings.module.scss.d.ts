@@ -7,8 +7,12 @@ interface CssExports {
   'gridItemRight': string;
   'label': string;
   'page': string;
-  'parameterGrid': string;
+  'saveButton': string;
   'select': string;
+  'settingsContainer': string;
+  'settingsGrid': string;
+  'settingsMenu': string;
+  'settingsMenuTitle': string;
   'storagePlaceInput': string;
 }
 export const cssExports: CssExports;

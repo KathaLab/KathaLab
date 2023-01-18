@@ -9,7 +9,7 @@ type ComponentType = {
     device: Device;
     updateDevices: () => void;
 }
-  
+
 export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
 
     const setBridged = () => {
@@ -17,7 +17,7 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
         device.optional_parameters.bridged = !device.optional_parameters.bridged
         !device.optional_parameters.bridged && delete device.optional_parameters.bridged
     }
-    
+
     const setIpv6 = () => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.ipv6 = !device.optional_parameters.ipv6
@@ -36,42 +36,42 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
         device.optional_parameters.image === '' && delete device.optional_parameters.image
     }
 
-    const setMem = (value: string) => {
+    const setMemory = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
-        device.optional_parameters.mem = value
-        device.optional_parameters.mem === '' && delete device.optional_parameters.mem
+        device.optional_parameters.memory = value
+        device.optional_parameters.memory === '' && delete device.optional_parameters.memory
     }
-    
+
     const setCpus = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.cpus = value
         device.optional_parameters.cpus === '' && delete device.optional_parameters.cpus
     }
-    
+
     const setExec = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.exec = value
         device.optional_parameters.exec === '' && delete device.optional_parameters.exec
     }
-    
+
     const setSysctlc = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.sysctl = value
         device.optional_parameters.sysctl === '' && delete device.optional_parameters.sysctl
     }
-    
+
     const setEnv = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.env = value
         device.optional_parameters.env === '' && delete device.optional_parameters.env
     }
-    
+
     const setShell = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.shell = value
         device.optional_parameters.shell === '' && delete device.optional_parameters.shell
     }
-    
+
     const setNumTerms = (value: number) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.num_terms = value
@@ -83,86 +83,86 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
             <div className={style.menuOptionsParameters}>
                 <div className={style.label}>
                     <p className={style.labelForm}>Bridged</p>
-                    <Switch 
-                    onChange={() => {setBridged(); updateDevices()}} 
+                    <Switch
+                    onChange={() => {setBridged(); updateDevices()}}
                     state={device.optional_parameters?.bridged || false}></Switch>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Port</p>
-                    <TextInput type={"NUMBER"} 
-                    value={device?.optional_parameters?.port} 
+                    <TextInput type={"NUMBER"}
+                    value={device?.optional_parameters?.port}
                     placeholder="82000"
-                    onChange={(value) => {setPort(value); updateDevices()}} 
+                    onChange={(value) => {setPort(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Image</p>
                     <TextInput
-                    value={device?.optional_parameters?.image} 
+                    value={device?.optional_parameters?.image}
                     placeholder=""
-                    onChange={(value) => {setImage(value); updateDevices()}}  
+                    onChange={(value) => {setImage(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
-                    <p className={style.labelForm}>Mem</p>
+                    <p className={style.labelForm}>Memory</p>
                     <TextInput
-                    value={device?.optional_parameters?.mem} 
+                    value={device?.optional_parameters?.memory}
                     placeholder=""
-                    onChange={(value) => {setMem(value); updateDevices()}}  
+                    onChange={(value) => {setMemory(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Cpus</p>
                     <TextInput
-                    value={device?.optional_parameters?.cpus} 
+                    value={device?.optional_parameters?.cpus}
                     placeholder=""
-                    onChange={(value) => {setCpus(value); updateDevices()}}  
+                    onChange={(value) => {setCpus(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Exec</p>
                     <TextInput
                     value={device?.optional_parameters?.exec}
-                    placeholder="" 
-                    onChange={(value) => {setExec(value); updateDevices()}}  
+                    placeholder=""
+                    onChange={(value) => {setExec(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Ipv6</p>
-                    <Switch 
-                    onChange={() => {setIpv6(); updateDevices()}} 
+                    <Switch
+                    onChange={() => {setIpv6(); updateDevices()}}
                     state={device.optional_parameters?.ipv6 || false}></Switch>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Sysctl</p>
                     <TextInput
-                    value={device?.optional_parameters?.sysctl} 
-                    placeholder="" 
-                    onChange={(value) => {setSysctlc(value); updateDevices()}}  
+                    value={device?.optional_parameters?.sysctl}
+                    placeholder=""
+                    onChange={(value) => {setSysctlc(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Env</p>
                     <TextInput
-                    value={device?.optional_parameters?.env} 
-                    placeholder="" 
-                    onChange={(value) => {setEnv(value); updateDevices()}}  
+                    value={device?.optional_parameters?.env}
+                    placeholder=""
+                    onChange={(value) => {setEnv(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Shell</p>
                     <TextInput
-                    value={device?.optional_parameters?.shell} 
-                    placeholder="" 
-                    onChange={(value) => {setShell(value); updateDevices()}}  
+                    value={device?.optional_parameters?.shell}
+                    placeholder=""
+                    onChange={(value) => {setShell(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
                     <p className={style.labelForm}>Num_terms</p>
                     <TextInput
-                    value={device?.optional_parameters?.num_terms?  device?.optional_parameters?.num_terms.toString() : ""} 
+                    value={device?.optional_parameters?.num_terms?  device?.optional_parameters?.num_terms.toString() : ""}
                     placeholder=""
-                    onChange={(value) => {setNumTerms(Number(value)); updateDevices()}}  
+                    onChange={(value) => {setNumTerms(Number(value)); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
             </div>
