@@ -135,7 +135,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         })
 
         filesData.startupFiles.filter((elem:{deviceName:string, fileData: string}) => { return  elem.deviceName != '' && elem.fileData != ''}).forEach((startupFile: { deviceName: string, fileData: string }) => {
-            const deviceName = startupFile.deviceName;
+            const deviceName = startupFile.deviceName.toUpperCase();
             const fileData = startupFile.fileData;
             let device = labConf.devices.find((device) => device.deviceName == deviceName);
 
@@ -149,7 +149,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         });
 
         filesData.shutdownFiles.filter((elem:{deviceName:string, fileData: string}) => { return  elem.deviceName != '' && elem.fileData != ''}).forEach((shutdownFile: { deviceName: string, fileData: string }) => {
-            const deviceName = shutdownFile.deviceName;
+            const deviceName = shutdownFile.deviceName.toUpperCase();
             const fileData = shutdownFile.fileData;
             let device = labConf.devices.find((device) => device.deviceName == deviceName);
 
@@ -157,10 +157,19 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
                 device = {deviceName: deviceName, type: DeviceType.PC};
                 labConf.devices.push(device)
             }
+            if (!device.shutdown_commands){
+                device.shutdown_commands = [];
+            }
             device.shutdown_commands.push(fileData);
         });
 
-        console.log(labConf)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        await window.electronAPI.saveData(labConf);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        await window.electronAPI.loadSave();
+
     }
 
     return (

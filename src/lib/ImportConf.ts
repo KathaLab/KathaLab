@@ -11,7 +11,7 @@ export default class ImportConf {
         this.getLabConf(lab, line)? isLabConf = true: isLabConf;
 
         if (isLabConf !== true){
-            const deviceName = Array.from(line.matchAll(RegexConst.LAB_DEVICE_NAME_REGEX))[0]?.groups.deviceName;
+            const deviceName = Array.from(line.matchAll(RegexConst.LAB_DEVICE_NAME_REGEX))[0]?.groups.deviceName.toUpperCase();
             if (deviceName){
                 let device = lab.devices.find((device) => device.deviceName == deviceName);
 
@@ -31,7 +31,6 @@ export default class ImportConf {
             ?? Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_AND_IP_IS_UP_REGEX))[0]?.filter((interfaceName) => { return interfaceName != undefined})[1]
             ?? undefined;
 
-        console.log(line + " itf name : " + interfaceName + "\n");
         if (interfaceName){
             if (!device.interfaces){
                 device.interfaces = [];
@@ -43,6 +42,11 @@ export default class ImportConf {
                 device.interfaces.push(itf)
             }
             this.getDeviceInterfacesConf(itf, device, line)
+        }else {
+            if (!device.startups_commands){
+                device.startups_commands = [];
+            }
+            device.startups_commands.push(line);
         }
     }
 
@@ -144,16 +148,26 @@ export default class ImportConf {
     }
 
     private getDeviceInterfacesConf(itf: Interfaces,device: Device, line:string){
+        let hasMatched = false
         if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_AND_IP_IS_UP_REGEX))[0]){
             itf.is_up = true;
-        }else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_IP_REGEX))[0]){
+            hasMatched =true
+        }
+        if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_IP_REGEX))[0]){
+            hasMatched =true
             itf.ip = Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_IP_REGEX))[0]?.filter((ip) => {
                 return ip != undefined
             })[1]
-        }else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_CIDR_REGEX))[0]){
+        }
+        if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_CIDR_REGEX))[0]){
+            hasMatched = true
             const cidr = Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_CIDR_REGEX))[0]?.filter((cidr) => { return cidr != undefined })[1]
             itf.cidr = Number(cidr);
-        }else {
+        }
+        if (hasMatched === false){
+            if (!device.startups_commands){
+                device.startups_commands = [];
+            }
             device.startups_commands.push(line);
         }
     }

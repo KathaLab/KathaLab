@@ -25,6 +25,7 @@ export const LAB_DEVICE_INTERFACE_IP_REGEX = /ip +address +add +(\d{1,3}\.\d{1,3
 export const LAB_DEVICE_INTERFACE_NAME_FROM_IP_ADD = /ip +address +add +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2} +dev +(\w{1,64}) ?|ip +addr +add +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2} +dev +(\w{1,64}) ?|ip +a +add +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2} +dev +(\w{1,64}) ?|ip +a +a +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2} +dev +(\w{1,64}) ?|ip +addr +a +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2} +dev +(\w{1,64}) ?/gi;
 export const LAB_DEVICE_INTERFACE_NAME_AND_IP_IS_UP_REGEX = /ip +link +set +up +dev +(\w{1,64})|ip +link +set +dev +(\w{1,64}) +up|ip +link +set +(\w{1,64}) +up|ip +link +set +up +(\w{1,64})/gi;
 export const LAB_DEVICE_INTERFACE_CIDR_REGEX = /ip +address +add +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/(\d{1,2}) +dev +\w{1,64} ?|ip +addr +add +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/(\d{1,2}) +dev +\w{1,64} ?|ip +a +add +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/(\d{1,2}) +dev +\w{1,64} ?|ip +a +a +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/(\d{1,2}) +dev +\w{1,64} ?|ip +addr +a +\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/(\d{1,2}) +dev +\w{1,64} ?/gi;
+
 export const LAB_DEVICE_INTERFACE_DEFAULT_ROUTE_REGEX =/a/gi;
 export const LAB_DEVICE_INTERFACE_CUSTOM_ROUTE_REGEX = /a/gi;
 
