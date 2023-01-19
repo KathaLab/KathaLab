@@ -77,7 +77,7 @@
         border-radius: 1.5rem;
         background-color: var(--clr-action-bg-default);
         color: var(--clr-action-text-default);
-        padding: 0.5rem 1rem;
+        padding: .5rem .75rem;
         font-size: 1rem;
         line-height: 1rem;
         text-transform: capitalize;
@@ -117,9 +117,10 @@
         }
 
         .labelForm {
-            width: 40%;
+            width: 30%;
             font-size: .9rem;
             color: var(--clr-panel-text);
+            margin-right: 10px;
         }
 
         .inputForm {
@@ -145,6 +146,17 @@
                 margin-bottom: 1rem;
             }
         }
+
+        .toolType {
+            width: 10%;
+
+            .iconWarning {
+                font-size: 1.25rem;
+                color: var(--clr-warning);
+                margin-left: 5px;
+            }
+        }
+        
     }
 
     .buttonAddInterface {

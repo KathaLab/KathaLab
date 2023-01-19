@@ -2,9 +2,6 @@ import React, { useState, useEffect, useLayoutEffect, useRef} from 'react'
 import style from './ConfigPanel.module.scss'
 import { Button } from '../../../../components/Button/Button'
 import { TextInput, textInputType } from "../../../../components/TextInput/TextInput";
-import { Switch } from "../../../../components/Switch/Switch";
-import { Expanded } from '../../../../components/Expanded/Expanded';
-import { ListCommand } from './ListCommand/ListCommand';
 import { Device, DeviceType, OptionalParameters } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
@@ -29,6 +26,17 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
     if(device?.type) imageRef.current.src = getImg(device.type, color).src;
   }, [device])
 
+
+  const validation = (value: string, parameter: RegExp) => {
+    console.log(value)
+    if (value) { 
+      const array = Array.from(value.matchAll(parameter))[0]?.toString()
+      console.log(array === value)
+      return !(array === value)
+    }
+    return true
+  }
+
   return (
     <div className={style.panel} data-expanded={expanded}>
       <Button className={style.toggleExpand}
@@ -49,7 +57,7 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
             className={style.inputDeviceName}></TextInput>
 
           {/* INTERFACES */}
-          <Interface device={device} updateDevices={updateDevices} allCollisionDomain={allCollisionDomain}></Interface>
+          <Interface device={device} updateDevices={updateDevices} allCollisionDomain={allCollisionDomain} validation={validation}></Interface>
 
           {/* STARTUP COMMANDS */}
           <StartupCommands device={device}></StartupCommands>

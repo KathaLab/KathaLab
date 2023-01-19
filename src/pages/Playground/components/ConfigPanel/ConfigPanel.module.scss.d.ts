@@ -5,6 +5,7 @@ interface CssExports {
   'buttonDelInterface': string;
   'form': string;
   'hideDeviceForm': string;
+  'iconWarning': string;
   'image': string;
   'inputDeviceName': string;
   'inputForm': string;
@@ -16,6 +17,7 @@ interface CssExports {
   'panel': string;
   'title': string;
   'toggleExpand': string;
+  'toolType': string;
   'typeDevice': string;
 }
 export const cssExports: CssExports;

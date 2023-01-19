@@ -67,17 +67,18 @@
                     "js": "./src/preload.ts"
                   }
                 },
-                  {
-                    "html": "./src/splash.html",
-                    "js": "./src/renderer.ts",
-                    "name": "splash"
-                  }
+                {
+                  "html": "./src/splash.html",
+                  "js": "./src/renderer.ts",
+                  "name": "splash"
+                }
               ]
             }
           }
         ]
       ]
     }
+    
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.66",
