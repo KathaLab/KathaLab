@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Lab} from '../../model/Lab'
 import {Pages} from '../../app'
 import {ContextMenu} from '../ContextMenu/ContextMenu'
@@ -9,6 +9,7 @@ import {v4 as uuidv4} from "uuid";
 import {DeviceType} from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
 import {electronAPI} from "../../electronAPI";
+import SnackbarContext from "../../context/SnackbarContext";
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -28,6 +29,8 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleLabClick = () => setLabExpanded(x => !x);
+
+    const snackBar = useContext(SnackbarContext);
 
     useEffect(() => {
         setIsTitleEditable(page !== Pages.Playground)
@@ -57,7 +60,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         {separator: true},
         {label: 'Save', disabled: isDisabled, onClick: onSave},
         {
-            label: 'Import',disabled: page == Pages.Playground,  onClick: () => {
+            label: 'Import', disabled: page == Pages.Playground, onClick: () => {
                 handleImport();
             }
         },
@@ -89,7 +92,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const handleExport = async (lab: Lab) => {
 
         const exportConf = new ExportConf();
-        const labExported =  exportConf.exportLabConf(lab);
+        const labExported = exportConf.exportLabConf(lab);
         const deviceExportedStartup = exportConf.exportStartupConf(lab);
         const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
 
@@ -103,22 +106,34 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     window.electronAPI.saveFile(filePath, fileName, labExported);
-                    if (deviceExportedStartup){
-                        for (const deviceName in deviceExportedStartup){
+                    if (deviceExportedStartup) {
+                        for (const deviceName in deviceExportedStartup) {
                             const fileName = deviceName + '.startup';
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             window.electronAPI.saveFile(filePath, fileName, deviceExportedStartup[deviceName])
+
                         }
                     }
-                    if (deviceExportedShutdown){
-                        for (const deviceName in deviceExportedShutdown){
+                    if (deviceExportedShutdown) {
+                        for (const deviceName in deviceExportedShutdown) {
                             const fileName = deviceName + '.shutdown';
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             window.electronAPI.saveFile(filePath, fileName, deviceExportedShutdown[deviceName])
                         }
                     }
+                    snackBar.updateContext({
+                        duration: 3000,
+                        message: 'The lab have been successfully exported',
+                        icon: 'done'
+                    })
+                } else {
+                    snackBar.updateContext({
+                        duration: 3000,
+                        message: 'The lab can not be exported',
+                        icon: 'warning'
+                    })
                 }
             })
     }
@@ -129,6 +144,11 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         // @ts-ignore
         const directoryPath = await window.electronAPI.chooseDirectory()
         if (!directoryPath) {
+            snackBar.updateContext({
+                duration: 3000,
+                message: 'No directory selected',
+                icon: 'warning'
+            })
             return;
         }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -143,12 +163,14 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             labConf = importConf.importLabConf(labConf, line)
         })
 
-        filesData.startupFiles.filter((elem:{deviceName:string, fileData: string}) => { return  elem.deviceName != '' && elem.fileData != ''}).forEach((startupFile: { deviceName: string, fileData: string }) => {
+        filesData.startupFiles.filter((elem: { deviceName: string, fileData: string }) => {
+            return elem.deviceName != '' && elem.fileData != ''
+        }).forEach((startupFile: { deviceName: string, fileData: string }) => {
             const deviceName = startupFile.deviceName.toUpperCase();
             const fileData = startupFile.fileData;
             let device = labConf.devices.find((device) => device.deviceName == deviceName);
 
-            if (!device){
+            if (!device) {
                 device = {deviceName: deviceName, type: DeviceType.PC};
                 labConf.devices.push(device)
             }
@@ -157,16 +179,18 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             })
         });
 
-        filesData.shutdownFiles.filter((elem:{deviceName:string, fileData: string}) => { return  elem.deviceName != '' && elem.fileData != ''}).forEach((shutdownFile: { deviceName: string, fileData: string }) => {
+        filesData.shutdownFiles.filter((elem: { deviceName: string, fileData: string }) => {
+            return elem.deviceName != '' && elem.fileData != ''
+        }).forEach((shutdownFile: { deviceName: string, fileData: string }) => {
             const deviceName = shutdownFile.deviceName.toUpperCase();
             const fileData = shutdownFile.fileData;
             let device = labConf.devices.find((device) => device.deviceName == deviceName);
 
-            if (!device){
+            if (!device) {
                 device = {deviceName: deviceName, type: DeviceType.PC};
                 labConf.devices.push(device)
             }
-            if (!device.shutdown_commands){
+            if (!device.shutdown_commands) {
                 device.shutdown_commands = [];
             }
             device.shutdown_commands.push(fileData);
@@ -179,6 +203,12 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         await window.electronAPI.loadSave();
+
+        snackBar.updateContext({
+            duration: 3000,
+            message: 'The lab have been successfully imported',
+            icon: 'done'
+        })
     }
 
     return (

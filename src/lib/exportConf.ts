@@ -1,6 +1,4 @@
 import {Lab} from "../model/Lab";
-import {Interfaces} from "../model/Interfaces";
-import {Device} from "../model/Device";
 import {ModelToKatharaConf} from "./ModelToKatharaConf";
 import * as RegexConst from "./RegexConst";
 
@@ -19,12 +17,13 @@ export default class ExportConf {
             lab.devices.forEach(device => {
                 if (device.default_command) {
                     conf += device.default_command  + "\n";
+                    conf = conf.replace(`%deviceName%`, device.deviceName);
                 }
                 if (device.optional_parameters) {
                     for (const key in device.optional_parameters) {
                         if (key == 'image' || key == 'memory' || key == 'cpus' || key == 'port' || key == 'bridged' || key == 'ipv6' || key == 'ipv6' || key == 'exec' || key == 'sysctl' || key == 'env' || key == 'shell' || key == 'num_terms') {
                             conf += ModelToKatharaConf[key] + `"${device.optional_parameters[key]}"` + "\n";
-                            this.replaceDeviceInformation(device, conf)
+                            conf = conf.replace(`%deviceName%`, device.deviceName);
                         }
                     }
                 }
@@ -33,12 +32,15 @@ export default class ExportConf {
                     device.interfaces.forEach(itf => {
                         if (itf.collision_domain) {
                             conf += ModelToKatharaConf['collision_domain'] + itf.collision_domain + "\n";
-                            this.replaceInterfaceInformation(itf, conf)
-                            this.replaceDeviceInformation(device, conf)
+                            conf = conf.replace(`%deviceName%`, device.deviceName);
+                            conf = conf.replace(`%interfaceName%`, itf.interfaceName);
+
                         }
                     })
                 }
+                conf = conf.replace(`%deviceName%`, device.deviceName);
             })
+
         }
 
         return conf
@@ -58,13 +60,17 @@ export default class ExportConf {
 
             if (device.interfaces) {
                 device.interfaces.forEach(itf => {
+                    if (itf.is_up == true && itf.interfaceName) {
+                        conf += ModelToKatharaConf.IP_UP + '\n';
+                        conf = conf.replace(`%${'interfaceName'}%`,itf.interfaceName);
+                    }
                     if (itf.interfaceName && itf.ip && itf.cidr) {
                         conf += ModelToKatharaConf.IP_ADDRESS_ADD + '\n';
-                        if (itf.is_up == true) {
-                            conf += ModelToKatharaConf.IP_UP + '\n';
-                            this.replaceInterfaceInformation(itf, conf)
+                        for (const key in itf){
+                            if (key == 'interfaceName' || key == 'ip' ||key == 'cidr'){
+                                conf = conf.replace(`%${key}%`,<string>itf[key]);
+                            }
                         }
-                        this.replaceInterfaceInformation(itf, conf)
                     }
                     if (device.optional_parameters && device.optional_parameters.bridged && device.optional_parameters.bridged == true) {
                         if (itf.ip.match(RegexConst.IP_REGEX)) {
@@ -94,30 +100,5 @@ export default class ExportConf {
             devicesShutdownConf[device.deviceName.toUpperCase()] = conf
         })
         return devicesShutdownConf;
-    }
-
-    protected replaceInterfaceInformation(itf: Interfaces, conf: string): string {
-        for (const key in itf) {
-            if (key == 'interfaceName' || key == 'collision_domain' || key == 'ip' || key == 'cidr') {
-                conf = conf.replace(`%${key}%`, <string>itf[key]);
-            }
-        }
-        return conf;
-    }
-
-    protected replaceDeviceInformation(device: Device, conf: string) {
-        for (const key in device) {
-            if (key == 'deviceName') {
-                conf = conf.replace(`%${key}%`, <string>device[key]);
-            }
-            if (key == 'optional_parameters') {
-                for (const optParamKey in device[key]) {
-                    if (optParamKey == 'image' || optParamKey == 'memory' || optParamKey == 'cpus' || optParamKey == 'port' || optParamKey == 'bridged' || optParamKey == 'ipv6' || optParamKey == 'ipv6' || optParamKey == 'exec' || optParamKey == 'sysctl' || optParamKey == 'env' || optParamKey == 'shell' || optParamKey == 'num_terms') {
-                        conf = conf.replace(`%${optParamKey}%`, <string>device.optional_parameters[optParamKey])
-                    }
-                }
-            }
-        }
-        return conf;
     }
 }

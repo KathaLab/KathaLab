@@ -8,19 +8,18 @@ export enum ModelToKatharaConf {
     version = "LAB_VERSION=",
     web = "LAB_WEB=",
 
-    image = "%deviceName%[image]=%image%",
-    memory = "%deviceName%[memory]=%memory%",
-    cpus = "%deviceName%[cpus]=%cpus%",
-    port = "%deviceName%[port]=%port%",
-    bridged = "%deviceName%[bridged]=%bridged%",
-    ipv6 = "%deviceName%[ipv6]=%ipv6%",
-    exec = "%deviceName%[exec]=%exec%",
-    sysctl = "%deviceName%[sysctl]=%sysctl%",
-    env = "%deviceName%[env]=%env%",
-    shell = "%deviceName%[shell]=%shell%",
-    num_terms = "%deviceName%[num_terms]=%num_terms%",
-
-    collision_domain = "%deviceName%[%interfaceName%]=%collision_domain%",
+    image = "%deviceName%[image]=",
+    memory = "%deviceName%[memory]=",
+    cpus = "%deviceName%[cpus]=",
+    port = "%deviceName%[port]=",
+    bridged = "%deviceName%[bridged]=",
+    ipv6 = "%deviceName%[ipv6]=",
+    exec = "%deviceName%[exec]=",
+    sysctl = "%deviceName%[sysctl]=",
+    env = "%deviceName%[env]=",
+    shell = "%deviceName%[shell]=",
+    num_terms = "%deviceName%[num_terms]=",
+    collision_domain = "%deviceName%[%interfaceName%]=",
 
     //FOR THE DEVICE.STARTUP
 
