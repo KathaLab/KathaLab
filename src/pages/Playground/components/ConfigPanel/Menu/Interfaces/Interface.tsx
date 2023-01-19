@@ -109,4 +109,5 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
       </Expanded>
     </div>
   )
+
 };

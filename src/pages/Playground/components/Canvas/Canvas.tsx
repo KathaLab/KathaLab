@@ -21,6 +21,7 @@ type ComponentType = {
   onSave?: () => void;
   onDuplicate?: () => void;
   onNew?: (type: DeviceType, pos?: { x: number, y: number }) => void;
+  onExport?: () => void;
   interactive: boolean
 };
 
@@ -31,6 +32,7 @@ export const Canvas = ({
   onSave,
   onDuplicate,
   onNew,
+  onExport,
   interactive = true,
 }: ComponentType) => {
 
@@ -60,7 +62,7 @@ export const Canvas = ({
     { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
     { label: 'Save', onClick: onSave },
-    { label: 'Export' },
+    { label: 'Export', onClick: onExport },
   ];
 
   const observer = useRef(
@@ -195,7 +197,32 @@ export const Canvas = ({
 
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-      // render devices
+    // render links between devices
+    
+    ctx.lineWidth = 3
+    json.devices?.forEach((device, idx, self) => {
+      device.interfaces?.map(inter => inter.collision_domain).filter(Boolean).forEach(domain => {
+        json.devices.slice(idx + 1, self.length).forEach(dev => {
+          dev.interfaces?.forEach((itr) => {
+            if (itr.collision_domain === domain) {
+              ctx.beginPath();
+              ctx.moveTo(device.position.x + canvasCenter.current.x, device.position.y + canvasCenter.current.y);
+              ctx.lineTo(dev.position.x + canvasCenter.current.x, dev.position.y + canvasCenter.current.y);
+              ctx.strokeStyle = color
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.fillStyle = "#1e1e1e";
+              ctx.arc(dev.position.x + canvasCenter.current.x, dev.position.y + canvasCenter.current.y, 50, 0, Math.PI * 2, true);
+              ctx.arc(device.position.x + canvasCenter.current.x, device.position.y + canvasCenter.current.y, 50, 0, Math.PI * 2, true);
+              ctx.fill();
+            }
+          })
+        })
+      })
+    })
+    ctx.closePath();
+
+    // render devices
     json.devices && await Promise.all(json.devices.map((device) => {
       if (!device.position)
         device.position = device?.position || {
@@ -238,6 +265,7 @@ export const Canvas = ({
       })();
 
     }));
+
 
     // render scrollbars
     renderHScrollbars();
@@ -292,7 +320,6 @@ export const Canvas = ({
     }
 
     if (mouseButtonDownRef.current === MouseButtonType.RightClick) {
-      console.log("test")
       setMouseDownEvent(e as any);
     } else {
       setMouseDownEvent(null);
@@ -310,20 +337,20 @@ export const Canvas = ({
       return actionTypeRef.current = 'scrollX';
     }
 
-    const [devices] = getDeviceInZone(
+    const [device] = getDeviceInZone(
       position.x,
       position.y,
       position.x,
       position.y
     );
 
-    if (devices && !selectedDevices.includes(devices)) {
-      setSelectedDevices([devices]);
+    if (device && !selectedDevices.includes(device)) {
+      setSelectedDevices(e.shiftKey ? [...selectedDevices,  device] : [device]);
     }
 
-    if (!devices) {
+    if (!device) {
       actionTypeRef.current = "select";
-    } else if (devices) {
+    } else if (device) {
       actionTypeRef.current = "move";
     }
   };
