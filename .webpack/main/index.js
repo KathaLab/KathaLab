@@ -1099,7 +1099,7 @@ var electronAPI = /** @class */ (function () {
                                     filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
                                 if (path.extname(fileName) == ".shutdown") {
-                                    var deviceName = path.basename(fileName, '.startup').toUpperCase();
+                                    var deviceName = path.basename(fileName, '.shutdown').toUpperCase();
                                     var fileData = readFile(path.join(directoryPath, fileName));
                                     filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
@@ -1198,7 +1198,7 @@ var createWindow = function () {
             display();
         loader = true;
     }, 10000);
-    // create a new `splash`-Window 
+    // create a new `splash`-Window
     var splash = new electron_1.BrowserWindow({ width: 810, height: 610, transparent: true, frame: false, alwaysOnTop: true });
     splash.loadURL('http://localhost:3000/splash');
     // Create the browser window.
@@ -1207,12 +1207,13 @@ var createWindow = function () {
         show: false,
         webPreferences: {
             contextIsolation: true,
-            preload: 'D:\\dev\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
+            preload: '/Users/benjamin/LP/projet-kathara/.webpack/renderer/main_window/preload.js',
         },
     });
     // and load the index.html of the app.
     // if main window is ready to show, then destroy the splash window and show up the main window
     mainWindow.loadURL('http://localhost:3000/main_window');
+    mainWindow.webContents.openDevTools();
     mainWindow.once('ready-to-show', function () {
         if (loader)
             display();
