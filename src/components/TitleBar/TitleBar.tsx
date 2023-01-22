@@ -3,8 +3,7 @@ import {Lab} from '../../model/Lab'
 import {Pages} from '../../app'
 import {ContextMenu} from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
-import ExportConf from "../../lib/exportConf";
-import ExportDevicesConf from "../../lib/ExportDevicesConf";
+import ExportConf from "../../lib/ExportConf";
 import {v4 as uuidv4} from "uuid";
 import {DeviceType} from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
