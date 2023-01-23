@@ -7,17 +7,14 @@ import { v4 as uuidv4 } from "uuid";
 import { Gallery, Playground, Settings } from "./pages";
 
 // importing stuff related to the localization
-import { LocalizationContext } from "./context/LocalizationContext";
 import { createRoot } from "react-dom/client";
 
 // importing styles
-import { ThemeContext } from "./context/ThemeContext";
 import { TitleBar } from "./components/TitleBar/TitleBar";
 
 // SnackBarContext
-import { SnackbarContext } from "./context/SnackbarContext";
 import { Lab } from "./model/Lab";
-import { KeybindContext } from "./context/KeybindContext";
+import { GlobalContext } from "./context/GlobalContext";
 
 
 export enum Pages {
@@ -54,7 +51,6 @@ const App = () => {
     window.electronAPI.deleteSave(labId);
   };
 
-  //fetch labs on load
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -84,42 +80,37 @@ const App = () => {
     window.electronAPI.loadSave();
   };
 
+  const pageToComponent = (page: Pages) => {
+    switch (page) {
+      case Pages.Settings:
+        return <Settings />
+      case Pages.Playground:
+        return <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
+      case Pages.Gallery:
+        return<Gallery
+          handleDelete={handleDelete}
+          switchPage={setPage}
+          labs={labs}
+          setSelectedLab={setLab}
+        />
+    }
+  }
+
   return (
-    <ThemeContext>
-      <LocalizationContext>
-        <KeybindContext keybinds={[{
-          eventName: "all",
-          code: ["a"],
-          ctrl: true
-        }]}>
-          <SnackbarContext>
-            <TitleBar
-              switchPage={setPage}
-              page={page}
-              onSave={handleSave}
-              setSelectedLab={setLab}
-              labs={labs}
-              selectedLab={currentLab}
-              onChange={(name) => setCurrentLab({ ...currentLab, labName: name })}
-            ></TitleBar>
-            <div className="pageWrapper">
-              {page == Pages.Gallery ? (
-                <Gallery
-                  handleDelete={handleDelete}
-                  switchPage={setPage}
-                  labs={labs}
-                  setSelectedLab={setLab}
-                />
-              ) : page == Pages.Playground ? (
-                <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
-              ) : page == Pages.Settings ? (
-                <Settings />
-              ) : null}
-            </div>
-          </SnackbarContext>
-        </KeybindContext>
-      </LocalizationContext>
-    </ThemeContext>
+    <GlobalContext>
+      <TitleBar
+        switchPage={setPage}
+        page={page}
+        onSave={handleSave}
+        setSelectedLab={setLab}
+        labs={labs}
+        selectedLab={currentLab}
+        onChange={(name) => setCurrentLab({ ...currentLab, labName: name })}
+      ></TitleBar>
+      <div className="pageWrapper">
+        {pageToComponent(page)}
+      </div>
+    </GlobalContext >
 
   );
 };

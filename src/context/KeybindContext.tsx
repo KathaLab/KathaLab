@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react"
 import * as React from "react";
+import keybinds from "../model/defaultKeybinds.json"
 
 type contextType = {
   handlers: [string, (() => void)][],
@@ -19,9 +20,9 @@ export const keyBindContext = createContext<contextType>({
   remove: () => null
 })
 
-export const KeybindContext = ({ keybinds, children }: { keybinds: keybindType[], children: ReactNode }) => {
+export const KeybindContext = ({ children }: { children: ReactNode }) => {
   const pressed = useRef<Set<string>>(new Set())
-
+  console.log(keybinds)
   const [handlers, setHandlers] = useState<[string, () => void][]>([])
 
   useEffect(() => {

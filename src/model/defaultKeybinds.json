@@ -1,0 +1,10 @@
+[{
+  "eventName": "playground-select-all",
+  "code" : ["a"],
+  "ctrl" : true 
+}, 
+{
+  "eventName": "playground-select-duplicate",
+  "code" : ["d"],
+  "ctrl" : true 
+}]

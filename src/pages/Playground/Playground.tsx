@@ -24,11 +24,11 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const ctx = useContext(keyBindContext);
 
   useEffect(() => {
-    const func = () => console.log("all");
-    ctx.on("all", func)
+    const func = () => console.log("playground-select-all");
+    ctx.on("playground-select-all", func) 
 
     return () => {
-      ctx.remove("all", func)
+      ctx.remove("playground-select-all", func)
     }
   }, [])
 
