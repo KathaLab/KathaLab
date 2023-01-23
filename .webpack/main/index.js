@@ -1099,7 +1099,7 @@ var electronAPI = /** @class */ (function () {
                                     filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
                                 if (path.extname(fileName) == ".shutdown") {
-                                    var deviceName = path.basename(fileName, '.startup').toLowerCase();
+                                    var deviceName = path.basename(fileName, '.shutdown').toLowerCase();
                                     var fileData = readFile(path.join(directoryPath, fileName));
                                     filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
@@ -1207,11 +1207,7 @@ var createWindow = function () {
         show: false,
         webPreferences: {
             contextIsolation: true,
-<<<<<<< HEAD
-            preload: 'D:\\dev\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
-=======
             preload: '/Users/benjamin/LP/projet-kathara/.webpack/renderer/main_window/preload.js',
->>>>>>> BR_refacto_export
         },
     });
     // and load the index.html of the app.

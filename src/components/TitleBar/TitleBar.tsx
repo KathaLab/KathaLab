@@ -165,9 +165,9 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         filesData.startupFiles.filter((elem: { deviceName: string, fileData: string }) => {
             return elem.deviceName != '' && elem.fileData != ''
         }).forEach((startupFile: { deviceName: string, fileData: string }) => {
-            const deviceName = startupFile.deviceName.toUpperCase();
+            const deviceName = startupFile.deviceName;
             const fileData = startupFile.fileData;
-            let device = labConf.devices.find((device) => device.deviceName == deviceName);
+            let device = labConf.devices.find((device) => device.deviceName.toLowerCase() == deviceName);
 
             if (!device) {
                 device = {deviceName: deviceName, type: DeviceType.PC};
@@ -181,9 +181,9 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         filesData.shutdownFiles.filter((elem: { deviceName: string, fileData: string }) => {
             return elem.deviceName != '' && elem.fileData != ''
         }).forEach((shutdownFile: { deviceName: string, fileData: string }) => {
-            const deviceName = shutdownFile.deviceName.toUpperCase();
+            const deviceName = shutdownFile.deviceName;
             const fileData = shutdownFile.fileData;
-            let device = labConf.devices.find((device) => device.deviceName == deviceName);
+            let device = labConf.devices.find((device) => device.deviceName.toLowerCase() == deviceName);
 
             if (!device) {
                 device = {deviceName: deviceName, type: DeviceType.PC};
@@ -192,7 +192,9 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             if (!device.shutdown_commands) {
                 device.shutdown_commands = [];
             }
-            device.shutdown_commands.push(fileData);
+            fileData.split('\n').forEach(line => {
+                device.shutdown_commands.push(line);
+            })
         });
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

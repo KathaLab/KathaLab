@@ -11,9 +11,9 @@ export default class ImportConf {
         this.getLabConf(lab, line)? isLabConf = true: isLabConf;
 
         if (isLabConf !== true){
-            const deviceName = Array.from(line.matchAll(RegexConst.LAB_DEVICE_NAME_REGEX))[0]?.groups.deviceName.toUpperCase();
+            const deviceName = Array.from(line.matchAll(RegexConst.LAB_DEVICE_NAME_REGEX))[0]?.groups.deviceName.toLowerCase();
             if (deviceName){
-                let device = lab.devices.find((device) => device.deviceName == deviceName);
+                let device = lab.devices.find((device) => device.deviceName.toLowerCase() == deviceName);
 
                 if (!device){
                     device = {deviceName: deviceName, type: DeviceType.PC};
@@ -108,8 +108,8 @@ export default class ImportConf {
             device.optional_parameters.exec = Array.from(line.matchAll(RegexConst.LAB_DEVICE_EXEC_REGEX))[0].groups.exec?.replace(/['"]/g, '').toString();
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_SYSCTL_REGEX))[0]?.groups.sysctl){
-            const ipv4Forward = '/proc/sys/net/ipv4/ip_forward=1';
-            const ipv6Forward = '/proc/sys/net/ipv6/conf/all/forwarding=1';
+            const ipv4Forward = 'net.ipv4.ip_forward=1';
+            const ipv6Forward = 'net.ipv6.conf.all.forwarding=1';
 
             const systcl = Array.from(line.matchAll(RegexConst.LAB_DEVICE_SYSCTL_REGEX))[0].groups.sysctl?.replace(/['"]/g, '').toString();
             device.optional_parameters.sysctl = systcl;

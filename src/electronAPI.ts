@@ -141,7 +141,7 @@ export class electronAPI {
             filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
           if (path.extname(fileName) == ".shutdown") {
-            const deviceName = path.basename(fileName, '.startup').toLowerCase();
+            const deviceName = path.basename(fileName, '.shutdown').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
