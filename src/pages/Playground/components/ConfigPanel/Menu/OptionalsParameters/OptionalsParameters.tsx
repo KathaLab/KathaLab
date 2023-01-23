@@ -147,7 +147,7 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
                     state={device.optional_parameters?.ipv6 || false}></Switch>
                 </div>
                 <div>
-                    <Expanded title="Systl" classTitle={style.labelMenu}>
+                    <Expanded title="Sysctl" classTitle={style.labelMenu}>
                         <ListCommand
                             onChange={setSysctl}
                             list={device?.optional_parameters?.sysctl? device.optional_parameters.sysctl : []}
