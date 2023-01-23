@@ -19,13 +19,13 @@ export enum DeviceType {
 export type OptionalParameters = {
   image?: string,
   memory?: string,
-  cpus?: string,
+  cpus?: number,
   port?: string,
   bridged?: boolean,
   ipv6?: boolean,
   exec?: string,
-  sysctl?: string,
-  env?: string,
+  sysctl?: string[],
+  env?: string[],
   shell?: string,
   num_terms?: number,
 }
@@ -48,6 +48,6 @@ export const devices: Device[] = [
   {
     deviceName: "",
     type: DeviceType.Router,
-    optional_parameters : {sysctl: 'net.ipv4.ip_forward=1'}
+    optional_parameters : {sysctl: ['net.ipv4.ip_forward=1']}
   },
 ];
