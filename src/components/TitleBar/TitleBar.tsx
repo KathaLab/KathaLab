@@ -7,7 +7,6 @@ import ExportConf from "../../lib/ExportConf";
 import {v4 as uuidv4} from "uuid";
 import {DeviceType} from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
-import {electronAPI} from "../../electronAPI";
 import SnackbarContext from "../../context/SnackbarContext";
 
 type componentType = {

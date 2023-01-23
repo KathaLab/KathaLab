@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
@@ -6,8 +6,8 @@ import style from "./Playground.module.scss";
 import { Device, devices, DeviceType } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../../model/Lab";
-import ExportLabConf from "../../lib/ExportLabConf";
-import ExportDevicesConf from "../../lib/ExportDevicesConf";
+import ExportConf from "../../lib/ExportConf";
+import SnackbarContext from "../../context/SnackbarContext";
 
 type componentType = {
   lab?: Lab;
@@ -19,6 +19,8 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
   const color = useCssVar("--clr-main-primary");
+
+  const snackBar = useContext(SnackbarContext);
 
   const handleSave = async () => {
     if (lab.labName === "") lab.labName = "Untitled";
@@ -70,33 +72,53 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   }
 
+  const handleExport = async (lab: Lab) => {
 
-  const handleExport = async () => {
-
-    const labConf = new ExportLabConf(lab).exportGlobalLabConf();
-    const devicesConf = new ExportDevicesConf(lab).exportGlobalDevicesConf()
+    const exportConf = new ExportConf();
+    const labExported = exportConf.exportLabConf(lab);
+    const deviceExportedStartup = exportConf.exportStartupConf(lab);
+    const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
 
     //Creating lab.conf and all device.startup
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await window.electronAPI.chooseDirectory()
-      .then((filePath: string) => {
-        if (filePath && labConf && devicesConf) {
-          for (const labName in labConf) {
+        .then((filePath: string) => {
+          if (filePath && labExported && lab.devices) {
             const fileName = "lab.conf";
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window.electronAPI.saveFile(filePath, fileName, labExported);
+            if (deviceExportedStartup) {
+              for (const deviceName in deviceExportedStartup) {
+                const fileName = deviceName + '.startup';
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                window.electronAPI.saveFile(filePath, fileName, deviceExportedStartup[deviceName])
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            window.electronAPI.saveFile(filePath, fileName, labConf[labName]);
+              }
+            }
+            if (deviceExportedShutdown) {
+              for (const deviceName in deviceExportedShutdown) {
+                const fileName = deviceName + '.shutdown';
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                window.electronAPI.saveFile(filePath, fileName, deviceExportedShutdown[deviceName])
+              }
+            }
+            snackBar.updateContext({
+              duration: 3000,
+              message: 'The lab have been successfully exported',
+              icon: 'done'
+            })
+          } else {
+            snackBar.updateContext({
+              duration: 3000,
+              message: 'The lab can not be exported',
+              icon: 'warning'
+            })
           }
-          for (const deviceName in devicesConf) {
-            const fileName = deviceName + ".startup";
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            window.electronAPI.saveFile(filePath, fileName, devicesConf[deviceName])
-          }
-        }
-      })
+        })
   }
 
   const updateDevices = () => {
@@ -130,7 +152,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           topoJson={lab}
           setSelectedDevices={(devices: Device[]) => setSelectedDevices(devices)}
           selectedDevices={selectedDevices}
-          onExport={handleExport}
+          onExport={(lab:Lab) => handleExport(lab)}
         ></Canvas>
         {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>

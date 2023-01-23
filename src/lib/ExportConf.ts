@@ -71,7 +71,7 @@ export default class ExportConf {
                         }
                     }
                     if (device.optional_parameters && device.optional_parameters.bridged && device.optional_parameters.bridged == true) {
-                        if (itf.ip.match(RegexConst.IP_REGEX)) {
+                        if (itf.ip.match(RegexConst.DEVICE_IP)) {
                             conf += ModelToKatharaConf.IPV4_FORWARD + "\n";
                         } else {
                             conf += ModelToKatharaConf.IPV6_FORWARD + "\n";

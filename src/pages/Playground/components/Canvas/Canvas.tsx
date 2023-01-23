@@ -21,7 +21,7 @@ type ComponentType = {
   onSave?: () => void;
   onDuplicate?: () => void;
   onNew?: (type: DeviceType, pos?: { x: number, y: number }) => void;
-  onExport?: () => void;
+  onExport?: (lab: Lab) => void;
   interactive: boolean
 };
 
@@ -62,7 +62,7 @@ export const Canvas = ({
     { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
     { label: 'Save', onClick: onSave },
-    { label: 'Export', onClick: onExport },
+    { label: 'Export', onClick: () => onExport(topoJson) },
   ];
 
   const observer = useRef(
@@ -198,7 +198,7 @@ export const Canvas = ({
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
     // render links between devices
-    
+
     ctx.lineWidth = 3
     json.devices?.forEach((device, idx, self) => {
       device.interfaces?.map(inter => inter.collision_domain).filter(Boolean).forEach(domain => {
