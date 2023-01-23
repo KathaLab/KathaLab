@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { DeviceCard } from "./components/DeviceCard/DeviceCard";
 import { Canvas } from "./components/Canvas/Canvas";
 import { ConfigPanel } from "./components/ConfigPanel/ConfigPanel";
@@ -8,6 +8,7 @@ import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../../model/Lab";
 import ExportLabConf from "../../lib/ExportLabConf";
 import ExportDevicesConf from "../../lib/ExportDevicesConf";
+import { keyBindContext } from "../../context/KeybindContext";
 
 type componentType = {
   lab?: Lab;
@@ -19,6 +20,17 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
   const color = useCssVar("--clr-main-primary");
+
+  const ctx = useContext(keyBindContext);
+
+  useEffect(() => {
+    const func = () => console.log("all");
+    ctx.on("all", func)
+
+    return () => {
+      ctx.remove("all", func)
+    }
+  }, [])
 
   const handleSave = async () => {
     if (lab.labName === "") lab.labName = "Untitled";
@@ -135,5 +147,5 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>
     </div>
-  );
+    );
 };
