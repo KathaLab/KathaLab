@@ -4,6 +4,7 @@ import { Device } from '../../../../../../model/Device';
 import { Expanded } from '../../../../../../components/Expanded/Expanded'
 import { TextInput } from '../../../../../../components/TextInput/TextInput';
 import { Switch } from '../../../../../../components/Switch/Switch';
+import { ListCommand } from '../../ListCommand/ListCommand';
 
 type ComponentType = {
     device: Device;
@@ -42,10 +43,10 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
         device.optional_parameters.memory === '' && delete device.optional_parameters.memory
     }
 
-    const setCpus = (value: string) => {
+    const setCpus = (value: number) => {
         device.optional_parameters = device.optional_parameters || {}
         device.optional_parameters.cpus = value
-        device.optional_parameters.cpus === '' && delete device.optional_parameters.cpus
+        device.optional_parameters.cpus === null && delete device.optional_parameters.cpus
     }
 
     const setExec = (value: string) => {
@@ -54,17 +55,29 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
         device.optional_parameters.exec === '' && delete device.optional_parameters.exec
     }
 
-    const setSysctlc = (value: string) => {
+    const setSysctl = () => {
         device.optional_parameters = device.optional_parameters || {}
-        device.optional_parameters.sysctl = value
-        device.optional_parameters.sysctl === '' && delete device.optional_parameters.sysctl
+        device.optional_parameters.sysctl = device.optional_parameters.sysctl || [];
     }
 
-    const setEnv = (value: string) => {
-        device.optional_parameters = device.optional_parameters || {}
-        device.optional_parameters.env = value
-        device.optional_parameters.env === '' && delete device.optional_parameters.env
+    const getSysctl = (commands: string[]) => {
+        device.optional_parameters.sysctl = commands.filter(word => word !== '')
     }
+
+    const setEnv = () => {
+        device.optional_parameters = device.optional_parameters || {}
+        device.optional_parameters.env = device?.optional_parameters.env || [];
+    }
+
+    const getEnv = (commands: string[]) => {
+        device.optional_parameters.env = commands.filter(word => word !== '')
+    }
+
+    // const setEnv = (value: string) => {
+    //     device.optional_parameters = device.optional_parameters || {}
+    //     device.optional_parameters.env = value
+    //     device.optional_parameters.env === '' && delete device.optional_parameters.env
+    // }
 
     const setShell = (value: string) => {
         device.optional_parameters = device.optional_parameters || {}
@@ -114,9 +127,9 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
                 <div className={style.label}>
                     <p className={style.labelForm}>Cpus</p>
                     <TextInput
-                    value={device?.optional_parameters?.cpus}
+                    value={device?.optional_parameters?.cpus ? device?.optional_parameters?.cpus.toString() : ""}
                     placeholder=""
-                    onChange={(value) => {setCpus(value); updateDevices()}}
+                    onChange={(value) => {setCpus(Number(value)); updateDevices()}}
                     className={style.inputForm}></TextInput>
                 </div>
                 <div className={style.label}>
@@ -133,22 +146,40 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
                     onChange={() => {setIpv6(); updateDevices()}}
                     state={device.optional_parameters?.ipv6 || false}></Switch>
                 </div>
-                <div className={style.label}>
+                <div>
+                    <Expanded title="Systl" classTitle={style.labelMenu}>
+                        <ListCommand
+                            onChange={setSysctl}
+                            list={device?.optional_parameters?.sysctl? device.optional_parameters.sysctl : []}
+                            getCommands={(commands: string[]) => getSysctl(commands)}
+                            className={style.inputListCommands}></ListCommand>
+                    </Expanded>
+                </div>
+                {/* <div >
                     <p className={style.labelForm}>Sysctl</p>
                     <TextInput
                     value={device?.optional_parameters?.sysctl}
                     placeholder=""
                     onChange={(value) => {setSysctlc(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
+                </div> */}
+                <div>
+                    <Expanded title="Env" classTitle={style.labelMenu}>
+                        <ListCommand
+                            onChange={setEnv}
+                            list={device?.optional_parameters?.env? device.optional_parameters.env : []}
+                            getCommands={(commands: string[]) => getEnv(commands)}
+                            className={style.inputListCommands}></ListCommand>
+                    </Expanded> 
                 </div>
-                <div className={style.label}>
+                {/* <div className={style.label}>
                     <p className={style.labelForm}>Env</p>
                     <TextInput
                     value={device?.optional_parameters?.env}
                     placeholder=""
                     onChange={(value) => {setEnv(value); updateDevices()}}
                     className={style.inputForm}></TextInput>
-                </div>
+                </div> */}
                 <div className={style.label}>
                     <p className={style.labelForm}>Shell</p>
                     <TextInput
