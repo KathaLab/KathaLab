@@ -18,7 +18,7 @@ if (require('electron-squirrel-startup')) {
 let loader = false
 
 const createWindow = (): void => {
-  
+
   const display = () => {
     splash.destroy();
     mainWindow.maximize();
@@ -30,7 +30,7 @@ const createWindow = (): void => {
     loader = true;
   }, 10000)
 
-  // create a new `splash`-Window 
+  // create a new `splash`-Window
   const splash = new BrowserWindow({ width: 810, height: 610, transparent: true, frame: false, alwaysOnTop: true });
   splash.loadURL(SPLASH_WEBPACK_ENTRY);
 

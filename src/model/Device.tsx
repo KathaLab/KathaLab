@@ -6,7 +6,6 @@ export type Device = {
   type: DeviceType
   position?: Position
   interfaces?: Interfaces[]
-  default_command?: string[]
   startups_commands?: string[]
   shutdown_commands?: string[]
   optional_parameters?: OptionalParameters
@@ -49,9 +48,6 @@ export const devices: Device[] = [
   {
     deviceName: "",
     type: DeviceType.Router,
-    default_command: [
-      "%deviceName%[sysctl]=/proc/sys/net/ipv4/ip_forward=1 \n",
-      "%deviceName%[sysctl]=/proc/sys/net/ipv6/conf/all/forwarding=1 \n"
-    ]
+    optional_parameters : {sysctl: 'net.ipv4.ip_forward=1'}
   },
 ];

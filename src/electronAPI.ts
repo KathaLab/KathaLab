@@ -131,16 +131,17 @@ export class electronAPI {
         const filesNames = fs.readdirSync(directoryPath)
 
         filesNames.forEach(fileName => {
+
           if (path.extname(fileName) == ".conf") {
             filesData.confFile = readFile(path.join(directoryPath, fileName));
           }
           if (path.extname(fileName) == ".startup") {
-            const deviceName = path.basename(fileName, '.startup').toUpperCase();
+            const deviceName = path.basename(fileName, '.startup').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
           if (path.extname(fileName) == ".shutdown") {
-            const deviceName = path.basename(fileName, '.startup').toUpperCase();
+            const deviceName = path.basename(fileName, '.startup').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
@@ -148,7 +149,7 @@ export class electronAPI {
         return filesData
       } catch (err) {
         console.warn(err)
-        this.error(_.sender, "An error occured while trying to read the folder "+ directoryPath);
+        this.error(_.sender, "An error occured while trying to read the folder " + directoryPath);
       }
     })
   };
