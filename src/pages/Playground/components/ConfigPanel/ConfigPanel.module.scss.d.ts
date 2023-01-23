@@ -13,6 +13,7 @@ interface CssExports {
   'label': string;
   'labelForm': string;
   'labelMenu': string;
+  'labelTest': string;
   'menuOptionsParameters': string;
   'panel': string;
   'title': string;
