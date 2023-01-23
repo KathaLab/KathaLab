@@ -8,6 +8,7 @@ import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../../model/Lab";
 import ExportLabConf from "../../lib/ExportLabConf";
 import ExportDevicesConf from "../../lib/ExportDevicesConf";
+import path from "path-browserify"
 
 type componentType = {
   lab?: Lab;
@@ -18,7 +19,25 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
+  const [isKatharaInstalled, setIskatharaInstalled] = useState(false);
+
   const color = useCssVar("--clr-main-primary");
+
+  useEffect(() => {
+
+    (async () => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const res = await window.electronAPI.isKatharaInstalled()
+        if (res) setIskatharaInstalled(true)
+        console.log(res)
+      } catch (e) {
+        console.warn("Kathara is not installed ", e)
+      }
+    })()
+
+  }, [])
 
   const handleSave = async () => {
     if (lab.labName === "") lab.labName = "Untitled";
@@ -70,7 +89,6 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     });
   }
 
-
   const handleExport = async () => {
 
     const labConf = new ExportLabConf(lab).exportGlobalLabConf();
@@ -108,6 +126,39 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
   }
 
+  const startLab = async () => {
+    const labConf = new ExportLabConf(lab).exportGlobalLabConf();
+    const devicesConf = new ExportDevicesConf(lab).exportGlobalDevicesConf()
+
+    //Creating lab.conf and all device.startup
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const dataFolder = await window.electronAPI.getDataFolder()
+
+    const folderPath = path.join(dataFolder, "temp", lab.id)
+
+    console.log("Lab exported into ", folderPath);
+
+    if (folderPath && labConf && devicesConf) {
+      for (const labName in labConf) {
+        const fileName = "lab.conf";
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        window.electronAPI.saveFile(folderPath, fileName, labConf[labName]);
+      }
+      for (const deviceName in devicesConf) {
+        const fileName = deviceName + ".startup";
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        window.electronAPI.saveFile(folderPath, fileName, devicesConf[deviceName])
+      }
+    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.electronAPI.katharaStart(folderPath)
+  }
+
   return (
     <div className={style.page}>
       <div className={style.content}>
@@ -132,6 +183,11 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
           selectedDevices={selectedDevices}
           onExport={handleExport}
         ></Canvas>
+        {isKatharaInstalled && <ul className={style.labBar}>
+          <li className="material-icons material-icons-outlined" onClick={startLab}>play_arrow</li>
+          <li className="material-icons material-icons-outlined" onClick={startLab}>stop</li>
+          <li className="material-icons material-icons-outlined" onClick={startLab}>terminal</li>
+        </ul>}
         {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>
     </div>

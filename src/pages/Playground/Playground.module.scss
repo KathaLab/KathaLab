@@ -20,3 +20,25 @@
     gap: 1rem;
   }
 }
+
+.labBar {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  color: var(--clr-action-text-default);
+  background: var(--clr-panel-bg);
+  top: 1rem;
+  left: 9rem;
+  border-radius: .25rem;
+  font-size: .75rem;
+  
+  li {
+    padding: .25rem;
+    border-radius: .25rem;
+
+    &:hover{
+      background: var(--clr-tb-action-hover);
+      color: red;
+    }
+  }
+}

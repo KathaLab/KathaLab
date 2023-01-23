@@ -23,16 +23,20 @@
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
-          "platforms": ["win32"],
+          "platforms": [
+            "win32"
+          ],
           "config": {
             "name": "projet_kathara"
           }
         },
         {
           "name": "@electron-forge/maker-zip",
-          "platforms": ["darwin", "linux"],
-          "config": {
-          }
+          "platforms": [
+            "darwin",
+            "linux"
+          ],
+          "config": {}
         }
       ],
       "publishers": [
@@ -49,7 +53,6 @@
           }
         }
       ],
-
       "plugins": [
         [
           "@electron-forge/plugin-webpack",
@@ -63,15 +66,15 @@
                   "html": "./src/index.html",
                   "js": "./src/renderer.ts",
                   "name": "main_window",
-                  "preload" : {
+                  "preload": {
                     "js": "./src/preload.ts"
                   }
                 },
-                  {
-                    "html": "./src/splash.html",
-                    "js": "./src/renderer.ts",
-                    "name": "splash"
-                  }
+                {
+                  "html": "./src/splash.html",
+                  "js": "./src/renderer.ts",
+                  "name": "splash"
+                }
               ]
             }
           }
@@ -87,6 +90,8 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.66",
     "@electron-forge/plugin-webpack": "6.0.0-beta.66",
     "@electron-forge/publisher-github": "6.0.0-beta.66",
+    "@types/electron": "^1.6.10",
+    "@types/path-browserify": "^1.0.0",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/resize-observer-browser": "^0.1.7",
@@ -114,6 +119,7 @@
     "css-modules-typescript-loader": "^4.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "fs-extra": "^10.1.0",
+    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.55.0",

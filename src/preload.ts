@@ -18,14 +18,17 @@ contextBridge.exposeInMainWorld('electronAPI', {
     close: async () => await ipcRenderer.invoke('window:close'),
 
     getHomeDirectory : async() => await ipcRenderer.invoke('os:getHomeDirectory'),  
+    getDataFolder : async() => await ipcRenderer.invoke('os:getDataFolder'),  
+    
+    isKatharaInstalled : async() => await ipcRenderer.invoke('kathara:version'),
+    katharaStart : async(path: string) => await ipcRenderer.invoke('kathara:start', path),
+    katharaStop : async(path: string) => await ipcRenderer.invoke('kathara:stop', path),
 
-    test : async() => await ipcRenderer.invoke('cmd:ping'),
-
-    removeListener: (channel: any) => {
+    removeListener: (channel: string) => {
         ipcRenderer.removeAllListeners(channel)
     },
 
-    receive: (channel: any, func: any) => {
+    receive: (channel: string , func: (event: Electron.IpcRendererEvent, ...args: any[]) => void) => {
         ipcRenderer.on(channel, func);
     }
 })

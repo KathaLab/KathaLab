@@ -11,6 +11,8 @@ export class electronAPI {
   dataFolder = app.getPath("userData")
   exec = child_process.exec
 
+  currentSpawn: child_process.ChildProcessWithoutNullStreams;
+
   constructor() {
     if (!fs.existsSync(path.join(this.dataFolder, `data`))) {
       fs.mkdirSync(path.join(this.dataFolder, `data`));
@@ -89,7 +91,6 @@ export class electronAPI {
               )
             );
           });
-
         event.sender.send("save:load", lab);
       } catch (e) {
         console.error(e)
@@ -100,6 +101,9 @@ export class electronAPI {
     ipcMain.handle('fs:save-file', async (event, filePath, fileName, content) => {
       try {
         const fullPath = path.join(filePath, fileName);
+        if (!fs.existsSync(filePath)) fs.mkdirSync(filePath, {
+          recursive: true
+        });
         fs.writeFileSync(fullPath, content, "utf-8")
       } catch (e) {
         console.warn(e.message);
@@ -115,9 +119,16 @@ export class electronAPI {
         this.error(_.sender, "An error occured while deleting the lab");
       }
     });
+
+
     ipcMain.handle("os:getHomeDirectory", async () => {
       return os.homedir();
     });
+    ipcMain.handle("os:getDataFolder", async () => {
+      return this.dataFolder;
+    });
+
+
     ipcMain.handle("fs:read-directory", async (_, directoryPath) => {
 
       const filesData: { "confFile"?: string, "startupFiles"?: [{ deviceName: string, fileData: string }], "shutdownFiles"?: [{ deviceName: string, fileData: string }] } = {
@@ -155,14 +166,47 @@ export class electronAPI {
       }
     })
 
-    ipcMain.handle("cmd:ping", async (_) => {
+    ipcMain.handle("kathara:version", async (_) => {
       try {
-        this.exec('ping 0.0.0.0', (error, stdout, stderr) => {
-          console.log(stdout)
-        });
+        return new Promise((resolve, reject) => {
+          this.exec('kathara -v', (error, stdout, stderr) => {
+            if (stderr) reject(stderr)
+            resolve(stdout);
+          })
+        })
       } catch (err) {
         console.warn(err)
         this.error(_.sender, "Error whyle searching for ");
+      }
+    })
+
+    ipcMain.handle("kathara:start", async (_, path) => {
+      try {
+        this.currentSpawn = child_process.spawn(`kathara lstart`, {
+          cwd: path,
+          shell: true
+        })
+
+        this.currentSpawn.on('error', () => { console.log('error') })
+        this.currentSpawn.on('message', () => { console.log('message') })
+      } catch (err) {
+        console.warn(err)
+        this.error(_.sender, "Error trying to start the lab ");
+      }
+    })
+
+    ipcMain.handle("kathara:stop", async (_, path) => {
+      try {
+        this.currentSpawn = child_process.spawn(`kathara lclean`, {
+          cwd: path,
+          shell: true
+        })
+
+        this.currentSpawn.on('error', () => { console.log('error') })
+        this.currentSpawn.on('message', () => { console.log('message') })
+      } catch (err) {
+        console.warn(err)
+        this.error(_.sender, "Error trying to start the lab ");
       }
     })
   };
