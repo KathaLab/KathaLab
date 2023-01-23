@@ -38,7 +38,7 @@ export default class ImportConf {
             let itf = device.interfaces.find((itf) => itf.interfaceName == interfaceName);
 
             if (!itf){
-                itf = {cidr: 0, collision_domain: "", interfaceName: interfaceName, ip: "", is_up: false};
+                itf = {interfaceName: interfaceName};
                 device.interfaces.push(itf)
             }
             this.getDeviceInterfacesConf(itf, device, line)
@@ -138,7 +138,7 @@ export default class ImportConf {
                 let itf = device.interfaces.find((itf) => itf.interfaceName == interfaceName);
 
                 if (!itf){
-                    itf = {cidr: 0, collision_domain: "", ip: "", is_up: false, interfaceName:interfaceName};
+                    itf = {interfaceName:interfaceName};
                     device.interfaces.push(itf)
                 }
                 if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_COLLISION_DOMAIN_REGEX))[0]?.groups.collision_domain){
