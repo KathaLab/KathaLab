@@ -496,27 +496,27 @@ export const Canvas = ({
     if (!interactive) {
       const mostLeftDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
-          return curr.position.x < prev.position.x ? curr : prev;
-        })?.position?.x -
+          return curr?.position?.x < prev?.position?.x ? curr : prev;
+        }, null)?.position?.x -
         deviceSize.width / 2;
 
       const mostRightDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
-          return curr.position.x > prev.position.x ? curr : prev;
-        })?.position?.x +
+          return curr?.position?.x > prev?.position?.x ? curr : prev;
+        }, null)?.position?.x +
         deviceSize.width / 2;
 
 
       const mostTopDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
-          return curr.position.y < prev.position.y ? curr : prev;
-        }).position.y -
+          return curr?.position?.y < prev?.position?.y ? curr : prev;
+        },null)?.position?.y -
         deviceSize.height / 2;
 
       const mostBottomDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
-          return curr.position.y > prev.position.y ? curr : prev;
-        }).position.y + deviceSize.height;
+          return curr?.position?.y > prev?.position?.y ? curr : prev;
+        },null)?.position?.y + deviceSize.height;
 
       const x = (mostLeftDevicePosition + mostRightDevicePosition) / 2
       const y = (mostTopDevicePosition + mostBottomDevicePosition) / 2
