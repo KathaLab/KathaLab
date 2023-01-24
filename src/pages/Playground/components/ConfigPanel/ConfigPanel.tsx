@@ -28,10 +28,8 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
 
 
   const validation = (value: string, parameter: RegExp) => {
-    console.log(value)
     if (value) { 
       const array = Array.from(value.matchAll(parameter))[0]?.toString()
-      console.log(array === value)
       return !(array === value)
     }
     return true
@@ -68,7 +66,6 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
           {/* OPTIONALS PARAMETERS */}
           <OptionalsParameters device={device} updateDevices={updateDevices}></OptionalsParameters>
         </div>
-        <TextInput type='AUTOCOMPLETE' autocommplete={['test 1','test2']}></TextInput>
       </div>
     </div> 
   )
