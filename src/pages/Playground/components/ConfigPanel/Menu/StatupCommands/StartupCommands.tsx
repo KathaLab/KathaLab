@@ -20,7 +20,7 @@ export const StartupCommands = ({device}: ComponentType) => {
 
     return (
         <Expanded title="Startup commands" classTitle={style.labelMenu}>
-            <ListCommand 
+            <ListCommand
             onChange={setStartupsCommands} 
             list={device.startups_commands ? device.startups_commands : []}
             getCommands={(commands: string[]) => getStartupCommands(commands)}

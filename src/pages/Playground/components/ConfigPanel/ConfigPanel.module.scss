@@ -141,7 +141,7 @@
         }
 
         .menuOptionsParameters {
-            div {
+            > div {
                 margin-top: 0rem;
                 margin-bottom: 1rem;
             }
@@ -159,6 +159,7 @@
         
     }
 
+
     .buttonAddInterface {
         text-transform: capitalize;
         margin-top: 0.5rem;
@@ -174,6 +175,12 @@
         &:hover {
             background-color: var(--clr-action-hover-default);
         }
+    }
+
+    .labelTest {
+        line-height: 1.5rem;
+        display: flex;
+        align-items: flex-start;
     }
 
     .buttonDelInterface {

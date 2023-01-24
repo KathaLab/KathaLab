@@ -38,7 +38,7 @@ export default class ImportConf {
             let itf = device.interfaces.find((itf) => itf.interfaceName == interfaceName);
 
             if (!itf){
-                itf = {cidr: 0, collision_domain: "", interfaceName: interfaceName, ip: "", is_up: false};
+                itf = {interfaceName: interfaceName};
                 device.interfaces.push(itf)
             }
             this.getDeviceInterfacesConf(itf, device, line)
@@ -85,7 +85,7 @@ export default class ImportConf {
             device.optional_parameters.memory = Array.from(line.matchAll(RegexConst.LAB_DEVICE_MEMORY_REGEX))[0].groups.memory?.replace(/['"]/g, '').toString();
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_CPUS_REGEX))[0]?.groups.cpus){
-            device.optional_parameters.cpus = Array.from(line.matchAll(RegexConst.LAB_DEVICE_CPUS_REGEX))[0].groups.cpus?.replace(/['"]/g, '').toString();
+            device.optional_parameters.cpus = Number(Array.from(line.matchAll(RegexConst.LAB_DEVICE_CPUS_REGEX))[0].groups.cpus?.replace(/['"]/g, ''));
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_PORT_REGEX))[0]?.groups.port){
             device.optional_parameters.port = Array.from(line.matchAll(RegexConst.LAB_DEVICE_PORT_REGEX))[0].groups.port?.replace(/['"]/g, '').toString();
@@ -112,14 +112,15 @@ export default class ImportConf {
             const ipv6Forward = 'net.ipv6.conf.all.forwarding=1';
 
             const systcl = Array.from(line.matchAll(RegexConst.LAB_DEVICE_SYSCTL_REGEX))[0].groups.sysctl?.replace(/['"]/g, '').toString();
-            device.optional_parameters.sysctl = systcl;
+            device.optional_parameters.sysctl.push(systcl);
 
             if (systcl == ipv4Forward || systcl == ipv6Forward){
                 device.type = DeviceType.Router;
             }
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_ENV_REGEX))[0]?.groups.env){
-            device.optional_parameters.env = Array.from(line.matchAll(RegexConst.LAB_DEVICE_ENV_REGEX))[0].groups.env?.replace(/['"]/g, '').toString();
+            const env = Array.from(line.matchAll(RegexConst.LAB_DEVICE_ENV_REGEX))[0].groups.env?.replace(/['"]/g, '').toString();
+            device.optional_parameters.env.push(env);
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_SHELL_REGEX))[0]?.groups.shell){
             device.optional_parameters.shell = Array.from(line.matchAll(RegexConst.LAB_DEVICE_SHELL_REGEX))[0].groups.shell?.replace(/['"]/g, '').toString();
@@ -137,7 +138,7 @@ export default class ImportConf {
                 let itf = device.interfaces.find((itf) => itf.interfaceName == interfaceName);
 
                 if (!itf){
-                    itf = {cidr: 0, collision_domain: "", ip: "", is_up: false, interfaceName:interfaceName};
+                    itf = {interfaceName:interfaceName};
                     device.interfaces.push(itf)
                 }
                 if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_COLLISION_DOMAIN_REGEX))[0]?.groups.collision_domain){
