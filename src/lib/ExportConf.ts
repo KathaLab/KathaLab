@@ -35,8 +35,13 @@ export default class ExportConf {
 
                 if (device.optional_parameters) {
                     for (const key in device.optional_parameters) {
-                        if (key == 'image' || key == 'memory' || key == 'cpus' || key == 'port' || key == 'bridged' || key == 'ipv6' || key == 'ipv6' || key == 'exec' || key == 'sysctl' || key == 'env' || key == 'shell' || key == 'num_terms') {
+                        if (key == 'image' || key == 'memory' || key == 'cpus' || key == 'port' || key == 'bridged' || key == 'ipv6' || key == 'ipv6' || key == 'exec' || key == 'shell' || key == 'num_terms') {
                             conf += ModelToKatharaConf[key] + `${device.optional_parameters[key]}` + '\n';
+                        }
+                        if (key == 'env' || key == 'sysctl'){
+                            device.optional_parameters[key].forEach( value => {
+                                conf += ModelToKatharaConf[key] + value + '\n';
+                            })
                         }
                     }
                 }
