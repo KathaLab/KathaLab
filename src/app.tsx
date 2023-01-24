@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,6 +15,7 @@ import { TitleBar } from "./components/TitleBar/TitleBar";
 // SnackBarContext
 import { Lab } from "./model/Lab";
 import { GlobalContext } from "./context/GlobalContext";
+import { keyBindContext } from "./context/KeybindContext";
 
 
 export enum Pages {
@@ -67,7 +68,7 @@ const App = () => {
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
     };
-  }, []); 
+  }, []);
 
   const handleSave = async () => {
     if (currentLab.labName === "") currentLab.labName = "Untitled";
@@ -78,7 +79,7 @@ const App = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window.electronAPI.loadSave();
-  }; 
+  };
 
   const pageToComponent = (page: Pages) => {
     switch (page) {
@@ -87,14 +88,14 @@ const App = () => {
       case Pages.Playground:
         return <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
       case Pages.Gallery:
-        return<Gallery
+        return <Gallery
           handleDelete={handleDelete}
           switchPage={setPage}
           labs={labs}
           setSelectedLab={setLab}
         />
     }
-  } 
+  }
 
   return (
     <GlobalContext>
@@ -111,8 +112,7 @@ const App = () => {
         {pageToComponent(page)}
       </div>
     </GlobalContext >
-
-  ); 
+  );
 };
 
 createRoot(document.querySelector("#root")).render(<App />);

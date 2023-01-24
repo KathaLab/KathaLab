@@ -1,14 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Lab} from '../../model/Lab'
 import {Pages} from '../../app'
 import {ContextMenu} from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
 import ExportLabConf from "../../lib/ExportLabConf";
 import ExportDevicesConf from "../../lib/ExportDevicesConf";
-import * as RegexConst from "../../lib/RegexConst";
 import {v4 as uuidv4} from "uuid";
-import {Device, DeviceType} from "../../model/Device";
+import { DeviceType } from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
+import { keyBindContext } from '../../context/KeybindContext'
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -26,7 +26,9 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const ctx = useContext(keyBindContext);
 
+    
     const handleLabClick = () => setLabExpanded(x => !x);
 
     useEffect(() => {
@@ -171,6 +173,19 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         await window.electronAPI.loadSave();
 
     }
+
+    useEffect(() => {
+        const handleNewLab = () => {
+            setSelectedLab(undefined);
+            switchPage(Pages.Playground);
+          }
+          ctx.on('app-new-lab', handleNewLab)
+
+          return () => {
+            ctx.remove('app-new-lab', handleNewLab)
+          }
+    }, [])
+    
 
     return (
         <div className={styles.titleBar}>

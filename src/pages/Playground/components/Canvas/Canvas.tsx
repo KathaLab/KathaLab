@@ -488,7 +488,7 @@ export const Canvas = ({
   }, [topoJson, selectedDevices]);
 
   useEffect(() => {
-    if (!interactive) {
+    if (!interactive && topoJson.devices.length) {
       const mostLeftDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
           return curr.position.x < prev.position.x ? curr : prev;

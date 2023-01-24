@@ -26,15 +26,15 @@ export const KeybindContext = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     pressed.current = new Set()
 
-    document.onkeyup = (e) => pressed.current.delete(e.key)
+    document.onkeyup = (e) => pressed.current.delete(e.key.toUpperCase())
     document.onkeydown = (e) => {
-      pressed.current.add(e.key)
+      pressed.current.add(e.key.toUpperCase())
       keybinds.forEach((keybind: keybindType) => {
-        if (keybind.code.every((code) => pressed.current.has(code)))
+        if (keybind.code.length === pressed.current.size && keybind.code.every((code) => pressed.current.has(code.toUpperCase()))) {
           handlers.forEach((element) => element?.[0] === keybind.eventName && element[1]());
+        }
       });
     }
-
   }, [keybinds, handlers])
 
   const on = (eventName: string, handlerFunction: () => void) => {
