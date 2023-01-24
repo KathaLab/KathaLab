@@ -68,6 +68,7 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
           {/* OPTIONALS PARAMETERS */}
           <OptionalsParameters device={device} updateDevices={updateDevices}></OptionalsParameters>
         </div>
+        <TextInput type='AUTOCOMPLETE' autocommplete={['test 1','test2']}></TextInput>
       </div>
     </div> 
   )
