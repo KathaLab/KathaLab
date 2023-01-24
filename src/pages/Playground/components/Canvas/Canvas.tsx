@@ -5,6 +5,7 @@ import React, {
   KeyboardEventHandler,
   WheelEventHandler,
   useState,
+  useContext,
 } from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
@@ -12,7 +13,8 @@ import { Device, deviceSize, DeviceType } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
 import { MouseButtonType, ScrollBarWidth } from "./canvaHelper";
-import { ContextMenu } from "../../../../components/ContextMenu/ContextMenu";
+import { ContextMenu, option } from "../../../../components/ContextMenu/ContextMenu";
+import { keyBindContext } from "../../../../context/KeybindContext";
 
 type ComponentType = {
   topoJson: Lab;
@@ -36,6 +38,10 @@ export const Canvas = ({
   interactive = true,
 }: ComponentType) => {
 
+  const [addDevice, setAddDevice] = useState(false);
+
+  const ctx = useContext(keyBindContext);
+
   const canvasRef = useRef(null);
   const canvasCenter = useRef({ x: 0, y: 0 });
 
@@ -50,15 +56,16 @@ export const Canvas = ({
   const color = useCssVar("--clr-main-primary");
   const [mouseDownEvent, setMouseDownEvent] = useState<MouseEvent>(null);
 
+  const newDeviceOptions: option[] = Object.entries(DeviceType).map(([name, type]) => {
+    return {
+      label: name,
+      onClick: () => onNew(type)
+    }
+  })
+
+
   const labOptions = [
-    {
-      label: 'New', options: Object.entries(DeviceType).map(([name, type]) => {
-        return {
-          label: name,
-          onClick: () => onNew(type)
-        }
-      })
-    },
+    { label: 'New', options: newDeviceOptions },
     { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
     { label: 'Save', onClick: onSave },
@@ -198,7 +205,7 @@ export const Canvas = ({
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
     // render links between devices
-    
+
     ctx.lineWidth = 3
     json.devices?.forEach((device, idx, self) => {
       device.interfaces?.map(inter => inter.collision_domain).filter(Boolean).forEach(domain => {
@@ -343,7 +350,7 @@ export const Canvas = ({
     ).at(-1);
 
     if (device && !selectedDevices.includes(device)) {
-      setSelectedDevices(e.shiftKey ? [...selectedDevices,  device] : [device]);
+      setSelectedDevices(e.shiftKey ? [...selectedDevices, device] : [device]);
     }
 
     if (!device) {
@@ -488,7 +495,17 @@ export const Canvas = ({
   }, [topoJson, selectedDevices]);
 
   useEffect(() => {
-    if (!interactive && topoJson.devices.length) {
+    if (interactive) {
+      const handleAdd = () => {
+        setAddDevice(true)
+      }
+
+      ctx.on('playground-new-device', handleAdd);
+
+      return () => {
+        ctx.remove('playground-new-device', handleAdd);
+      }
+    }else if (topoJson.devices.length) {
       const mostLeftDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
           return curr.position.x < prev.position.x ? curr : prev;
@@ -520,11 +537,8 @@ export const Canvas = ({
       canvasCenter.current.x = canvasCenter.current.x - x
       canvasCenter.current.y = canvasCenter.current.y - y
       renderJson(topoJson);
-
     }
   }, [interactive])
-
-
 
 
 
@@ -548,6 +562,9 @@ export const Canvas = ({
   }
 
   return <>
+    <div>
+      {addDevice}
+    </div>
     <canvas
       tabIndex={0}
       ref={canvasRef}
@@ -564,5 +581,6 @@ export const Canvas = ({
       onDrop={dragDrop}
     ></canvas>
     {mouseDownEvent && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
+    {addDevice && <ContextMenu className={style.center} onHide={() => setAddDevice(false)} options={newDeviceOptions}></ContextMenu>}
   </>
 };

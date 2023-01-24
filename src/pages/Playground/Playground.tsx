@@ -118,18 +118,14 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
     const handleSelectAll = () => setSelectedDevices(lab.devices)
 
-    const handleDebug = () => console.log("debug")
-
     ctx.on("playground-select-all", handleSelectAll)
     ctx.on("playground-duplicate-device", handleSelectionDuplicate)
-    ctx.on("playground-new-device", handleDebug)
     ctx.on("playground-save-lab", handleSave)
     ctx.on("playground-export-lab", handleExport)
 
     return () => {
       ctx.remove("playground-select-all", handleSelectAll)
       ctx.remove("playground-duplicate-device", handleSelectionDuplicate)
-      ctx.remove("playground-new-device", handleDebug)
       ctx.remove("playground-save-lab", handleSave)
       ctx.remove("playground-export-lab", handleExport)
     }

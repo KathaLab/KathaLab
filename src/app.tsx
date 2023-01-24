@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,7 +15,6 @@ import { TitleBar } from "./components/TitleBar/TitleBar";
 // SnackBarContext
 import { Lab } from "./model/Lab";
 import { GlobalContext } from "./context/GlobalContext";
-import { keyBindContext } from "./context/KeybindContext";
 
 
 export enum Pages {

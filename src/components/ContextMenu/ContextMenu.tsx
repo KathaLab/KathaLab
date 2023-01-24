@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./ContextMenu.module.scss";
 
-type option = {
+export type option = {
   label?: string;
   onClick?: () => void;
   separator?: boolean;
@@ -12,18 +12,19 @@ type option = {
 type componentType = {
   onHide?: () => void;
   options: option[];
+  className?: string
   position?: {
     x: number;
     y: number;
   }
 };
 
-export const ContextMenu = ({ onHide, options, position }: componentType) => {
+export const ContextMenu = ({ onHide, options, position, className }: componentType) => {
 
   return (
     <>
       {onHide && <div className={style.background} onClick={onHide}></div>}
-      <ul className={style.menu} style={{left: position?.x, top: position?.y}}>
+      <ul className={style.menu + ' ' + className} style={{left: position?.x, top: position?.y}}>
         {options.map((option, index) => {
           if (option.separator) {
             return <span key={index} className={style.separator}></span>;
