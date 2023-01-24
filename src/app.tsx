@@ -67,7 +67,7 @@ const App = () => {
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
     };
-  }, []);
+  }, []); 
 
   const handleSave = async () => {
     if (currentLab.labName === "") currentLab.labName = "Untitled";
@@ -78,7 +78,7 @@ const App = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window.electronAPI.loadSave();
-  };
+  }; 
 
   const pageToComponent = (page: Pages) => {
     switch (page) {
@@ -94,7 +94,7 @@ const App = () => {
           setSelectedLab={setLab}
         />
     }
-  }
+  } 
 
   return (
     <GlobalContext>
@@ -112,7 +112,7 @@ const App = () => {
       </div>
     </GlobalContext >
 
-  );
+  ); 
 };
 
 createRoot(document.querySelector("#root")).render(<App />);

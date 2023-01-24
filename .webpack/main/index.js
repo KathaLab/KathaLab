@@ -1207,7 +1207,7 @@ var createWindow = function () {
         show: false,
         webPreferences: {
             contextIsolation: true,
-            preload: 'D:\\dev\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
+            preload: 'D:\\dev\\pt\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
         },
     });
     // and load the index.html of the app.

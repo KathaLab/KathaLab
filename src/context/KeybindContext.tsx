@@ -11,7 +11,6 @@ type contextType = {
 type keybindType = {
   eventName: string,
   code: string[],
-  ctrl: boolean
 }
 
 export const keyBindContext = createContext<contextType>({
@@ -22,7 +21,6 @@ export const keyBindContext = createContext<contextType>({
 
 export const KeybindContext = ({ children }: { children: ReactNode }) => {
   const pressed = useRef<Set<string>>(new Set())
-  console.log(keybinds)
   const [handlers, setHandlers] = useState<[string, () => void][]>([])
 
   useEffect(() => {
@@ -32,10 +30,8 @@ export const KeybindContext = ({ children }: { children: ReactNode }) => {
     document.onkeydown = (e) => {
       pressed.current.add(e.key)
       keybinds.forEach((keybind: keybindType) => {
-        if (
-          e.ctrlKey === keybind.ctrl &&
-          keybind.code.every((code) => pressed.current.has(code))
-        ) handlers.forEach((element) => element?.[0] === keybind.eventName && element[1]());
+        if (keybind.code.every((code) => pressed.current.has(code)))
+          handlers.forEach((element) => element?.[0] === keybind.eventName && element[1]());
       });
     }
 

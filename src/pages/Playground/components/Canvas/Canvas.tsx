@@ -263,9 +263,7 @@ export const Canvas = ({
           20
         );
       })();
-
     }));
-
 
     // render scrollbars
     renderHScrollbars();
@@ -337,12 +335,12 @@ export const Canvas = ({
       return actionTypeRef.current = 'scrollX';
     }
 
-    const [device] = getDeviceInZone(
+    const device = getDeviceInZone(
       position.x,
       position.y,
       position.x,
       position.y
-    );
+    ).at(-1);
 
     if (device && !selectedDevices.includes(device)) {
       setSelectedDevices(e.shiftKey ? [...selectedDevices,  device] : [device]);
@@ -441,9 +439,6 @@ export const Canvas = ({
 
     if (e.key === "Shift") {
       isMajPressedRef.current = true;
-    }
-    if (e.key === "a" && e.ctrlKey) {
-      setSelectedDevices(topoJson.devices);
     }
     if (e.key === "Delete" || e.key === "Backspace") {
       topoJson.devices = topoJson.devices.filter(

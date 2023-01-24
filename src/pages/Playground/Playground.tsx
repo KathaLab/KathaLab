@@ -23,15 +23,6 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const ctx = useContext(keyBindContext);
 
-  useEffect(() => {
-    const func = () => console.log("playground-select-all");
-    ctx.on("playground-select-all", func) 
-
-    return () => {
-      ctx.remove("playground-select-all", func)
-    }
-  }, [])
-
   const handleSave = async () => {
     if (lab.labName === "") lab.labName = "Untitled";
 
@@ -80,8 +71,11 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     setCurrentLab({
       ...lab, devices: [...lab.devices, ...newDevices]
     });
-  }
 
+    setSelectedDevices(newDevices)
+
+    console.log(selectedDevices)
+  }
 
   const handleExport = async () => {
 
@@ -120,6 +114,27 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
     return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
   }
 
+  useEffect(() => {
+
+    const handleSelectAll = () => setSelectedDevices(lab.devices)
+
+    const handleDebug = () => console.log("debug")
+
+    ctx.on("playground-select-all", handleSelectAll)
+    ctx.on("playground-duplicate-device", handleSelectionDuplicate)
+    ctx.on("playground-new-device", handleDebug)
+    ctx.on("playground-save-lab", handleSave)
+    ctx.on("playground-export-lab", handleExport)
+
+    return () => {
+      ctx.remove("playground-select-all", handleSelectAll)
+      ctx.remove("playground-duplicate-device", handleSelectionDuplicate)
+      ctx.remove("playground-new-device", handleDebug)
+      ctx.remove("playground-save-lab", handleSave)
+      ctx.remove("playground-export-lab", handleExport)
+    }
+  }, [lab.devices, selectedDevices])
+
   return (
     <div className={style.page}>
       <div className={style.content}>
@@ -147,5 +162,5 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         {selectedDevices?.[0] && <ConfigPanel allCollisionDomain={allCollisionDomain()} updateDevices={updateDevices} device={selectedDevices?.[0]}></ConfigPanel>}
       </div>
     </div>
-    );
+  );
 };

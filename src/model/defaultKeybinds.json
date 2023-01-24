@@ -1,10 +1,24 @@
 [{
   "eventName": "playground-select-all",
-  "code" : ["a"],
-  "ctrl" : true 
+  "code" : ["Control","a"]
 }, 
 {
-  "eventName": "playground-select-duplicate",
-  "code" : ["d"],
-  "ctrl" : true 
+  "eventName": "playground-duplicate-device",
+  "code" : ["Control", "d"]
+},
+{
+  "eventName": "playground-new-device",
+  "code" : ["Control", "n"]
+},
+{
+  "eventName": "playground-save-lab",
+  "code" : ["Control", "s"]
+},
+{
+  "eventName": "playground-export-lab",
+  "code" : ["Control", "Shift", "e"]
+},
+{
+  "eventName": "app-new-lab",
+  "code" : ["Control", "Shift", "n"]
 }]
