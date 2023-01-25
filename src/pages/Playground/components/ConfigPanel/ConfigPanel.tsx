@@ -28,10 +28,8 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
 
 
   const validation = (value: string, parameter: RegExp) => {
-    console.log(value)
     if (value) { 
       const array = Array.from(value.matchAll(parameter))[0]?.toString()
-      console.log(array === value)
       return !(array === value)
     }
     return true

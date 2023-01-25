@@ -1,0 +1,30 @@
+.autocomplete {
+    position: relative;
+
+    .input {
+        position: relative;
+        width: 100%;
+    }
+    
+    .list {
+        position: absolute;
+        width: 100%;
+        top: 100%;
+        z-index: 1;
+        color: var(--clr-input-text);
+        font-size: .825rem;
+        background-color: var(--clr-input-bg);
+        box-shadow:0 6px 6px 0 rgba(0, 0, 0, 0.3);;
+    
+        .item {
+            padding: .5rem .25rem;
+            border-bottom: solid 1px var(--clr-separator);
+        }
+        
+        .itemHover {
+            background-color: var(--clr-input-list-hover);
+        }
+    }
+}
+
+

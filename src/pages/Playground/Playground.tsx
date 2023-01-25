@@ -126,7 +126,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   }
 
   const allCollisionDomain = () => {
-    const collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain))
+    const collisionDomain = lab.devices.flatMap(device => device.interfaces?.flatMap(data => data.collision_domain)).filter(Boolean)
     return collisionDomain.filter((item, idx, self) => self.lastIndexOf(item) === idx)
   }
 

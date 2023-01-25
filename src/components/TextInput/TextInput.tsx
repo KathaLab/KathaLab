@@ -1,4 +1,3 @@
-import { number } from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import { useId } from "../../hooks/useId"
 import style from "./TextInput.module.scss";
@@ -6,7 +5,6 @@ import style from "./TextInput.module.scss";
 const textInputTypeValidator = {
   NUMBER: /[0-9]*/,
   IP: /[0-9\.]*/,
-  AUTOCOMPLETE: "autocomplete",
   DEFAULT: /.*/,
 }
 
@@ -18,11 +16,10 @@ type componentType = {
   value?: string,
   onChange?: (params?: string) => void,
   onBlur?: (value?: string) => void,
-  autocommplete?: string[],
   type?: textInputType
 }
 
-export const TextInput = ({ placeholder, className, onChange, value, onBlur, autocommplete, type = "DEFAULT" }: componentType) => {
+export const TextInput = ({ placeholder, className, onChange, value, onBlur, type = "DEFAULT" }: componentType) => {
 
   const id = "id_" + useId("data-list");
   const [inputValue, setInputValue] = useState(value || "");
@@ -49,9 +46,5 @@ export const TextInput = ({ placeholder, className, onChange, value, onBlur, aut
       placeholder={placeholder}
       onChange={handleChange}
     />
-
-    {autocommplete && <datalist id={id}>
-      {autocommplete?.map((item, index) => <option key={index} value={item} />)}
-    </datalist>}
   </>
 };
