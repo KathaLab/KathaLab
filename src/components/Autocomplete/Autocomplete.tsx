@@ -8,26 +8,26 @@ type AutocompleteType = {
     defaultValue?: string,
     datalist: string[],
     onChange?: (value: string) => void,
-    placeholder?: string
+    placeholder?: string,
+    onBlur?: (value?: string) => void,
 }
 
-export const Autocomplete = ({defaultValue, datalist, onChange, placeholder, classInput}: AutocompleteType) => {
+export const Autocomplete = ({defaultValue, datalist, onChange, placeholder, classInput, onBlur}: AutocompleteType) => {
     const [state, setState] = useState(false);
-    const [value, setValue] = useState(defaultValue);
+    const [value, setValue] = useState(defaultValue || "");
     const [index, setIndex] = useState(null);
 
     
     const componentRef = useRef(null);
 
     const getAutocomplete = () => {
-        console.log(datalist);
-        console.log(datalist.length)
         return [...datalist].filter(
             (data, index) => index === datalist.indexOf(data) && data.includes(value)
         );
     };
 
     useEffect(() => {
+        setValue(defaultValue || "")
         const handler = (event: KeyboardEvent) => {
             if (event.key === "ArrowUp") {
                 setIndex((old: number) => (old === null ? 0 : Math.max(old - 1, 0)));
@@ -36,7 +36,7 @@ export const Autocomplete = ({defaultValue, datalist, onChange, placeholder, cla
             } else if (event.key === "Enter" && index != null) {
                 const list = getAutocomplete();
                 setValue(list[index % list.length]);
-                onChange(list[index % list.length]);
+                onChange?.(list[index % list.length]);
             }
         };
         document.addEventListener("keydown", handler);
@@ -44,7 +44,7 @@ export const Autocomplete = ({defaultValue, datalist, onChange, placeholder, cla
         return () => {
             document.removeEventListener("keydown", handler);
         };
-    }, [index]);
+    }, [index, defaultValue]);
 
     return (
         <div ref={componentRef} className={style.autocomplete + " " + classInput}>
@@ -54,11 +54,11 @@ export const Autocomplete = ({defaultValue, datalist, onChange, placeholder, cla
                 type="text"
                 onChange={(e) => {
                     setValue(e.target.value);
-                    onChange(e.target.value);
+                    onChange?.(e.target.value);
                     setIndex(null)
                 }
                 }
-                onBlur={(e) => setState(false)}
+                onBlur={(event) =>{ setState(false); onBlur && onBlur(event.target.value)}}
                 onFocus={(e) => setState(true)}
                 value={value} />
             <ul className={style.list}>
@@ -67,7 +67,7 @@ export const Autocomplete = ({defaultValue, datalist, onChange, placeholder, cla
                         <li
                             key={data}
                             onMouseDown={(e) => e.preventDefault()}
-                            onClick={(e) => { setValue(data); onChange(data) }}
+                            onClick={(e) => { setValue(data); onChange?.(data) }}
                             className={(index !== null && index % self.length === idx? style.item +" " + style.itemHover : style.item)}>
                             {data}
                         </li>
