@@ -7,22 +7,16 @@ import { v4 as uuidv4 } from "uuid";
 import { Gallery, Playground, Settings } from "./pages";
 
 // importing stuff related to the localization
-import localizationContext from "./context/LocalizationContext";
-import { Language, LanguageToLocalization } from "./localization";
 import { createRoot } from "react-dom/client";
 
 // importing styles
-import themes from "./theme/_theme.scss";
-import themeContext from "./context/ThemeContext";
 import { TitleBar } from "./components/TitleBar/TitleBar";
 
 // SnackBarContext
-import SnackBarContext from "./context/SnackbarContext";
-import { SnackBar, snackBarMessageType } from "./components/SnackBar/SnackBar";
-import { useDelayQueue } from "./hooks/useDelayQueue";
 import { Lab } from "./model/Lab";
+import { GlobalContext } from "./context/GlobalContext";
 
-export type themeNames = keyof typeof themes;
+
 export enum Pages {
   Gallery,
   Playground,
@@ -31,13 +25,7 @@ export enum Pages {
 
 const App = () => {
   const [page, setPage] = useState<Pages>(Pages.Gallery);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const [localization, setLocalization] = useState<Language>(localStorage.getItem('language') == null ? Language.EN :  String(localStorage.getItem('language')));
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const [theme, setTheme] = useState<themeNames>(localStorage.getItem('theme') == null ? "theme-dark2" : localStorage.getItem('theme'));
-  const [snackbarVisibility, setSnackbarVisibility] = useState(false);
+
   const [labs, setLabs] = useState<Lab[]>([]);
   const [currentLab, setCurrentLab] = useState<Lab>(null);
 
@@ -63,32 +51,11 @@ const App = () => {
     window.electronAPI.deleteSave(labId);
   };
 
-  // handle snackbar
-  const handleSnackBarMessage = (message: snackBarMessageType) => {
-    setSnackbarVisibility(true);
-    return new Promise<void>((resolve) =>
-      setTimeout(() => {
-        setSnackbarVisibility(false);
-        setTimeout(resolve, 200);
-      }, message.duration - 200)
-    );
-  };
-  const [[currentElement], addElement] = useDelayQueue<snackBarMessageType>(
-    handleSnackBarMessage
-  );
-
-  //fetch labs on load
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window.electronAPI.receive("save:load", (_: unknown, data: Lab[]) => {
       setLabs(data);
-    });
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.electronAPI.receive("snack:add", (_: unknown, snackMessage: snackBarMessageType) => {
-      addElement(snackMessage)
     });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -99,9 +66,6 @@ const App = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.electronAPI.removeListener("save:load");
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.electronAPI.removeListener("snack:add");
     };
   }, []);
 
@@ -116,45 +80,37 @@ const App = () => {
     window.electronAPI.loadSave();
   };
 
+  const pageToComponent = (page: Pages) => {
+    switch (page) {
+      case Pages.Settings:
+        return <Settings />
+      case Pages.Playground:
+        return <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
+      case Pages.Gallery:
+        return <Gallery
+          handleDelete={handleDelete}
+          switchPage={setPage}
+          labs={labs}
+          setSelectedLab={setLab}
+        />
+    }
+  }
+
   return (
-    <main className={themes[theme]}>
-      <localizationContext.Provider
-        value={{
-          language: localization,
-          languageDico: LanguageToLocalization[localization],
-          updateContext: setLocalization,
-        }}
-      >
-        <themeContext.Provider value={{ theme, updateContext: setTheme }}>
-          <SnackBarContext.Provider value={{ updateContext: addElement }}>
-            <TitleBar
-              switchPage={setPage}
-              page={page}
-              onSave={handleSave}
-              setSelectedLab={setLab}
-              labs={labs}
-              selectedLab={currentLab}
-              onChange={(name) => setCurrentLab({ ...currentLab, labName: name })}
-            ></TitleBar>
-            <div className="pageWrapper">
-              {page == Pages.Gallery ? (
-                <Gallery
-                  handleDelete={handleDelete}
-                        switchPage={setPage}
-                        labs={labs}
-                        setSelectedLab={setLab}
-                    />
-                ) : page == Pages.Playground ? (
-                    <Playground lab={currentLab} setCurrentLab={setCurrentLab} />
-                ) : page == Pages.Settings ? (
-                    <Settings />
-                ) : null}
-              </div>
-              <SnackBar visibility={snackbarVisibility} {...currentElement} />
-            </SnackBarContext.Provider>
-          </themeContext.Provider>
-        </localizationContext.Provider>
-      </main>
+    <GlobalContext>
+      <TitleBar
+        switchPage={setPage}
+        page={page}
+        onSave={handleSave}
+        setSelectedLab={setLab}
+        labs={labs}
+        selectedLab={currentLab}
+        onChange={(name) => setCurrentLab({ ...currentLab, labName: name })}
+      ></TitleBar>
+      <div className="pageWrapper">
+        {pageToComponent(page)}
+      </div>
+    </GlobalContext >
   );
 };
 

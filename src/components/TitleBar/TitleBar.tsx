@@ -7,7 +7,10 @@ import ExportConf from "../../lib/ExportConf";
 import {v4 as uuidv4} from "uuid";
 import {DeviceType} from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
-import SnackbarContext from "../../context/SnackbarContext";
+import { snackbarContext } from "../../context/SnackbarContext";
+import { keyBindContext } from '../../context/KeybindContext'
+import { dialogContext } from '../../context/DialogContext'
+import { DialogConfirmation } from '../Dialog/DialogConfirmation'
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -25,10 +28,12 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
 
     const inputRef = useRef<HTMLInputElement>(null);
-
+    const ctx = useContext(keyBindContext);
+    const dialog = useContext(dialogContext)
+    
     const handleLabClick = () => setLabExpanded(x => !x);
 
-    const snackBar = useContext(SnackbarContext);
+    const snackBar = useContext(snackbarContext);
 
     useEffect(() => {
         setIsTitleEditable(page !== Pages.Playground)
@@ -38,9 +43,23 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const labOptions = [
         {
             label: 'New', onClick: () => {
-                setSelectedLab(undefined);
-                switchPage(Pages.Playground);
-                setLabExpanded(false);
+                let keep = true;
+                dialog.updateContext(DialogConfirmation, {
+                    text: "are you sure ?",
+                    Cancel: () => {
+                        keep = false
+                        dialog.close()
+                    },
+                    Validate: () => {
+                        keep = true
+                        dialog.close()
+                    }
+                }).onClose(() => {
+                    setSelectedLab(undefined);
+                    switchPage(Pages.Playground);
+                    setLabExpanded(false);
+                    console.log(keep)
+                })
             }
         },
         {
@@ -210,6 +229,19 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             icon: 'done'
         })
     }
+
+    useEffect(() => {
+        const handleNewLab = () => {
+            setSelectedLab(undefined);
+            switchPage(Pages.Playground);
+          }
+          ctx.on('app-new-lab', handleNewLab)
+
+          return () => {
+            ctx.remove('app-new-lab', handleNewLab)
+          }
+    }, [])
+    
 
     return (
         <div className={styles.titleBar}>
