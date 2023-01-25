@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { DialogContext } from './DialogContext'
 import { KeybindContext } from './KeybindContext'
 import { LocalizationContext } from './LocalizationContext'
 import { SnackbarContext } from './SnackbarContext'
@@ -9,9 +10,11 @@ export const GlobalContext = ({ children }: { children: ReactNode }) => {
     <ThemeContext>
       <LocalizationContext>
         <KeybindContext>
-          <SnackbarContext>
-            {children}
-          </SnackbarContext>
+          <DialogContext>
+            <SnackbarContext>
+              {children}
+            </SnackbarContext>
+          </DialogContext>
         </KeybindContext>
       </LocalizationContext>
     </ThemeContext>

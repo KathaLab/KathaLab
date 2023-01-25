@@ -9,6 +9,8 @@ import {v4 as uuidv4} from "uuid";
 import { DeviceType } from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
 import { keyBindContext } from '../../context/KeybindContext'
+import { dialogContext } from '../../context/DialogContext'
+import { DialogConfirmation } from '../Dialog/DialogConfirmation'
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -27,7 +29,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
 
     const inputRef = useRef<HTMLInputElement>(null);
     const ctx = useContext(keyBindContext);
-
+    const dialog = useContext(dialogContext)
     
     const handleLabClick = () => setLabExpanded(x => !x);
 
@@ -39,9 +41,23 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const labOptions = [
         {
             label: 'New', onClick: () => {
-                setSelectedLab(undefined);
-                switchPage(Pages.Playground);
-                setLabExpanded(false);
+                let keep = true;
+                dialog.updateContext(DialogConfirmation, {
+                    text: "are you sure ?",
+                    Cancel: () => {
+                        keep = false
+                        dialog.close()
+                    },
+                    Validate: () => {
+                        keep = true
+                        dialog.close()
+                    }
+                }).onClose(() => {
+                    setSelectedLab(undefined);
+                    switchPage(Pages.Playground);
+                    setLabExpanded(false);
+                    console.log(keep)
+                })
             }
         },
         {
