@@ -96,5 +96,3 @@ out/
 /data/*.json
 
 ./.idea
-
-/.webpack
