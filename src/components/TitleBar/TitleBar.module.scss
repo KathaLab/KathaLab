@@ -70,6 +70,23 @@
   align-items: center;
 }
 
+.center {
+  margin: auto;
+  width: fit-content;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  & .badge {
+    position: absolute;
+    border-radius: 0.75rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: var(--clr-tb-title);
+    left: -1.5rem;
+  }
+}
+
 .separator {
   height: 100%;
   width: 2px;

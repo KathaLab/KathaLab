@@ -2,7 +2,9 @@
 // Please do not change this file!
 interface CssExports {
   'backBtn': string;
+  'badge': string;
   'btnList': string;
+  'center': string;
   'clickable': string;
   'clicked': string;
   'input': string;

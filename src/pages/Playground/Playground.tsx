@@ -140,19 +140,19 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   useEffect(() => {
 
     const handleSelectAll = () => setSelectedDevices(lab.devices)
-
+    const handleExportKeybind = () => handleExport(lab) 
     ctx.on("playground-select-all", handleSelectAll)
     ctx.on("playground-duplicate-device", handleSelectionDuplicate)
     ctx.on("playground-save-lab", handleSave)
-    ctx.on("playground-export-lab", handleExport)
+    ctx.on("playground-export-lab", handleExportKeybind)
 
     return () => {
       ctx.remove("playground-select-all", handleSelectAll)
       ctx.remove("playground-duplicate-device", handleSelectionDuplicate)
       ctx.remove("playground-save-lab", handleSave)
-      ctx.remove("playground-export-lab", handleExport)
+      ctx.remove("playground-export-lab", handleExportKeybind)
     }
-  }, [lab.devices, selectedDevices])
+  }, [lab, selectedDevices])
 
   return (
     <div className={style.page}>
