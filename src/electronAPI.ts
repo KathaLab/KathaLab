@@ -131,19 +131,21 @@ export class electronAPI {
         const filesNames = fs.readdirSync(directoryPath)
 
         filesNames.forEach(fileName => {
-
-          if (path.extname(fileName) == ".conf") {
+          if (path.extname(fileName) == "lab.conf") {
             filesData.confFile = readFile(path.join(directoryPath, fileName));
           }
-          if (path.extname(fileName) == ".startup") {
+          else if (path.extname(fileName) == ".startup") {
             const deviceName = path.basename(fileName, '.startup').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
-          if (path.extname(fileName) == ".shutdown") {
+          else if (path.extname(fileName) == ".shutdown") {
             const deviceName = path.basename(fileName, '.shutdown').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
+          }
+          else {
+            this.error(_.sender, "No lab.conf or .startup and .shutdown file find in : " + directoryPath);
           }
         })
         return filesData

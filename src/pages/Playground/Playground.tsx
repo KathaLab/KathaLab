@@ -74,51 +74,59 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const handleExport = async (lab: Lab) => {
 
-    const exportConf = new ExportConf();
-    const labExported = exportConf.exportLabConf(lab);
-    const deviceExportedStartup = exportConf.exportStartupConf(lab);
-    const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
+    try {
+      const exportConf = new ExportConf();
+      const labExported = exportConf.exportLabConf(lab);
+      const deviceExportedStartup = exportConf.exportStartupConf(lab);
+      const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
 
-    //Creating lab.conf and all device.startup
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await window.electronAPI.chooseDirectory()
-        .then((filePath: string) => {
-          if (filePath && labExported && lab.devices) {
-            const fileName = "lab.conf";
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            window.electronAPI.saveFile(filePath, fileName, labExported);
-            if (deviceExportedStartup) {
-              for (const deviceName in deviceExportedStartup) {
-                const fileName = deviceName + '.startup';
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                window.electronAPI.saveFile(filePath, fileName, deviceExportedStartup[deviceName])
+      //Creating lab.conf and all device.startup
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await window.electronAPI.chooseDirectory()
+          .then((filePath: string) => {
+            if (filePath) {
+              const fileName = "lab.conf";
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              window.electronAPI.saveFile(filePath, fileName, labExported);
+              if (deviceExportedStartup) {
+                for (const deviceName in deviceExportedStartup) {
+                  const fileName = deviceName + '.startup';
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  window.electronAPI.saveFile(filePath, fileName, deviceExportedStartup[deviceName])
 
+                }
               }
-            }
-            if (deviceExportedShutdown) {
-              for (const deviceName in deviceExportedShutdown) {
-                const fileName = deviceName + '.shutdown';
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                window.electronAPI.saveFile(filePath, fileName, deviceExportedShutdown[deviceName])
+              if (deviceExportedShutdown) {
+                for (const deviceName in deviceExportedShutdown) {
+                  const fileName = deviceName + '.shutdown';
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  window.electronAPI.saveFile(filePath, fileName, deviceExportedShutdown[deviceName])
+                }
               }
+              snackBar.updateContext({
+                duration: 3000,
+                message: 'The lab have been successfully exported',
+                icon: 'done'
+              })
+            } else {
+              snackBar.updateContext({
+                duration: 3000,
+                message: 'The lab can\'t be exported',
+                icon: 'warning'
+              })
             }
-            snackBar.updateContext({
-              duration: 3000,
-              message: 'The lab have been successfully exported',
-              icon: 'done'
-            })
-          } else {
-            snackBar.updateContext({
-              duration: 3000,
-              message: 'The lab can not be exported',
-              icon: 'warning'
-            })
-          }
-        })
+          })
+    }catch (err){
+      snackBar.updateContext({
+        duration: 3000,
+        message: err,
+        icon: 'warning'
+      })
+    }
   }
 
   const updateDevices = () => {
