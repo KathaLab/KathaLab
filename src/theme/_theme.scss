@@ -1,103 +1,180 @@
 // Colors used
-$clr-blue-primary: #559bc9;
-$clr-red: #ff4343;
-$clr-white: #ffffff;
-$clr-white-1: #ffffffd9;
-$clr-white-2: #ebebeb;
-$clr-white-3: #ffffff1a;
-$clr-black: #000000;
-$clr-grey-1: #1e1e1e;
-$clr-grey-2: #252525;
-$clr-grey-3: #202020;
-$clr-grey-4: #333333;
-$clr-grey-5: #aaaaaa;
+$clr-dark-primary: #559bc9;
+$clr-dark-red: #ff4343;
+$clr-dark-white: #ffffff;
+$clr-dark-white-1: #ffffffd9;
+$clr-dark-white-2: #ebebeb;
+$clr-dark-white-3: #ffffff1a;
+$clr-dark-black: #000000;
+$clr-dark-grey-1: #1e1e1e;
+$clr-dark-grey-2: #252525;
+$clr-dark-grey-3: #202020;
+$clr-dark-grey-4: #333333;
+$clr-dark-grey-5: #aaaaaa;
+
+
+$clr-light-primary: #d6cfe2;
+$clr-light-red: #ff6d6d;
+$clr-light-purple-1: #5a4579;
+$clr-light-purple-2: #705697;
+$clr-light-purple-3: #616175;
+$clr-light-purple-4: #ededf5;
+$clr-light-purple-5: #ddddf5;
+$clr-light-white: #ffffff;
+$clr-light-white-1: #f5f5f5;
+$clr-light-white-2: #f3f3f3;
+$clr-light-white-3: #f2f2f2;
+$clr-light-white-4: #f4f4f4;
+$clr-light-white-5: #fafafa;
+$clr-light-grey-1: #e0e0e0;
+$clr-light-grey-2: #c0c0c0;
 
 // Themes
 $themes: (
   light: (
-    clr-main-primary: #5A587C,
-    clr-main-orange: #ffffff,
-    clr-main-white: #ffffff,
-    clr-white: #ffffff,
-    clr-main-black: #000,
-    clr-main-secondary: #6c7087, 
-    clr-main-grey: #ebebeb,
-    clr-main-lightgrey: #c4c6d1, 
-    clr-light-grey: #6c7087,
-    clr-dark-grey: #ebebeb,
-    clr-title-color: #aaa
-  ),
-  dark2: (
-    //new
     //buttons
-    clr-action-bg-default: $clr-blue-primary,
-    clr-action-bg-red: $clr-red,
-    clr-action-icon-default: $clr-white-1,
-    clr-action-text-default:  $clr-white-1,
-    clr-action-hover-default: $clr-blue-primary,
-    clr-action-focus-default: $clr-blue-primary,
-    clr-action-bg-1: $clr-grey-2,
+    clr-action-bg-default: $clr-light-primary,
+    clr-action-bg-red: $clr-light-red,
+    clr-action-icon-default: $clr-light-purple-1,
+    clr-action-text-default: $clr-light-purple-1,
+    clr-action-hover-default: $clr-light-purple-4,
+    clr-action-focus-default: $clr-light-purple-1,
+    clr-action-bg-1: $clr-light-white-1,
 
     //backgrounds
-    clr-bg-white: $clr-white-1,
+    clr-bg-white: $clr-light-purple-1,
+    clr-playground-bg: $clr-light-white-1,
+    clr-listDevice-bg: $clr-light-white-3,
 
     //snackbar
-    clr-snackbar-bg: $clr-grey-4,
-    clr-snackbar-text: $clr-white,
+    clr-snackbar-bg: $clr-light-white-2,
+    clr-snackbar-text: $clr-light-purple-3,
 
     //inputs
-    clr-input-bg: $clr-grey-1,
-    clr-input-text: $clr-white-1,
-    clr-input-placeholder: $clr-grey-5,
-    clr-input-list-hover: $clr-grey-4,
+    clr-input-bg: $clr-light-white-5,
+    clr-input-text: $clr-light-purple-3,
+    clr-input-placeholder: $clr-light-grey-2,
+    clr-input-list-hover: $clr-light-primary,
 
     //title bar
-    clr-tb-title: $clr-grey-5,
-    clr-tb-action-hover: $clr-white-3,
+    clr-tb-title: $clr-light-purple-3,
+    clr-tb-action-hover: $clr-light-primary,
+    clr-tb-bg: $clr-light-grey-1,
 
     //Card Gallery
-    clr-cg-bg: $clr-grey-1,
-    clr-cg-title: $clr-grey-4,
-    clr-cg-text: $clr-white-1,
+    clr-cg-bg: $clr-light-white-1,
+    clr-cg-title: $clr-light-primary,
+    clr-cg-text: $clr-light-purple-3,
 
     //Gallery
-    clr-page-bg: $clr-grey-2,
+    clr-page-bg: $clr-light-white-2,
     
     //Panel
-    clr-panel-bg: $clr-grey-2,
-    clr-panel-title: $clr-white-1,
-    clr-panel-text: $clr-white-1,
-    clr-panel-image-bg: $clr-grey-3,
+    clr-panel-bg: $clr-light-white-3,
+    clr-panel-title: $clr-light-purple-3,
+    clr-panel-text: $clr-light-purple-3,
+    clr-panel-image-bg: $clr-light-white,
 
     //Scrollbar
-    clr-scrollbar-bg: $clr-grey-4,
-    clr-scrollbar-hover: $clr-blue-primary,
+    clr-scrollbar-bg: $clr-light-primary,
+    clr-scrollbar-hover: $clr-light-purple-2,
 
     //Settings
-    clr-settings-text: $clr-white-1,
-    clr-settings-border: $clr-grey-4,
-    clr-settings-icon: $clr-blue-primary,
+    clr-settings-text: $clr-light-purple-3,
+    clr-settings-border: $clr-light-primary,
+    clr-settings-icon: $clr-light-primary,
 
     //Tooltip
-    clr-tooltip-bg: $clr-grey-3,
-    clr-tooltip-text: $clr-white-1,
+    clr-tooltip-bg: $clr-light-white-1,
+    clr-tooltip-text: $clr-light-purple-3,
 
     clr-warning: #ebaa3b,
 
     //others
-    clr-separator: $clr-grey-4,
-    clr-separator-2: $clr-white-1,
-    clr-cardDevice-bg: $clr-grey-1,
+    clr-separator: $clr-light-grey-1,
+    clr-separator-2: $clr-light-grey-1,
+    clr-cardDevice-bg: $clr-light-white-1,
 
-    clr-playground-bg: $clr-grey-1,
-    clr-listDevice-bg: $clr-grey-2,
-
-    //old 
-    clr-main-primary: $clr-blue-primary,
+    //Device
+    clr-device: $clr-light-purple-1,
+    clr-device-hover: $clr-light-purple-1,
 
     //modal
-    clr-modal-bg: $clr-grey-4,
-    clr-modal-text: $clr-white-1
+    clr-modal-bg: $clr-dark-grey-4,
+    clr-modal-text: $clr-dark-white-1,
+  ),
+  dark2: (
+    //buttons
+    clr-action-bg-default: $clr-dark-primary,
+    clr-action-bg-red: $clr-dark-red,
+    clr-action-icon-default: $clr-dark-white-1,
+    clr-action-text-default:  $clr-dark-white-1,
+    clr-action-hover-default: $clr-dark-primary,
+    clr-action-focus-default: $clr-dark-primary,
+    clr-action-bg-1: $clr-dark-grey-2,
+
+    //backgrounds
+    clr-bg-white: $clr-dark-white-1,
+
+    //snackbar
+    clr-snackbar-bg: $clr-dark-grey-4,
+    clr-snackbar-text: $clr-dark-white,
+
+    //inputs
+    clr-input-bg: $clr-dark-grey-1,
+    clr-input-text: $clr-dark-white-1,
+    clr-input-placeholder: $clr-dark-grey-5,
+    clr-input-list-hover: $clr-dark-grey-4,
+
+    //title bar
+    clr-tb-title: $clr-dark-grey-5,
+    clr-tb-action-hover: $clr-dark-white-3,
+    clr-tb-bg: $clr-dark-grey-4,
+
+    //Card Gallery
+    clr-cg-bg: $clr-dark-grey-1,
+    clr-cg-title: $clr-dark-grey-4,
+    clr-cg-text: $clr-dark-white-1,
+
+    //Gallery
+    clr-page-bg: $clr-dark-grey-2,
+    
+    //Panel
+    clr-panel-bg: $clr-dark-grey-2,
+    clr-panel-title: $clr-dark-white-1,
+    clr-panel-text: $clr-dark-white-1,
+    clr-panel-image-bg: $clr-dark-grey-3,
+
+    //Scrollbar
+    clr-scrollbar-bg: $clr-dark-grey-4,
+    clr-scrollbar-hover: $clr-dark-primary,
+
+    //Settings
+    clr-settings-text: $clr-dark-white-1,
+    clr-settings-border: $clr-dark-grey-4,
+    clr-settings-icon: $clr-dark-primary,
+
+    //Tooltip
+    clr-tooltip-bg: $clr-dark-grey-3,
+    clr-tooltip-text: $clr-dark-white-1,
+
+    clr-warning: #ebaa3b,
+
+    //others
+    clr-separator: $clr-dark-grey-4,
+    clr-separator-2: $clr-dark-white-1,
+    clr-cardDevice-bg: $clr-dark-grey-1,
+
+    clr-playground-bg: $clr-dark-grey-1,
+    clr-listDevice-bg: $clr-dark-grey-2,
+
+    //device
+    clr-device: $clr-dark-primary,
+    clr-device-hover: $clr-dark-primary,
+
+    //modal
+    clr-modal-bg: $clr-dark-grey-4,
+    clr-modal-text: $clr-dark-white-1
   ),
   dark: (
     clr-main-primary: #dd733c,
