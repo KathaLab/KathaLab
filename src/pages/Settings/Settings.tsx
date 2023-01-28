@@ -4,6 +4,7 @@ import { themeContext } from "../../context/ThemeContext";
 import themes from "../../theme/_theme.scss";
 import style from "./Settings.module.scss"
 import { Language, LocalizationName } from "../../localization";
+import keybinds from "../../model/defaultKeybinds.json"
 export const Settings = () => {
     const { updateContext: updateLocalization, languageDico, language } = useContext(localizationContext);
     const { updateContext: updateTheme, theme } = useContext(themeContext);
@@ -12,6 +13,13 @@ export const Settings = () => {
     useEffect(() => {
         (async () => setPath(`${await homeDirectory()}\\Kathalab`))();
     }, [])
+
+    const concatKey = (keys : string[]) => {
+        if (keys.length == 2){
+            return <p><kbd className={style.kbd}>{keys[0]}</kbd> +  <kbd className={style.kbd}>{keys[1]}</kbd> </p>;
+        }
+        return <p><kbd className={style.kbd}>{keys[0]}</kbd> +  <kbd className={style.kbd}>{keys[1]}</kbd> +  <kbd className={style.kbd}>{keys[2]}</kbd> </p>;
+    }
 
     const openDirectory = async () => {
         let path = "";
@@ -29,6 +37,8 @@ export const Settings = () => {
             <div className={style.settingsMenu}>
                 <h1><a className={style.settingsMenuTitle}
                     href={"#settingsGlobal"}>{languageDico[LocalizationName.globalSettings]}</a></h1>
+                <h1><a className={style.settingsMenuTitle}
+                       href={"#settingsKeybind"}>{languageDico[LocalizationName.keybindSettings]}</a></h1>
             </div>
 
             <div className={style.settingsGrid}>
@@ -51,8 +61,8 @@ export const Settings = () => {
                             )}
                     </select>
                 </div>
-                <div className={style.gridItemLeft}><label htmlFor="theme"
-                    className={style.label}>{languageDico[LocalizationName.themeParameterLabel]} : </label>
+                <div className={style.gridItemLeft}>
+                    <label htmlFor="theme" className={style.label}>{languageDico[LocalizationName.themeParameterLabel]} : </label>
                 </div>
                 <div className={style.gridItemRight}>
                     <select id="theme" name="theme" className={style.select}
@@ -83,8 +93,27 @@ export const Settings = () => {
                         onClick={openDirectory}>folder
                     </button>
                 </div>
+                <h1 className={style.gridItemTitle}
+                    id={"settingsKeybind"}>{languageDico[LocalizationName.keybindSettings]}</h1>
+
+                <table className={style.gridItemTab} >
+                   <tr className={style["table-header"]}>
+                       <th className={style["col-1"]}>{languageDico[LocalizationName.action]}</th>
+                       <th className={style["col-2"]}>{languageDico[LocalizationName.command]}</th>
+                   </tr>
+                    {
+                        keybinds.map((keybind) => {
+                            return <tr className={style["table-row"]}>
+                                <td className={style["col-1"]}>
+                                    <label className={style.label}>{keybind.eventName}</label>
+                                </td>
+                                <td className={style["col-2"]}>{concatKey(keybind.code)}</td>
+                            </tr>
+
+                        })
+                    }
+                </table>
             </div>
         </div>
-
     </div>
 }

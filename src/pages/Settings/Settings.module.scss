@@ -1,5 +1,5 @@
 .page{
-  min-height: 100vh;
+  min-height: 100%;
   background-color: var(--clr-page-bg);
 }
 
@@ -29,7 +29,6 @@
   margin-top: 2rem;
 }
 
-
 .settingsMenuTitle {
   font-size: 20px;
   text-decoration: none;
@@ -45,20 +44,63 @@
 }
 
 .gridItemLeft {
-  justify-self: end;
   justify-self: start;
   align-self: center;
+  grid-area: auto / 1 / auto / 1;
 }
 
 .gridItemRight {
   display: flex;
-  align-self: center;
   align-items: center;
+  grid-area: auto / 2 / auto / 2;
 }
 
 .gridItemTitle {
-  grid-area: 1 / 1 / 2 / 3;
+  grid-area: auto / 1 / auto / 3;
   font-size: 25px;
+  margin-bottom: 2rem;
+}
+
+
+.gridItemTab {
+
+  grid-area: auto / 1 / auto / 3;
+  font-size: 25px;
+  margin-bottom: 2rem;
+  tr {
+    border-radius: 3px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  th {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .table-header {
+    background-color: var(--clr-action-bg-default);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .table-row {
+    background-color: var(--clr-input-bg);
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    height: fit-content;
+  }
+
+  .col-1 {
+    flex-basis: 70%;
+  }
+
+  .col-2 {
+    flex-basis: 40%;
+  }
+
 }
 
 select {
@@ -113,7 +155,6 @@ select {
   background-color: var(--clr-input-bg);
   color: var(--clr-input-text);
   box-shadow: none;
-  box-shadow: none;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -129,5 +170,34 @@ select {
 
   &:hover{
     cursor: pointer;
+  }
+}
+
+.kbd {
+  --kbd-color-border:    var(--clr-settings-border);
+
+  color: var(--clr-input-text);
+  background-color: var(--clr-input-bg);
+  border: 1px solid var(--clr-settings-border);
+
+  border-radius: 0.25rem;
+
+  box-shadow: 0 2px 0 1px var(--clr-settings-border);
+
+  font-size: 0.85em;
+
+  line-height: 1;
+
+  min-width: 0.75rem;
+
+  text-align: center;
+
+  padding: 2px 5px;
+  position: relative;
+  top: -1px;
+
+  &:hover {
+    box-shadow: 0 1px 0 0.5px var(--kbd-color-border);
+    top: 1px;
   }
 }
