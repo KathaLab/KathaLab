@@ -16,4 +16,5 @@ main {
 }
 :global(.pageWrapper) {
   flex-grow: 1;
+  height: calc(100% - 2.5rem);
 }

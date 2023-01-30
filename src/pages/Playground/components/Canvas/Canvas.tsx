@@ -315,7 +315,6 @@ export const Canvas = ({
   const handleMouseDown: MouseEventHandler = (e) => {
     if (!interactive) return
     mouseButtonDownRef.current = e.buttons;
-
     renderJson(topoJson);
 
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
@@ -580,7 +579,7 @@ export const Canvas = ({
       onDragEnter={dragEnter}
       onDrop={dragDrop}
     ></canvas>
-    {mouseDownEvent && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
+    {mouseDownEvent && <ContextMenu onHide={() => {console.log('test'); setMouseDownEvent(null)}} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
     {addDevice && <ContextMenu className={style.center} onHide={() => setAddDevice(false)} options={newDeviceOptions}></ContextMenu>}
   </>
 };

@@ -19,6 +19,10 @@
   "code" : ["Control", "Shift", "e"]
 },
 {
+  "eventName": "app-import-lab",
+  "code" : ["Control", "Shift", "z"]
+},
+{
   "eventName": "app-new-lab",
   "code" : ["Control", "Shift", "n"]
 }]
