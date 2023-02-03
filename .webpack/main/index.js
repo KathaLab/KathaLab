@@ -1207,7 +1207,7 @@ var createWindow = function () {
         show: false,
         webPreferences: {
             contextIsolation: true,
-            preload: '/Users/benjamin/LP/projet-kathara/.webpack/renderer/main_window/preload.js',
+            preload: 'D:\\dev\\pt\\projet-kathara\\.webpack\\renderer\\main_window\\preload.js',
         },
     });
     // and load the index.html of the app.
@@ -1377,6 +1377,11 @@ module.exports = require("util");
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat */
+/******/ 	
+/******/ 	if (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + "/native_modules/";
 /******/ 	
 /************************************************************************/
 /******/ 	

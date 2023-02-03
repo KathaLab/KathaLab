@@ -11,6 +11,7 @@ $clr-grey-2: #252525;
 $clr-grey-3: #202020;
 $clr-grey-4: #333333;
 $clr-grey-5: #aaaaaa;
+$clr-grey-6: #7a7a7a;
 
 // Themes
 $themes: (
@@ -70,13 +71,15 @@ $themes: (
     clr-panel-image-bg: $clr-grey-3,
 
     //Scrollbar
-    clr-scrollbar-bg: $clr-grey-4,
+    clr-scrollbar-bg: $clr-grey-6,
     clr-scrollbar-hover: $clr-blue-primary,
 
     //Settings
     clr-settings-text: $clr-white-1,
+    clr-settings-text-2: $clr-white-3,
     clr-settings-border: $clr-grey-4,
     clr-settings-icon: $clr-blue-primary,
+    clr-settings-nav-hover: $clr-blue-primary,
 
     //Tooltip
     clr-tooltip-bg: $clr-grey-3,
