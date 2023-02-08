@@ -4,14 +4,16 @@ import { Pages } from '../../app'
 import { ContextMenu } from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
 import ExportConf from "../../lib/ExportConf";
+import { localizationContext } from "../../context/LocalizationContext";
 import { v4 as uuidv4 } from "uuid";
 import { DeviceType } from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
 import { snackbarContext } from "../../context/SnackbarContext";
 import { keyBindContext } from '../../context/KeybindContext'
-import { dialogContext } from '../../context/DialogContext'
-import { DialogConfirmation } from '../Dialog/DialogConfirmation'
-import { Tooltip } from '../Tooltip/Tooltip'
+import { LocalizationName } from '../../localization'
+// import { dialogContext } from '../../context/DialogContext'
+// import { DialogConfirmation } from '../Dialog/DialogConfirmation'
+// import { Tooltip } from '../Tooltip/Tooltip'
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -24,7 +26,7 @@ type componentType = {
 }
 
 export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selectedLab, onChange }: componentType) => {
-
+    const { languageDico } = useContext(localizationContext);
     const [labExpanded, setLabExpanded] = useState(false);
     const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
 
@@ -253,7 +255,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
                         onClick={handleLabClick}>Lab</span>
                     {labExpanded &&
                         <ContextMenu options={labOptions} onHide={() => setLabExpanded(false)}></ContextMenu>}
-                    <span className={styles.clickable + " "} onClick={() => switchPage(Pages.Settings)}>Settings</span>
+                    <span className={styles.clickable + " "} onClick={() => switchPage(Pages.Settings)}>{languageDico[LocalizationName.titleSettings]}</span>
                 </div>
             </div>
             <div className={styles.center}>

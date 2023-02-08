@@ -19,7 +19,7 @@ export const fr : Record<LocalizationName, string> = {
     [LocalizationName.themeDark] : "Thème sombre",
     [LocalizationName.titleGallery] : "Gallerie",
     [LocalizationName.titlePlayground] : "Terrain de jeu",
-    [LocalizationName.titleSettings] : "Réglages",
+    [LocalizationName.titleSettings] : "Paramètres",
     [LocalizationName.themeDark2] : "Dark theme 2",
 
 }
