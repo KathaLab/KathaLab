@@ -31,13 +31,13 @@ export default class ExportConf {
         if (lab.devices) {
             lab.devices.forEach(device => {
                 if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                    throw "Can't export lab, be sure devices names doesn't have more than 32 characters and specials characters, only '_' and '-' are allowed";
+                    throw "Can't export lab, be sure devices names doesn't have more than 32 characters and specials characters";
                 }
 
                 if (device.interfaces) {
                     device.interfaces.forEach(itf => {
                         if (!itf.interfaceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                            throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters, only '_' and '-' are allowed";
+                            throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters" +;
                         }
 
                         if (itf.collision_domain) {
@@ -97,14 +97,14 @@ export default class ExportConf {
         const devicesStartupConf: { [deviceName: string]: string } = {}
         lab.devices.forEach(device => {
             if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                throw "Can't export lab, be sure devices names doesn't have more than 32  characters or specials characters, only '_' and '-' are allowed";
+                throw "Can't export lab, be sure devices names doesn't have more than 32  characters or specials characters";
             }
 
             let conf = "";
             if (device.interfaces) {
                 device.interfaces.forEach(itf => {
                     if (!itf.interfaceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                        throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters, only '_' and '-' are allowed";
+                        throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters";
                     }
 
                     if (itf.is_up && itf.is_up == true && itf.interfaceName) {
@@ -158,7 +158,7 @@ export default class ExportConf {
         lab.devices.forEach(device => {
             let conf = '';
             if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                throw "Can't export lab, be sure devices names doesn't have more than 32  characters or specials characters, only '_' and '-' are allowed";
+                throw "Can't export lab, be sure devices names doesn't have more than 32  characters or specials characters";
             }
 
             if (device.shutdown_commands) {
