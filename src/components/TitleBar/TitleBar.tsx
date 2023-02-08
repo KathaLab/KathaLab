@@ -142,7 +142,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
                         }
                         snackBar.updateContext({
                             duration: 3000,
-                            message: 'The lab have been successfully exported',
+                            message: 'The lab has been successfully exported',
                             icon: 'done'
                         })
                     } else {
@@ -232,7 +232,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
 
         snackBar.updateContext({
             duration: 3000,
-            message: 'The lab have been successfully imported',
+            message: 'The lab has been successfully imported',
             icon: 'done'
         })
     }

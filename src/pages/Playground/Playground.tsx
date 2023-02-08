@@ -116,7 +116,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
             }
             snackBar.updateContext({
               duration: 3000,
-              message: 'The lab have been successfully exported',
+              message: 'The lab has been successfully exported',
               icon: 'done'
             })
           } else {
