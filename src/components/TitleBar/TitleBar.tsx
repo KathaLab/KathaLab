@@ -30,7 +30,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
 
     const inputRef = useRef<HTMLInputElement>(null);
     const ctx = useContext(keyBindContext);
-    const dialog = useContext(dialogContext)
+    // const dialog = useContext(dialogContext)
 
     const handleLabClick = () => setLabExpanded(x => !x);
 
@@ -44,23 +44,19 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
     const labOptions = [
         {
             label: 'New', onClick: () => {
-                let keep = true;
-                dialog.updateContext(DialogConfirmation, {
-                    text: "are you sure ?",
-                    Cancel: () => {
-                        keep = false
-                        dialog.close()
-                    },
-                    Validate: () => {
-                        keep = true
-                        dialog.close()
-                    }
-                }).onClose(() => {
+                // dialog.updateContext(DialogConfirmation, {
+                //     text: "are you sure ?",
+                //     Cancel: () => {
+                //         dialog.close()
+                //     },
+                //     Validate: () => {
+                //         dialog.close()
+                //     }
+                // }).onClose(() => {
                     setSelectedLab(undefined);
                     switchPage(Pages.Playground);
                     setLabExpanded(false);
-                    console.log(keep)
-                })
+                // })
             }
         },
         {

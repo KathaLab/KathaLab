@@ -102,7 +102,7 @@ $themes: (
     clr-modal-bg: $clr-dark-grey-4,
     clr-modal-text: $clr-dark-white-1,
   ),
-  dark2: (
+  dark: (
     //buttons
     clr-action-bg-default: $clr-dark-primary,
     clr-action-bg-red: $clr-dark-red,
@@ -174,19 +174,6 @@ $themes: (
     //modal
     clr-modal-bg: $clr-dark-grey-4,
     clr-modal-text: $clr-dark-white-1
-  ),
-  dark: (
-    clr-main-primary: #dd733c,
-    clr-main-orange: #dd733c,
-    clr-main-white: #000,
-    clr-white: #ffffff,
-    clr-main-black: #fff,
-    clr-main-secondary: #212121, 
-    clr-main-grey: #424242,
-    clr-main-lightgrey: #212121,
-    clr-light-grey: #424242, 
-    clr-dark-grey: #212121,
-    clr-title-color: #aaa
   )
 );
 
