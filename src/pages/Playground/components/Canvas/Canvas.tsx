@@ -5,6 +5,7 @@ import React, {
   KeyboardEventHandler,
   WheelEventHandler,
   useState,
+  useContext,
 } from "react";
 import style from "./Canvas.module.scss";
 import { Lab } from "../../../../model/Lab";
@@ -12,7 +13,8 @@ import { Device, deviceSize, DeviceType } from "../../../../model/Device";
 import { useColoredImage } from "../../../../hooks/useColoredImage";
 import { useCssVar } from "../../../../hooks/useCssVar";
 import { MouseButtonType, ScrollBarWidth } from "./canvaHelper";
-import { ContextMenu } from "../../../../components/ContextMenu/ContextMenu";
+import { ContextMenu, option } from "../../../../components/ContextMenu/ContextMenu";
+import { keyBindContext } from "../../../../context/KeybindContext";
 
 type ComponentType = {
   topoJson: Lab;
@@ -36,6 +38,10 @@ export const Canvas = ({
   interactive = true,
 }: ComponentType) => {
 
+  const [addDevice, setAddDevice] = useState(false);
+
+  const ctx = useContext(keyBindContext);
+
   const canvasRef = useRef(null);
   const canvasCenter = useRef({ x: 0, y: 0 });
 
@@ -47,18 +53,23 @@ export const Canvas = ({
   const actionTypeRef = useRef<"move" | "select" | "scrollX" | "scrollY">("select");
 
   const [getImg] = useColoredImage();
-  const color = useCssVar("--clr-main-primary");
+  const colorDevice = useCssVar("--clr-device");
+  const colorDeviceHover = useCssVar("--clr-device-hover");
   const [mouseDownEvent, setMouseDownEvent] = useState<MouseEvent>(null);
 
+  const colorBg = useCssVar("--clr-playground-bg");
+  const colorScrollBar = useCssVar("--clr-scrollbar-bg");
+
+  const newDeviceOptions: option[] = Object.entries(DeviceType).map(([name, type]) => {
+    return {
+      label: name,
+      onClick: () => onNew(type)
+    }
+  })
+
+
   const labOptions = [
-    {
-      label: 'New', options: Object.entries(DeviceType).map(([name, type]) => {
-        return {
-          label: name,
-          onClick: () => onNew(type)
-        }
-      })
-    },
+    { label: 'New', options: newDeviceOptions },
     { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
     { label: 'Save', onClick: onSave },
@@ -121,7 +132,7 @@ export const Canvas = ({
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "#333333";
+    ctx.fillStyle = colorScrollBar;
     ctx.fillRect(
       4 * ScrollBarWidth + ((canvasRef.current.width - ScrollBarWidth * 5) * offsetRatio) / 100,
       canvasRef.current.height - ScrollBarWidth * 2,
@@ -176,7 +187,7 @@ export const Canvas = ({
     if (ratio === 100) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "#333333";
+    ctx.fillStyle = colorScrollBar;
     ctx.fillRect(
       10,
       10 + ((canvasRef.current.height - ScrollBarWidth * 5) * offsetRatio) / 100,
@@ -208,10 +219,10 @@ export const Canvas = ({
               ctx.beginPath();
               ctx.moveTo(device.position.x + canvasCenter.current.x, device.position.y + canvasCenter.current.y);
               ctx.lineTo(dev.position.x + canvasCenter.current.x, dev.position.y + canvasCenter.current.y);
-              ctx.strokeStyle = color
+              ctx.strokeStyle = colorDevice;
               ctx.stroke();
               ctx.beginPath();
-              ctx.fillStyle = "#1e1e1e";
+              ctx.fillStyle = colorBg;
               ctx.arc(dev.position.x + canvasCenter.current.x, dev.position.y + canvasCenter.current.y, 50, 0, Math.PI * 2, true);
               ctx.arc(device.position.x + canvasCenter.current.x, device.position.y + canvasCenter.current.y, 50, 0, Math.PI * 2, true);
               ctx.fill();
@@ -231,7 +242,7 @@ export const Canvas = ({
         };
 
       const selected = selectedDevices?.includes(device);
-      const color2 = selected ? lighten(color, 75) : color;
+      const color2 = selected ? lighten(colorDevice, 75) : colorDevice;
 
       return (async () => {
 
@@ -263,9 +274,7 @@ export const Canvas = ({
           20
         );
       })();
-
     }));
-
 
     // render scrollbars
     renderHScrollbars();
@@ -310,7 +319,6 @@ export const Canvas = ({
   const handleMouseDown: MouseEventHandler = (e) => {
     if (!interactive) return
     mouseButtonDownRef.current = e.buttons;
-
     renderJson(topoJson);
 
     if (mouseButtonDownRef.current === MouseButtonType.MiddleClick) {
@@ -337,15 +345,15 @@ export const Canvas = ({
       return actionTypeRef.current = 'scrollX';
     }
 
-    const [device] = getDeviceInZone(
+    const device = getDeviceInZone(
       position.x,
       position.y,
       position.x,
       position.y
-    );
+    ).at(-1);
 
     if (device && !selectedDevices.includes(device)) {
-      setSelectedDevices(e.shiftKey ? [...selectedDevices,  device] : [device]);
+      setSelectedDevices(e.shiftKey ? [...selectedDevices, device] : [device]);
     }
 
     if (!device) {
@@ -442,9 +450,6 @@ export const Canvas = ({
     if (e.key === "Shift") {
       isMajPressedRef.current = true;
     }
-    if (e.key === "a" && e.ctrlKey) {
-      setSelectedDevices(topoJson.devices);
-    }
     if (e.key === "Delete" || e.key === "Backspace") {
       topoJson.devices = topoJson.devices.filter(
         (device) => !selectedDevices.includes(device)
@@ -493,7 +498,17 @@ export const Canvas = ({
   }, [topoJson, selectedDevices]);
 
   useEffect(() => {
-    if (!interactive) {
+    if (interactive) {
+      const handleAdd = () => {
+        setAddDevice(true)
+      }
+
+      ctx.on('playground-new-device', handleAdd);
+
+      return () => {
+        ctx.remove('playground-new-device', handleAdd);
+      }
+    }else if (topoJson.devices.length) {
       const mostLeftDevicePosition =
         topoJson.devices?.reduce((prev, curr) => {
           return curr?.position?.x < prev?.position?.x ? curr : prev;
@@ -525,11 +540,8 @@ export const Canvas = ({
       canvasCenter.current.x = canvasCenter.current.x - x
       canvasCenter.current.y = canvasCenter.current.y - y
       renderJson(topoJson);
-
     }
   }, [interactive])
-
-
 
 
 
@@ -553,6 +565,9 @@ export const Canvas = ({
   }
 
   return <>
+    <div>
+      {addDevice}
+    </div>
     <canvas
       tabIndex={0}
       ref={canvasRef}
@@ -568,6 +583,7 @@ export const Canvas = ({
       onDragEnter={dragEnter}
       onDrop={dragDrop}
     ></canvas>
-    {mouseDownEvent && <ContextMenu onHide={() => setMouseDownEvent(null)} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
+    {mouseDownEvent && <ContextMenu onHide={() => {console.log('test'); setMouseDownEvent(null)}} options={labOptions} position={{ x: mouseDownEvent?.clientX, y: mouseDownEvent?.clientY - 40 }}></ContextMenu>}
+    {addDevice && <ContextMenu className={style.center} onHide={() => setAddDevice(false)} options={newDeviceOptions}></ContextMenu>}
   </>
 };

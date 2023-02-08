@@ -1,6 +1,8 @@
 import {LocalizationName} from "./index";
 
 export const fr : Record<LocalizationName, string> = {
+    [LocalizationName.action] : "Action",
+    [LocalizationName.command] : "Commande",
     [LocalizationName.galleryExplication] : "Bonjour, sélectionnez ou ajoutez une topologie pour la visualiser",
     [LocalizationName.titleGallery] : "Gallerie",
     [LocalizationName.titlePlayground] : "Terrain de jeu",
@@ -8,6 +10,7 @@ export const fr : Record<LocalizationName, string> = {
     [LocalizationName.EN] : "Anglais",
     [LocalizationName.FR] : "Français",
     [LocalizationName.globalSettings] : "Paramètres globaux",
+    [LocalizationName.keybindSettings] : "Raccourci clavier",
     [LocalizationName.languageParameterLabel] : "Langue",
     [LocalizationName.save] : "Sauvegarder",
     [LocalizationName.storagePlaceLabel] : "Espace de stockage",
@@ -16,7 +19,7 @@ export const fr : Record<LocalizationName, string> = {
     [LocalizationName.themeDark] : "Thème sombre",
     [LocalizationName.titleGallery] : "Gallerie",
     [LocalizationName.titlePlayground] : "Terrain de jeu",
-    [LocalizationName.titleSettings] : "Réglages",
+    [LocalizationName.titleSettings] : "Paramètres",
     [LocalizationName.themeDark2] : "Dark theme 2",
 
 }

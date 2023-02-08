@@ -11,23 +11,6 @@
     overflow-y: overlay;
     overflow-x: hidden;
 
-    &::-webkit-scrollbar {
-        width: 8px;
-
-        &-track {
-            background-color: transparent;
-        }
-
-        &-thumb {
-            border-radius: 4px;
-            background-color: var(--clr-scrollbar-bg);
-        }
-
-        &-thumb:hover {
-            background-color: var(--clr-scrollbar-hover);
-        }
-    }
-
     .toggleExpand {
         position: absolute;
         top: 0.5rem;

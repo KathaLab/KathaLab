@@ -1,0 +1,27 @@
+.dialog {
+  position: absolute;
+  top: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  min-height: 1rem;
+  min-width: 500px;
+  max-width: 700px;
+  max-height: calc(100vh - 8rem);
+  background-color: var(--clr-modal-bg);
+  color: var(--clr-modal-text);
+  box-shadow: 0px 0px 5px #000;
+  border-radius: .5rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+
+  &__header {
+    order: 1;
+  }
+  &__body {
+    order: 2;
+  }
+  &__footer {
+    order: 3;
+  }
+}

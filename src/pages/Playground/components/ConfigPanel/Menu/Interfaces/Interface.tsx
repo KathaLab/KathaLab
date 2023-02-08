@@ -7,6 +7,7 @@ import { Switch } from '../../../../../../components/Switch/Switch';
 import { Button } from '../../../../../../components/Button/Button';
 import { Tooltip } from '../../../../../../components/Tooltip/Tooltip';
 import * as RegexConst from "../../../../../../lib/RegexConst";
+import { Autocomplete } from '../../../../../../components/Autocomplete/Autocomplete';
 
 type ComponentType = {
   device: Device;
@@ -25,7 +26,7 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
         ip: '',
         cidr: null,
         is_up: false,
-        collision_domain: "",
+        collision_domain: '',
       }
     );
     updateDevices();
@@ -52,7 +53,7 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                   <TextInput type={"IP"}
                     value={device?.interfaces?.[i]?.ip}
                     placeholder="127.0.0.1"
-                    onChange={(value: string) => { console.log(device, value); device.interfaces[i].ip = value; updateDevices() }}
+                    onChange={(value: string) => {device.interfaces[i].ip = value; updateDevices() }}
                     className={style.inputForm}></TextInput>
                   <div className={style.toolType}>
                     {validation(device?.interfaces?.[i]?.ip, RegexConst.DEVICE_IP) &&
@@ -81,12 +82,19 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                 </div>
                 <div className={style.label}>
                   <p className={style.labelForm}>Collision domain</p>
-                  <TextInput
+                  <Autocomplete
+                    placeholder="Autocomplete"
+                    classInput={style.inputForm}
+                    defaultValue={device?.interfaces?.[i]?.collision_domain}
+                    datalist={allCollisionDomain.filter(value => value != device.interfaces[i].collision_domain )} 
+                    onChange={(value: string) => { device.interfaces[i].collision_domain = value; updateDevices() }}></Autocomplete>
+
+                  {/* <TextInput
                     autocommplete={allCollisionDomain}
                     value={device?.interfaces?.[i]?.collision_domain}
                     placeholder="Autocomplete"
                     onChange={(value: string) => { device.interfaces[i].collision_domain = value; updateDevices() }}
-                    className={style.inputForm}></TextInput>
+                    className={style.inputForm}></TextInput> */}
                 </div>
                 <div className={style.label}>
                   <p className={style.labelForm}>Ip Active</p>

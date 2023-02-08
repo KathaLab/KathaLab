@@ -19,7 +19,7 @@ type ComponentType = {
 export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: ComponentType) => {
   const [expanded, setExpanded] = useState(false);
   const [getImg] = useColoredImage();
-  const color = useCssVar("--clr-main-primary");
+  const color = useCssVar("--clr-device");
   const imageRef = useRef(null);
   
   useLayoutEffect(() => {
@@ -28,10 +28,8 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
 
 
   const validation = (value: string, parameter: RegExp) => {
-    console.log(value)
     if (value) { 
       const array = Array.from(value.matchAll(parameter))[0]?.toString()
-      console.log(array === value)
       return !(array === value)
     }
     return true
