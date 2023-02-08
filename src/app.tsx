@@ -24,14 +24,14 @@ export enum Pages {
 }
 
 const App = () => {
-  const [page, setPage] = useState<Pages>(Pages.Gallery);
+  const [page, setPage] = useState<Pages>(Pages.Settings);
 
   const [labs, setLabs] = useState<Lab[]>([]);
   const [currentLab, setCurrentLab] = useState<Lab>(null);
 
   const setLab = (lab: Lab) => {
     setCurrentLab(
-      lab || {
+      JSON.parse(JSON.stringify(lab)) || {
         labName: "",
         id: uuidv4(),
         devices: [],

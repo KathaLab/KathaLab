@@ -23,7 +23,7 @@ export const ContextMenu = ({ onHide, options, position, className }: componentT
 
   return (
     <>
-      {onHide && <div className={style.background} onClick={onHide}></div>}
+      {onHide && <div className={style.background} onClick={onHide} onContextMenu={onHide}></div>}
       <ul className={style.menu + ' ' + className} style={{left: position?.x, top: position?.y}}>
         {options.map((option, index) => {
           if (option.separator) {

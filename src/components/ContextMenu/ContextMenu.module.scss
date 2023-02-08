@@ -10,14 +10,19 @@
     border-radius: 5px;
     transition: .1s;
 
+    transform: translate(-1px,-1px);
 
     & .menu {
+        transform: none;
+        position: absolute;
         left: 100%;
+        top: -5px;
         visibility: hidden;
     }
 }
 
 .menu li {
+    position: relative;
     font-size: .75rem;
     padding: .5rem 2rem;
     white-space: nowrap;

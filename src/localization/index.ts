@@ -1,9 +1,12 @@
 export enum LocalizationName {
+    action,
+    command,
     galleryExplication,
     titleHeader,
     EN,
     FR,
     globalSettings,
+    keybindSettings,
     languageParameterLabel,
     save,
     storagePlaceLabel,

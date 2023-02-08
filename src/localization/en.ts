@@ -1,6 +1,8 @@
 import {LocalizationName} from "./index";
 
 export const en : Record<LocalizationName, string> = {
+    [LocalizationName.action] : "Action",
+    [LocalizationName.command] : "Command",
     [LocalizationName.galleryExplication] :  "Hello, select or add a topology to view it",
     [LocalizationName.titleGallery] : "Gallery",
     [LocalizationName.titlePlayground] : "Playground",
@@ -8,6 +10,7 @@ export const en : Record<LocalizationName, string> = {
     [LocalizationName.EN] : "English",
     [LocalizationName.FR] : "French",
     [LocalizationName.globalSettings] : "Global Settings",
+    [LocalizationName.keybindSettings] : "Keybind",
     [LocalizationName.languageParameterLabel] : "Language",
     [LocalizationName.save] : "Save",
     [LocalizationName.storagePlaceLabel] : "Storage place",

@@ -1,16 +1,17 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
-import {Lab} from '../../model/Lab'
-import {Pages} from '../../app'
-import {ContextMenu} from '../ContextMenu/ContextMenu'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { Lab } from '../../model/Lab'
+import { Pages } from '../../app'
+import { ContextMenu } from '../ContextMenu/ContextMenu'
 import styles from './TitleBar.module.scss'
 import ExportConf from "../../lib/ExportConf";
-import {v4 as uuidv4} from "uuid";
-import {DeviceType} from "../../model/Device";
+import { v4 as uuidv4 } from "uuid";
+import { DeviceType } from "../../model/Device";
 import ImportConf from "../../lib/ImportConf";
 import { snackbarContext } from "../../context/SnackbarContext";
 import { keyBindContext } from '../../context/KeybindContext'
 import { dialogContext } from '../../context/DialogContext'
 import { DialogConfirmation } from '../Dialog/DialogConfirmation'
+import { Tooltip } from '../Tooltip/Tooltip'
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -22,7 +23,7 @@ type componentType = {
     onChange: (title: string) => void
 }
 
-export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, selectedLab, onChange}: componentType) => {
+export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selectedLab, onChange }: componentType) => {
 
     const [labExpanded, setLabExpanded] = useState(false);
     const [isDisabled, setIsTitleEditable] = useState(page !== Pages.Playground);
@@ -30,7 +31,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
     const inputRef = useRef<HTMLInputElement>(null);
     const ctx = useContext(keyBindContext);
     const dialog = useContext(dialogContext)
-    
+
     const handleLabClick = () => setLabExpanded(x => !x);
 
     const snackBar = useContext(snackbarContext);
@@ -67,15 +68,15 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
                 return {
                     label: lab.labName || 'Untitled',
                     onClick: () => {
-                        setSelectedLab({...lab});
+                        setSelectedLab({ ...lab });
                         setLabExpanded(false);
                         switchPage(Pages.Playground);
                     }
                 }
             })
         },
-        {separator: true},
-        {label: 'Save', disabled: isDisabled, onClick: onSave},
+        { separator: true },
+        { label: 'Save', disabled: isDisabled, onClick: onSave },
         {
             label: 'Import', disabled: page == Pages.Playground, onClick: () => {
                 handleImport();
@@ -172,7 +173,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         // @ts-ignore
         const filesData = await window.electronAPI.readDirectory(directoryPath)
         const importConf = new ImportConf();
-        let labConf: Lab = {canvas: {x: 0, y: 0, zoom: 0}, devices: [], id: "", labName: ""};
+        let labConf: Lab = { canvas: { x: 0, y: 0, zoom: 0 }, devices: [], id: "", labName: "" };
 
         labConf.id = uuidv4();
 
@@ -188,7 +189,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             let device = labConf.devices.find((device) => device.deviceName.toLowerCase() == deviceName);
 
             if (!device) {
-                device = {deviceName: deviceName, type: DeviceType.PC};
+                device = { deviceName: deviceName, type: DeviceType.PC };
                 labConf.devices.push(device)
             }
             fileData.split('\n').forEach(line => {
@@ -204,7 +205,7 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
             let device = labConf.devices.find((device) => device.deviceName.toLowerCase() == deviceName);
 
             if (!device) {
-                device = {deviceName: deviceName, type: DeviceType.PC};
+                device = { deviceName: deviceName, type: DeviceType.PC };
                 labConf.devices.push(device)
             }
             if (!device.shutdown_commands) {
@@ -234,37 +235,42 @@ export const TitleBar = ({page, switchPage, onSave, labs, setSelectedLab, select
         const handleNewLab = () => {
             setSelectedLab(undefined);
             switchPage(Pages.Playground);
-          }
-          ctx.on('app-new-lab', handleNewLab)
+        }
+        ctx.on('app-new-lab', handleNewLab)
+        ctx.on('app-import-lab', handleImport)
 
-          return () => {
+        return () => {
             ctx.remove('app-new-lab', handleNewLab)
-          }
+            ctx.remove('app-import-lab', handleImport)
+        }
     }, [])
-    
+
 
     return (
         <div className={styles.titleBar}>
             <div className={styles.left}>
-          <span className={styles.backBtn + ' material-icons material-icons-outlined' + " " + styles.clickable}
-                onClick={() => switchPage(Pages.Gallery)}>apps</span>
+                <span className={styles.backBtn + ' material-icons material-icons-outlined' + " " + styles.clickable}
+                    onClick={() => switchPage(Pages.Gallery)}>apps</span>
                 <div>
                     <span className={styles.separator}>|</span>
                     <span className={styles.clickable + " " + (labExpanded ? styles.clicked : "")}
-                          onClick={handleLabClick}>Lab</span>
+                        onClick={handleLabClick}>Lab</span>
                     {labExpanded &&
                         <ContextMenu options={labOptions} onHide={() => setLabExpanded(false)}></ContextMenu>}
                     <span className={styles.clickable + " "} onClick={() => switchPage(Pages.Settings)}>Settings</span>
                 </div>
             </div>
-            <input
-                disabled={isDisabled}
-                className={styles.input + " " + styles.clickable + " " + (isDisabled ? styles.title : "")}
-                type="text"
-                onChange={(e) => onChange(e.target.value)}
-                placeholder="Untitled"
-                ref={inputRef}
-            />
+            <div className={styles.center}>
+                {!isDisabled && JSON.stringify(selectedLab) !== JSON.stringify(labs?.filter((l) => l.id === selectedLab.id)?.[0]) && <div className={styles.badge}></div>}
+                <input
+                    disabled={isDisabled}
+                    className={styles.input + " " + styles.clickable + " " + (isDisabled ? styles.title : "")}
+                    type="text"
+                    onChange={(e) => onChange(e.target.value)}
+                    placeholder="Untitled"
+                    ref={inputRef}
+                />
+            </div>
             <ul className={styles.btnList}>
                 <li className={'material-icons material-icons-outlined ' + styles.clickable}
                     onClick={handleMinimimze}>remove
