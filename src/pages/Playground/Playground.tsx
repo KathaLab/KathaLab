@@ -20,7 +20,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
-  const color = useCssVar("--clr-main-primary");
+  const color = useCssVar("--clr-device");
 
   const snackBar = useContext(snackbarContext);
   const ctx = useContext(keyBindContext);
