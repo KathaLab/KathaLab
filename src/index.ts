@@ -46,6 +46,7 @@ const createWindow = (): void => {
   // and load the index.html of the app.
   // if main window is ready to show, then destroy the splash window and show up the main window
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.webContents.openDevTools();
 
   mainWindow.once('ready-to-show', () => {
     if(loader) display()

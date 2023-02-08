@@ -1078,6 +1078,7 @@ var electronAPI = /** @class */ (function () {
                 }); });
                 electron_1.ipcMain.handle("fs:read-directory", function (_, directoryPath) { return __awaiter(_this, void 0, void 0, function () {
                     var filesData, readFile, filesNames;
+                    var _this = this;
                     return __generator(this, function (_a) {
                         filesData = {
                             confFile: "",
@@ -1090,18 +1091,21 @@ var electronAPI = /** @class */ (function () {
                         try {
                             filesNames = fs_1.default.readdirSync(directoryPath);
                             filesNames.forEach(function (fileName) {
-                                if (path.extname(fileName) == ".conf") {
+                                if (path.extname(fileName) == "lab.conf") {
                                     filesData.confFile = readFile(path.join(directoryPath, fileName));
                                 }
-                                if (path.extname(fileName) == ".startup") {
+                                else if (path.extname(fileName) == ".startup") {
                                     var deviceName = path.basename(fileName, '.startup').toLowerCase();
                                     var fileData = readFile(path.join(directoryPath, fileName));
                                     filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
                                 }
-                                if (path.extname(fileName) == ".shutdown") {
+                                else if (path.extname(fileName) == ".shutdown") {
                                     var deviceName = path.basename(fileName, '.shutdown').toLowerCase();
                                     var fileData = readFile(path.join(directoryPath, fileName));
                                     filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
+                                }
+                                else {
+                                    _this.error(_.sender, "No lab.conf or .startup and .shutdown file find in : " + directoryPath);
                                 }
                             });
                             return [2 /*return*/, filesData];
@@ -1213,6 +1217,7 @@ var createWindow = function () {
     // and load the index.html of the app.
     // if main window is ready to show, then destroy the splash window and show up the main window
     mainWindow.loadURL('http://localhost:3000/main_window');
+    mainWindow.webContents.openDevTools();
     mainWindow.once('ready-to-show', function () {
         if (loader)
             display();
@@ -1377,6 +1382,11 @@ module.exports = require("util");
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat */
+/******/ 	
+/******/ 	if (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + "/native_modules/";
 /******/ 	
 /************************************************************************/
 /******/ 	
