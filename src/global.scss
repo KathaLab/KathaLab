@@ -14,7 +14,24 @@ main {
   width: 100vw;
   overflow: hidden;
 }
+
 :global(.pageWrapper) {
   flex-grow: 1;
   height: calc(100% - 2.5rem);
 }
+
+::-webkit-scrollbar {
+  width: 7px;
+  
+  &-track {
+    background-color: transparent;
+  }
+  
+  &-thumb {
+    background-color: var(--clr-scrollbar-bg);
+  }
+
+  &-thumb:hover {
+    background-color: var(--clr-scrollbar-hover);
+  }
+  }
