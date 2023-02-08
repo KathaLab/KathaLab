@@ -37,7 +37,7 @@ export default class ExportConf {
                 if (device.interfaces) {
                     device.interfaces.forEach(itf => {
                         if (!itf.interfaceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                            throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters" +;
+                            throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters";
                         }
 
                         if (itf.collision_domain) {
