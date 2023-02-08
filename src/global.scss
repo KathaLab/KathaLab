@@ -17,6 +17,7 @@ main {
 
 :global(.pageWrapper) {
   flex-grow: 1;
+  height: calc(100% - 2.5rem);
 }
 
 ::-webkit-scrollbar {
@@ -33,4 +34,4 @@ main {
   &-thumb:hover {
     background-color: var(--clr-scrollbar-hover);
   }
-}
+  }

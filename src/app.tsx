@@ -31,7 +31,7 @@ const App = () => {
 
   const setLab = (lab: Lab) => {
     setCurrentLab(
-      lab || {
+      JSON.parse(JSON.stringify(lab)) || {
         labName: "",
         id: uuidv4(),
         devices: [],
