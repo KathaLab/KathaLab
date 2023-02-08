@@ -16,7 +16,7 @@ export const themeContext = createContext<contextType>({
 
 export const ThemeContext = ({ children }: { children: ReactNode }) => {
 
-    const [theme, setTheme] = useState<themeNames>(localStorage.getItem('theme') == null ? "theme-dark2" : localStorage.getItem('theme') as themeNames);
+    const [theme, setTheme] = useState<themeNames>(localStorage.getItem('theme') == null ? "theme-dark" : localStorage.getItem('theme') as themeNames);
 
     return (
         <themeContext.Provider value={{ theme, updateContext: setTheme }}>
