@@ -129,25 +129,27 @@ export class electronAPI {
 
       try {
         const filesNames = fs.readdirSync(directoryPath)
+        let labConfExist = false;
 
         filesNames.forEach(fileName => {
-          if (path.extname(fileName) == "lab.conf") {
+          if (fileName == "lab.conf") {
+            labConfExist = true;
             filesData.confFile = readFile(path.join(directoryPath, fileName));
           }
-          else if (path.extname(fileName) == ".startup") {
+          if (path.extname(fileName) == ".startup") {
             const deviceName = path.basename(fileName, '.startup').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.startupFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
-          else if (path.extname(fileName) == ".shutdown") {
+          if (path.extname(fileName) == ".shutdown") {
             const deviceName = path.basename(fileName, '.shutdown').toLowerCase();
             const fileData = readFile(path.join(directoryPath, fileName));
             filesData.shutdownFiles.push({ 'deviceName': deviceName, 'fileData': fileData });
           }
-          else {
-            this.error(_.sender, "No lab.conf or .startup and .shutdown file find in : " + directoryPath);
-          }
         })
+        if (labConfExist == false){
+          this.error(_.sender, "No lab.conf file found in : " + directoryPath);
+        }
         return filesData
       } catch (err) {
         console.warn(err)

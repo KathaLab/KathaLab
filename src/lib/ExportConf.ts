@@ -66,11 +66,14 @@ export default class ExportConf {
                             conf += value.trim() + '\n';
                         }
                         if (key == 'cpus' || key == 'num_terms'){
-                            if (!Number.isInteger(device.optional_parameters[key])){
-                                throw `Can't export a lab : ${key} must be an integer`;
+                            if (device.optional_parameters[key] != null){
+                                if (device.optional_parameters[key].toString().match(RegexConst.EXPORTED_NUMBER_VAR_REGEX)){
+                                    const value = ModelToKatharaConf[key] + `${device.optional_parameters[key]}`;
+                                    conf += value.trim() + '\n';
+                                }else {
+                                    throw `Can't export a lab : ${key} must be an integer`;
+                                }
                             }
-                            const value = ModelToKatharaConf[key] + `${device.optional_parameters[key]}`;
-                            conf += value.trim() + '\n';
                         }
 
                         if (key == 'env' || key == 'sysctl'){
@@ -107,9 +110,9 @@ export default class ExportConf {
                         throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters";
                     }
 
-                    if (itf.is_up && itf.is_up == true && itf.interfaceName) {
+                    if (itf.is_up == true) {
                         conf += ModelToKatharaConf.IP_UP + '\n';
-                        conf = conf.replace(`%interfaceName%`,itf.interfaceName.trim);
+                        conf = conf.replace(`%interfaceName%`,itf.interfaceName.trim());
                     }
 
                     if (itf.interfaceName && itf.ip && itf.cidr) {
