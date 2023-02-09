@@ -1,8 +1,8 @@
 {
-  "name": "projet-kathara",
-  "productName": "projet-kathara",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "kathalab",
+  "productName": "Kathalab",
+  "version": "1.0.1",
+  "description": "KathaLab a lab maker 💥",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -25,7 +25,7 @@
           "name": "@electron-forge/maker-squirrel",
           "platforms": ["win32"],
           "config": {
-            "name": "projet_kathara"
+            "name": "KathaLab"
           }
         },
         {
@@ -44,7 +44,7 @@
           "config": {
             "repository": {
               "owner": "xernois",
-              "name": "projet-kathara"
+              "name": "KathaLab"
             }
           }
         }
