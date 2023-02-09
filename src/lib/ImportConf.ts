@@ -113,7 +113,9 @@ export default class ImportConf {
             const ipv6Forward = 'net.ipv6.conf.all.forwarding=1';
 
             const systcl = Array.from(line.matchAll(RegexConst.LAB_DEVICE_SYSCTL_REGEX))[0].groups.sysctl?.replace(/['"]/g, '').toString().trim().slice(0,128);
-            device.optional_parameters.sysctl = []
+            if (!device.optional_parameters.sysctl){
+                device.optional_parameters.sysctl = []
+            }
             device.optional_parameters.sysctl.push(systcl);
 
             if (systcl == ipv4Forward || systcl == ipv6Forward){
@@ -122,7 +124,9 @@ export default class ImportConf {
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_ENV_REGEX))[0]?.groups.env){
             const env = Array.from(line.matchAll(RegexConst.LAB_DEVICE_ENV_REGEX))[0].groups.env?.replace(/['"]/g, '').toString().trim().slice(0,128);
-            device.optional_parameters.env = []
+            if (!device.optional_parameters.env){
+                device.optional_parameters.env = []git
+            }
             device.optional_parameters.env.push(env);
         }
         else if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_SHELL_REGEX))[0]?.groups.shell){
