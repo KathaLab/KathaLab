@@ -11,6 +11,7 @@ $clr-dark-grey-2: #252525;
 $clr-dark-grey-3: #202020;
 $clr-dark-grey-4: #333333;
 $clr-dark-grey-5: #aaaaaa;
+$clr-dark-shadow: #00000022;
 
 $clr-light-primary: #d6cfe2;
 $clr-light-red: #ff6d6d;
@@ -22,11 +23,12 @@ $clr-light-purple-5: #ddddf5;
 $clr-light-white: #ffffff;
 $clr-light-white-1: #f5f5f5;
 $clr-light-white-2: #f3f3f3;
-$clr-light-white-3: #f2f2f2;
+$clr-light-white-3: #eeeeee;
 $clr-light-white-4: #f4f4f4;
 $clr-light-white-5: #fafafa;
 $clr-light-grey-1: #e0e0e0;
 $clr-light-grey-2: #c0c0c0;
+$clr-light-shadow: #00000011;
 
 // Themes
 $themes: (
@@ -93,6 +95,7 @@ $themes: (
     clr-separator: $clr-light-grey-1,
     clr-separator-2: $clr-light-grey-1,
     clr-cardDevice-bg: $clr-light-white-1,
+    clr-shadow: $clr-light-shadow,
 
     //Device
     clr-device: $clr-light-purple-1,
@@ -163,6 +166,7 @@ $themes: (
     clr-separator: $clr-dark-grey-4,
     clr-separator-2: $clr-dark-white-1,
     clr-cardDevice-bg: $clr-dark-grey-1,
+    clr-shadow: $clr-dark-shadow,
 
     clr-playground-bg: $clr-dark-grey-1,
     clr-listDevice-bg: $clr-dark-grey-2,

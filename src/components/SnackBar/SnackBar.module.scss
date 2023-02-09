@@ -1,7 +1,7 @@
 .snackbar {
     background-color: var(--clr-snackbar-bg);
     color: var(--clr-snackbar-text);
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0 0 10px 0 var(--clr-shadow);
     text-align: center;
     border-radius: .25rem;
     position: fixed;

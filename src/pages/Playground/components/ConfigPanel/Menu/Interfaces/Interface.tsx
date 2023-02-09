@@ -53,12 +53,12 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                   <TextInput type={"IP"}
                     value={device?.interfaces?.[i]?.ip}
                     placeholder="127.0.0.1"
-                    onChange={(value: string) => {device.interfaces[i].ip = value; updateDevices() }}
+                    onChange={(value: string) => { device.interfaces[i].ip = value; updateDevices() }}
                     className={style.inputForm}></TextInput>
                   <div className={style.toolType}>
                     {validation(device?.interfaces?.[i]?.ip, RegexConst.DEVICE_IP) &&
                       device?.interfaces?.[i]?.ip &&
-                      <Tooltip message="Ip invalide">
+                      <Tooltip message="Invalid Ip">
                         <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
                       </Tooltip>
                     }
@@ -72,9 +72,9 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                     onChange={(value: string) => { device.interfaces[i].cidr = Number(value); updateDevices() }}
                     className={style.inputForm}></TextInput>
                   <div className={style.toolType}>
-                    {validation(device?.interfaces?.[i]?.cidr?.toString(), RegexConst.DEVICE_CIDR) 
-                      && !!device?.interfaces?.[i]?.cidr 
-                      && <Tooltip message="CIDR invalide">
+                    {validation(device?.interfaces?.[i]?.cidr?.toString(), RegexConst.DEVICE_CIDR)
+                      && !!device?.interfaces?.[i]?.cidr
+                      && <Tooltip message="Invalid CDIR">
                         <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
                       </Tooltip>
                     }
@@ -83,18 +83,19 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                 <div className={style.label}>
                   <p className={style.labelForm}>Collision domain</p>
                   <Autocomplete
-                    placeholder="Autocomplete"
+                    placeholder="collision domain"
                     classInput={style.inputForm}
                     defaultValue={device?.interfaces?.[i]?.collision_domain}
-                    datalist={allCollisionDomain.filter(value => value != device.interfaces[i].collision_domain )} 
+                    datalist={allCollisionDomain.filter(value => value != device.interfaces[i].collision_domain)}
                     onChange={(value: string) => { device.interfaces[i].collision_domain = value; updateDevices() }}></Autocomplete>
-
-                  {/* <TextInput
-                    autocommplete={allCollisionDomain}
-                    value={device?.interfaces?.[i]?.collision_domain}
-                    placeholder="Autocomplete"
-                    onChange={(value: string) => { device.interfaces[i].collision_domain = value; updateDevices() }}
-                    className={style.inputForm}></TextInput> */}
+                  <div className={style.toolType}>
+                    {validation(device?.interfaces?.[i]?.collision_domain, RegexConst.EXPORTED_NAME_REGEX) &&
+                      device?.interfaces?.[i]?.collision_domain &&
+                      <Tooltip message="Invalid collision domain">
+                        <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
+                      </Tooltip>
+                    }
+                  </div>
                 </div>
                 <div className={style.label}>
                   <p className={style.labelForm}>Ip Active</p>

@@ -14,7 +14,7 @@
         color: var(--clr-input-text);
         font-size: .825rem;
         background-color: var(--clr-input-bg);
-        box-shadow:0 6px 6px 0 rgba(0, 0, 0, 0.3);;
+        box-shadow:0 6px 6px 0 var(--clr-shadow);
     
         .item {
             padding: .5rem .25rem;
