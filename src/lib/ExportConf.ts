@@ -8,7 +8,7 @@ export default class ExportConf {
 
     public static lang: Language = Language.EN
 
-    public exportLabConf(lab: Lab) {
+    public static exportLabConf(lab: Lab) {
         let conf = "";
 
         if (!lab.labName.match(RegexConst.EXPORTED_LAB_NAME_REGEX)){
@@ -100,7 +100,7 @@ export default class ExportConf {
         return conf;
     }
 
-    public exportStartupConf(lab: Lab) {
+    public static exportStartupConf(lab: Lab) {
         const devicesStartupConf: { [deviceName: string]: string } = {}
         lab.devices.forEach(device => {
             if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
@@ -159,7 +159,7 @@ export default class ExportConf {
         return devicesStartupConf;
     }
 
-    public exportShutdownConf(lab: Lab) {
+    public static exportShutdownConf(lab: Lab) {
         const devicesShutdownConf: { [deviceName: string]: string } = {};
 
         lab.devices.forEach(device => {

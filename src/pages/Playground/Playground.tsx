@@ -82,10 +82,9 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const handleExport = async (lab: Lab) => {
 
     try {
-      const exportConf = new ExportConf();
-      const labExported = exportConf.exportLabConf(lab);
-      const deviceExportedStartup = exportConf.exportStartupConf(lab);
-      const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
+      const labExported = ExportConf.exportLabConf(lab);
+      const deviceExportedStartup = ExportConf.exportStartupConf(lab);
+      const deviceExportedShutdown = ExportConf.exportShutdownConf(lab);
 
       //Creating lab.conf and all device.startup
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -129,7 +128,7 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
         })
     } catch (err) {
       snackBar.updateContext({
-        duration: 3000,
+        duration: 5000,
         message: err,
         icon: 'warning'
       })

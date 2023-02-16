@@ -8,7 +8,7 @@ export default class ImportConf {
 
     public static lang: Language = Language.EN
 
-    public importLabConf(lab: Lab, line: string) {
+    public static importLabConf(lab: Lab, line: string) {
         let isLabConf = false;
 
         this.getLabConf(lab, line)? isLabConf = true: isLabConf;
@@ -28,7 +28,7 @@ export default class ImportConf {
         return lab
     }
 
-    public importDevicesConf(device: Device, line: string) {
+    public static importDevicesConf(device: Device, line: string) {
         const interfaceName =
             Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_FROM_IP_ADD))[0]?.filter((interfaceName) => { return interfaceName != undefined})[1].trim().slice(0,32)
             ?? Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_AND_IP_IS_UP_REGEX))[0]?.filter((interfaceName) => { return interfaceName != undefined})[1].trim().slice(0,32)
@@ -54,7 +54,7 @@ export default class ImportConf {
 
     }
 
-    private getLabConf(lab: Lab, line:string){
+    private static getLabConf(lab: Lab, line:string){
 
         if (Array.from(line.matchAll(RegexConst.LAB_NAME_REGEX))[0]?.groups.name){
             lab.labName = Array.from(line.matchAll(RegexConst.LAB_NAME_REGEX))[0].groups.name?.replace(/['"]/g, '').toString().trim().slice(0,32);
@@ -78,7 +78,7 @@ export default class ImportConf {
         }
     }
 
-    private getOptionalLabDeviceConf(device: Device, line:string) {
+    private static getOptionalLabDeviceConf(device: Device, line:string) {
         if (!device.optional_parameters){
             device.optional_parameters = {};
         }
@@ -158,7 +158,7 @@ export default class ImportConf {
         }
     }
 
-    private getDeviceInterfacesConf(itf: Interfaces,device: Device, line:string){
+    private static getDeviceInterfacesConf(itf: Interfaces,device: Device, line:string){
         let hasMatched = false
         if (Array.from(line.matchAll(RegexConst.LAB_DEVICE_INTERFACE_NAME_AND_IP_IS_UP_REGEX))[0]){
             itf.is_up = true;

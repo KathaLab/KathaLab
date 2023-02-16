@@ -108,10 +108,9 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
     const handleExport = async (lab: Lab) => {
 
         try {
-            const exportConf = new ExportConf();
-            const labExported = exportConf.exportLabConf(lab);
-            const deviceExportedStartup = exportConf.exportStartupConf(lab);
-            const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
+            const labExported = ExportConf.exportLabConf(lab);
+            const deviceExportedStartup = ExportConf.exportStartupConf(lab);
+            const deviceExportedShutdown = ExportConf.exportShutdownConf(lab);
 
             //Creating lab.conf and all device.startup
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -155,7 +154,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
                 })
         }catch (err){
             snackBar.updateContext({
-                duration: 3000,
+                duration: 5000,
                 message: err,
                 icon: 'warning'
             })
@@ -178,13 +177,13 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const filesData = await window.electronAPI.readDirectory(directoryPath)
-        const importConf = new ImportConf();
+
         let labConf: Lab = { canvas: { x: 0, y: 0, zoom: 0 }, devices: [], id: "", labName: "" };
 
         labConf.id = uuidv4();
 
         String(filesData.confFile).split('\n').forEach(line => {
-            labConf = importConf.importLabConf(labConf, line)
+            labConf = ImportConf.importLabConf(labConf, line)
         })
 
         filesData.startupFiles.filter((elem: { deviceName: string, fileData: string }) => {
@@ -199,7 +198,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
                 labConf.devices.push(device)
             }
             fileData.split('\n').forEach(line => {
-                importConf.importDevicesConf(device, line);
+                ImportConf.importDevicesConf(device, line);
             })
         });
 
