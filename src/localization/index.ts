@@ -17,6 +17,7 @@ export enum LocalizationName {
     titleGallery,
     titlePlayground,
     titleSettings,
+    exportlabNameError
 }
 
 // import is after because language files need localizationName

@@ -2,14 +2,18 @@ import {Lab} from "../model/Lab";
 import {ModelToKatharaConf} from "./ModelToKatharaConf";
 import * as RegexConst from "./RegexConst";
 import {DeviceType} from "../model/Device";
+import { Language, LanguageToLocalization, LocalizationName } from "../localization";
 
 export default class ExportConf {
+
+    public static lang: Language = Language.EN
 
     public exportLabConf(lab: Lab) {
         let conf = "";
 
         if (!lab.labName.match(RegexConst.EXPORTED_LAB_NAME_REGEX)){
-            throw "Can't export lab, be sure lab name doesn't have more than 32 characters and specials characters, only '_' and '-' are allowed";
+            throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabNameError]
+            // throw "Can't export lab, be sure lab name doesn't have more than 32 characters and specials characters, only '_' and '-' are allowed";
         }
 
         for (const key in lab) {

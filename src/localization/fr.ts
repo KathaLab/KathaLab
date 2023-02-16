@@ -21,5 +21,6 @@ export const fr : Record<LocalizationName, string> = {
     [LocalizationName.titlePlayground] : "Terrain de jeu",
     [LocalizationName.titleSettings] : "Paramètres",
     [LocalizationName.themeDark2] : "Dark theme 2",
+    [LocalizationName.exportlabNameError] : "Impossible d'exporter le lab, soyez sur que le nom du lab ne dépasse pas les 32 charaters et ne contiennent pas de characters spéciale '' and '-' sont autorisés"
 
 }

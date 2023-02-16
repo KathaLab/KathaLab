@@ -2,8 +2,11 @@ import {Lab} from "../model/Lab";
 import * as RegexConst from "./RegexConst";
 import {Device, DeviceType} from "../model/Device";
 import {Interfaces} from "../model/Interfaces";
+import { Language } from "../localization";
 
 export default class ImportConf {
+
+    public static lang: Language = Language.EN
 
     public importLabConf(lab: Lab, line: string) {
         let isLabConf = false;
