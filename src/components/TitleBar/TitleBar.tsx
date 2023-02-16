@@ -141,13 +141,13 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
                         }
                         snackBar.updateContext({
                             duration: 3000,
-                            message: 'The lab has been successfully exported',
+                            message: languageDico[LocalizationName.exportSuccessFully],
                             icon: 'done'
                         })
                     } else {
                         snackBar.updateContext({
                             duration: 3000,
-                            message: 'The lab can\'t be exported',
+                            message: languageDico[LocalizationName.exportError],
                             icon: 'warning'
                         })
                     }
@@ -169,7 +169,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
         if (!directoryPath) {
             snackBar.updateContext({
                 duration: 3000,
-                message: 'No directory selected',
+                message: languageDico[LocalizationName.importDirectoryError],
                 icon: 'warning'
             })
             return;
@@ -231,7 +231,7 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
 
         snackBar.updateContext({
             duration: 3000,
-            message: 'The lab has been successfully imported',
+            message: languageDico[LocalizationName.importSuccessFully],
             icon: 'done'
         })
     }

@@ -13,20 +13,19 @@ export default class ExportConf {
 
         if (!lab.labName.match(RegexConst.EXPORTED_LAB_NAME_REGEX)){
             throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabNameError]
-            // throw "Can't export lab, be sure lab name doesn't have more than 32 characters and specials characters, only '_' and '-' are allowed";
         }
 
         for (const key in lab) {
             if (key == 'labName' || key == 'description' || key == 'author' || key == 'email' || key == 'version' || key == 'web') {
                 const value = ModelToKatharaConf[key] + `"${lab[key]}"`;
                 if (key == 'version'  && value.length >= 32){
-                    throw `Can't export a lab : ${key} with more than 32 characters not allowed`;
+                    throw key + " " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError32];
                 }
                 if (key == 'author' || key == 'web' || key == 'email' && value.length >= 128){
-                    throw `Can't export a lab : ${key} with more than 96 characters not allowed`;
+                    throw key + " " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError128];
                 }
                 if (key == 'description' && value.length >= 256){
-                    throw `Can't export a lab : ${key} with more than 256 characters not allowed`;
+                    throw key + " " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError256];
                 }
                 conf += value.trim() + '\n';
             }
@@ -35,18 +34,18 @@ export default class ExportConf {
         if (lab.devices) {
             lab.devices.forEach(device => {
                 if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                    throw "Can't export lab, be sure devices names doesn't have more than 32 characters and specials characters";
+                    throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportdeviceNameError]
                 }
 
                 if (device.interfaces) {
                     device.interfaces.forEach(itf => {
                         if (!itf.interfaceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                            throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters";
+                            throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportInterfaceNameError]
                         }
 
                         if (itf.collision_domain) {
                             if (!itf.collision_domain.match(RegexConst.EXPORTED_NAME_REGEX)){
-                                throw "Can't export lab, be sure collisions domains  doesn't have more than 32 characters or specials characters";
+                                throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportCollisionDomainError]
                             }
                             conf += ModelToKatharaConf['collision_domain'] + itf.collision_domain + "\n";
                             conf = conf.replace(`%interfaceName%`, itf.interfaceName);
@@ -65,7 +64,7 @@ export default class ExportConf {
                         if (key == 'image' || key == 'memory' || key == 'port' || key == 'bridged' || key == 'ipv6' || key == 'exec' || key == 'shell') {
                             const value = ModelToKatharaConf[key] + `${device.optional_parameters[key]}`;
                             if (value.length > 256){
-                                throw `Can't export a lab : ${key} with more than 256 characters not allowed`;
+                                throw key + " " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError256];
                             }
                             conf += value.trim() + '\n';
                         }
@@ -75,7 +74,7 @@ export default class ExportConf {
                                     const value = ModelToKatharaConf[key] + `${device.optional_parameters[key]}`;
                                     conf += value.trim() + '\n';
                                 }else {
-                                    throw `Can't export a lab : ${key} must be an integer`;
+                                    throw key + " " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError256];
                                 }
                             }
                         }
@@ -83,7 +82,7 @@ export default class ExportConf {
                         if (key == 'env' || key == 'sysctl'){
                             device.optional_parameters[key].forEach( value => {
                                 if (value.length > 256){
-                                    throw `Can't export a lab : ${key} with more than 256 characters not allowed`;
+                                    throw key + " " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError256];
                                 }
                                 conf += ModelToKatharaConf[key] + value + '\n';
                             })
@@ -104,14 +103,14 @@ export default class ExportConf {
         const devicesStartupConf: { [deviceName: string]: string } = {}
         lab.devices.forEach(device => {
             if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                throw "Can't export lab, be sure devices names doesn't have more than 32  characters or specials characters";
+                throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportdeviceNameError]
             }
 
             let conf = "";
             if (device.interfaces) {
                 device.interfaces.forEach(itf => {
                     if (!itf.interfaceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                        throw "Can't export lab, be sure interfaces names doesn't have more than 32 characters or specials characters";
+                        throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportInterfaceNameError]
                     }
 
                     if (itf.is_up == true) {
@@ -121,10 +120,10 @@ export default class ExportConf {
 
                     if (itf.interfaceName && itf.ip && itf.cidr) {
                         if (!itf.cidr.toString().match(RegexConst.DEVICE_CIDR)){
-                            throw "Can't export lab, be sure CIDR is valid";
+                            throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterCIDRError]
                         }
                         if (!itf.ip.match(RegexConst.DEVICE_IP)){
-                            throw "Can't export lab, be sure IP is valid";
+                            throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterIPError]
                         }
                         conf += ModelToKatharaConf.IP_ADDRESS_ADD + '\n';
                         for (const key in itf){
@@ -149,7 +148,7 @@ export default class ExportConf {
                 device.startups_commands.forEach(startupCmd => {
                     const value = startupCmd;
                     if (value.length >= 256){
-                        throw "Can't export lab, a startup command can't have more than 256 characters";
+                        throw "startup commands " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError256];
                     }
                     conf += value.trim() + '\n';
                 })
@@ -165,14 +164,14 @@ export default class ExportConf {
         lab.devices.forEach(device => {
             let conf = '';
             if (!device.deviceName.match(RegexConst.EXPORTED_NAME_REGEX)){
-                throw "Can't export lab, be sure devices names doesn't have more than 32  characters or specials characters";
+                throw LanguageToLocalization[ExportConf.lang][LocalizationName.exportdeviceNameError]
             }
 
             if (device.shutdown_commands) {
                 device.shutdown_commands.forEach(shutdownCmd => {
                     const value = shutdownCmd;
                     if (value.length >= 256){
-                        throw "Can't export lab, a shutdown command can't have more than 256 characters";
+                        throw "shutdown commands " + LanguageToLocalization[ExportConf.lang][LocalizationName.exportlabParameterError256];
                     }
                     conf += value.trim() + '\n';
                 })
