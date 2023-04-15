@@ -11,9 +11,6 @@ import ImportConf from "../../lib/ImportConf";
 import { snackbarContext } from "../../context/SnackbarContext";
 import { keyBindContext } from '../../context/KeybindContext'
 import { LocalizationName } from '../../localization'
-// import { dialogContext } from '../../context/DialogContext'
-// import { DialogConfirmation } from '../Dialog/DialogConfirmation'
-// import { Tooltip } from '../Tooltip/Tooltip'
 
 type componentType = {
     switchPage: (page: Pages) => void
@@ -45,24 +42,14 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
 
     const labOptions = [
         {
-            label: 'New', onClick: () => {
-                // dialog.updateContext(DialogConfirmation, {
-                //     text: "are you sure ?",
-                //     Cancel: () => {
-                //         dialog.close()
-                //     },
-                //     Validate: () => {
-                //         dialog.close()
-                //     }
-                // }).onClose(() => {
+            label: languageDico[LocalizationName.newLab], onClick: () => {
                     setSelectedLab(undefined);
                     switchPage(Pages.Playground);
                     setLabExpanded(false);
-                // })
             }
         },
         {
-            label: 'Open', options: labs.map(lab => {
+            label: languageDico[LocalizationName.openLab], options: labs.map(lab => {
                 return {
                     label: lab.labName || 'Untitled',
                     onClick: () => {
@@ -74,14 +61,14 @@ export const TitleBar = ({ page, switchPage, onSave, labs, setSelectedLab, selec
             })
         },
         { separator: true },
-        { label: 'Save', disabled: isDisabled, onClick: onSave },
+        { label: languageDico[LocalizationName.saveLab], disabled: isDisabled, onClick: onSave },
         {
-            label: 'Import', disabled: page == Pages.Playground, onClick: () => {
+            label: languageDico[LocalizationName.importLab], disabled: page == Pages.Playground, onClick: () => {
                 handleImport();
             }
         },
         {
-            label: 'Export', disabled: page !== Pages.Playground, onClick: () => {
+            label: languageDico[LocalizationName.exportLab], disabled: page !== Pages.Playground, onClick: () => {
                 handleExport(selectedLab)
             }
         }

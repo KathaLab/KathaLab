@@ -31,6 +31,14 @@ export enum LocalizationName {
     exportError,
     importSuccessFully,
     importDirectoryError,
+    titleSearch,
+    newLab,
+    openLab,
+    saveLab,
+    importLab,
+    exportLab,
+    warning,
+    duplicateLab
 }
 
 // import is after because language files need localizationName

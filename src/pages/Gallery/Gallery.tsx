@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Pages } from "../../app"
 import style from "./Gallery.scss"
 import { CardGallery } from './Components/CardGallery/CardGallery'
 import { Lab } from "../../model/Lab";
+import { localizationContext } from "../../context/LocalizationContext";
+import { LocalizationName } from "../../localization";
 
 type componentType = {
   switchPage: (page: Pages, option?: { lab?: Lab }) => void
@@ -12,6 +14,8 @@ type componentType = {
 }
 
 export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: componentType) => {
+
+  const { languageDico } = useContext(localizationContext);
 
   const [search, setSearch] = useState<string>("");
   const [labList, setLabList] = useState<Lab[]>(labs);
@@ -28,7 +32,7 @@ export const Gallery = ({ switchPage, labs, setSelectedLab, handleDelete }: comp
 
   return <div className={style.container}>
     <div className={style.search}>
-      <input type="text" className={style.searchInput} placeholder="Searching a lab ?" value={search} onChange={handleSearch}/>
+      <input type="text" className={style.searchInput} placeholder={languageDico[LocalizationName.titleSearch]} value={search} onChange={handleSearch}/>
     </div>
     <div className={style.cardList}>
       {

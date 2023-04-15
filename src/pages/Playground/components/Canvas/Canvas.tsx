@@ -15,6 +15,8 @@ import { useCssVar } from "../../../../hooks/useCssVar";
 import { MouseButtonType, ScrollBarWidth } from "./canvaHelper";
 import { ContextMenu, option } from "../../../../components/ContextMenu/ContextMenu";
 import { keyBindContext } from "../../../../context/KeybindContext";
+import { LocalizationName } from '../../../../localization'
+import {localizationContext} from "../../../../context/LocalizationContext";
 
 type ComponentType = {
   topoJson: Lab;
@@ -39,6 +41,8 @@ export const Canvas = ({
 }: ComponentType) => {
 
   const [addDevice, setAddDevice] = useState(false);
+
+  const { languageDico } = useContext(localizationContext);
 
   const ctx = useContext(keyBindContext);
 
@@ -69,11 +73,11 @@ export const Canvas = ({
 
 
   const labOptions = [
-    { label: 'New', options: newDeviceOptions },
+    { label: languageDico[LocalizationName.newLab], options: newDeviceOptions },
     { label: 'Duplicate', disabled: !selectedDevices?.length, onClick: onDuplicate },
     { separator: true },
-    { label: 'Save', onClick: onSave },
-    { label: 'Export', onClick: () => onExport(topoJson) },
+    { label: languageDico[LocalizationName.saveLab], onClick: onSave },
+    { label: languageDico[LocalizationName.importLab], onClick: () => onExport(topoJson) },
   ];
 
   const observer = useRef(
