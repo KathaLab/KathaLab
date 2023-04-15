@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import style from '../../ConfigPanel.module.scss'
 import { Device } from '../../../../../../model/Device';
 import { Expanded } from '../../../../../../components/Expanded/Expanded'
@@ -8,6 +8,8 @@ import { Button } from '../../../../../../components/Button/Button';
 import { Tooltip } from '../../../../../../components/Tooltip/Tooltip';
 import * as RegexConst from "../../../../../../lib/RegexConst";
 import { Autocomplete } from '../../../../../../components/Autocomplete/Autocomplete';
+import { localizationContext } from "../../../../../../context/LocalizationContext";
+import { LocalizationName } from "../../../../../../localization";
 
 type ComponentType = {
   device: Device;
@@ -17,6 +19,7 @@ type ComponentType = {
 }
 
 export const Interface = ({ device, updateDevices, allCollisionDomain, validation }: ComponentType) => {
+  const { languageDico } = useContext(localizationContext);
 
   const setInterface = () => {
     device.interfaces = device.interfaces || [];
@@ -49,7 +52,7 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
             <li key={i}>
               <Expanded title={"Eth" + i} classTitle={style.labelMenu}>
                 <div className={style.label}>
-                  <p className={style.labelForm}>Ip address</p>
+                  <p className={style.labelForm}>{languageDico[LocalizationName.idAddress]}</p>
                   <TextInput type={"IP"}
                     value={device?.interfaces?.[i]?.ip}
                     placeholder="127.0.0.1"
@@ -58,7 +61,7 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                   <div className={style.toolType}>
                     {validation(device?.interfaces?.[i]?.ip, RegexConst.DEVICE_IP) &&
                       device?.interfaces?.[i]?.ip &&
-                      <Tooltip message="Invalid Ip">
+                      <Tooltip message={languageDico[LocalizationName.invalidIP]}>
                         <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
                       </Tooltip>
                     }
@@ -74,16 +77,16 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                   <div className={style.toolType}>
                     {validation(device?.interfaces?.[i]?.cidr?.toString(), RegexConst.DEVICE_CIDR)
                       && !!device?.interfaces?.[i]?.cidr
-                      && <Tooltip message="Invalid CDIR">
+                      && <Tooltip message={languageDico[LocalizationName.invalidCIDR]}>
                         <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
                       </Tooltip>
                     }
                   </div>
                 </div>
                 <div className={style.label}>
-                  <p className={style.labelForm}>Collision domain</p>
+                  <p className={style.labelForm}>{languageDico[LocalizationName.collisionDomain]}</p>
                   <Autocomplete
-                    placeholder="collision domain"
+                    placeholder={languageDico[LocalizationName.collisionDomain]}
                     classInput={style.inputForm}
                     defaultValue={device?.interfaces?.[i]?.collision_domain}
                     datalist={allCollisionDomain.filter(value => value != device.interfaces[i].collision_domain)}
@@ -105,7 +108,7 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
                 </div>
                 <Button className={style.buttonDelInterface}
                   type='text'
-                  value='Delete'
+                  value={languageDico[LocalizationName.delete]}
                   onclick={() => { deleteInterface(i); setInterfaceName(); updateDevices() }}></Button>
               </Expanded>
             </li>
@@ -113,7 +116,7 @@ export const Interface = ({ device, updateDevices, allCollisionDomain, validatio
         </ul>
         <Button className={style.buttonAddInterface}
           type='text'
-          value='new interface'
+          value={languageDico[LocalizationName.newInterface]}
           onclick={() => { setInterface(); setInterfaceName() }}></Button>
       </Expanded>
     </div>

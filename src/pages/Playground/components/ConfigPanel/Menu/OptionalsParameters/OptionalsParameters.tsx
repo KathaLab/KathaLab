@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import style from '../../ConfigPanel.module.scss'
 import { Device } from '../../../../../../model/Device';
 import { Expanded } from '../../../../../../components/Expanded/Expanded'
 import { TextInput } from '../../../../../../components/TextInput/TextInput';
 import { Switch } from '../../../../../../components/Switch/Switch';
 import { ListCommand } from '../../ListCommand/ListCommand';
+import { localizationContext } from "../../../../../../context/LocalizationContext";
+import { LocalizationName } from "../../../../../../localization";
 
 type ComponentType = {
     device: Device;
@@ -12,6 +14,7 @@ type ComponentType = {
 }
 
 export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
+    const { languageDico } = useContext(localizationContext);
 
     const setBridged = () => {
         device.optional_parameters = device.optional_parameters || {}
@@ -86,7 +89,7 @@ export const OptionalsParameters = ({device, updateDevices}: ComponentType) => {
     }
 
     return (
-        <Expanded title="Optionals parameters" classTitle={style.labelMenu}>
+        <Expanded title={languageDico[LocalizationName.optionalsParameters]} classTitle={style.labelMenu}>
             <div className={style.menuOptionsParameters}>
                 <div className={style.label}>
                     <p className={style.labelForm}>Bridged</p>

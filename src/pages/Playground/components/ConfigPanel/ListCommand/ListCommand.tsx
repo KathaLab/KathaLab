@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { TextInput } from "../../../../../components/TextInput/TextInput";
+import { localizationContext } from "../../../../../context/LocalizationContext";
+import { LocalizationName } from "../../../../../localization";
 
 type componentType = {
     list?: string[],
@@ -10,7 +12,7 @@ type componentType = {
 }
 
 export const ListCommand = ({ list, className, onChange, onBlur, getCommands }: componentType) => {
-
+    const { languageDico } = useContext(localizationContext);
     const [values, setValues] = useState<string[]>([...list, ""]);
 
     const handleValueChange = (value: string, index: number) => {
@@ -42,7 +44,7 @@ export const ListCommand = ({ list, className, onChange, onBlur, getCommands }: 
             {values.map((command, i) => (
                 <li key={i}>
                     <TextInput 
-                        placeholder={values[i] || 'New command'} 
+                        placeholder={values[i] || languageDico[LocalizationName.newCommand]} 
                         value={values[i]}
                         className={className} 
                         onBlur={handleBlur} onChange={(value: string) => handleValueChange(value, i)}></TextInput>

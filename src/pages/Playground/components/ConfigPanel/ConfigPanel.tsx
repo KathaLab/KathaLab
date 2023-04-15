@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef, useContext } from 'react'
 import style from './ConfigPanel.module.scss'
 import { Button } from '../../../../components/Button/Button'
 import { TextInput, textInputType } from "../../../../components/TextInput/TextInput";
@@ -11,6 +11,8 @@ import { ShutdownCommands } from './Menu/ShutdownCommands/ShutdownCommands';
 import { OptionalsParameters } from './Menu/OptionalsParameters/OptionalsParameters';
 import * as RegexConst from "../../../../lib/RegexConst";
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { localizationContext } from "../../../../context/LocalizationContext";
+import { LocalizationName } from "../../../../localization";
 
 type ComponentType = {
   device: Device;
@@ -23,6 +25,7 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
   const [getImg] = useColoredImage();
   const color = useCssVar("--clr-device");
   const imageRef = useRef(null);
+  const { languageDico } = useContext(localizationContext);
 
   useLayoutEffect(() => {
     if (device?.type) imageRef.current.src = getImg(device.type, color).src;
@@ -54,12 +57,12 @@ export const ConfigPanel = ({ device, updateDevices, allCollisionDomain }: Compo
           <div className={style.label}>
             <TextInput value={device.deviceName}
               onChange={(value: string) => { device.deviceName = value; updateDevices() }}
-              placeholder="Device Name"
+              placeholder={languageDico[LocalizationName.deviceName]}
               className={style.inputDeviceName}></TextInput>
             <div className={style.toolType}>
               {validation(device.deviceName, RegexConst.EXPORTED_NAME_REGEX)
                 && device.deviceName
-                && <Tooltip message="Invalid name">
+                && <Tooltip message={languageDico[LocalizationName.invalidName]}>
                   <span className={style.iconWarning + " material-icons material-symbols-outlined"}>warning</span>
                 </Tooltip>
               }

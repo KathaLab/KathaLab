@@ -38,7 +38,19 @@ export enum LocalizationName {
     importLab,
     exportLab,
     warning,
-    duplicateLab
+    duplicateLab,
+    idAddress,
+    collisionDomain,
+    newInterface,
+    delete,
+    invalidCIDR,
+    invalidIP,
+    StartupCommands,
+    newCommand,
+    optionalsParameters,
+    shutdownCommands,
+    deviceName,
+    invalidName
 }
 
 // import is after because language files need localizationName
