@@ -6,10 +6,11 @@ import style from "./Playground.module.scss";
 import { Device, devices, DeviceType } from "../../model/Device";
 import { useCssVar } from "../../hooks/useCssVar";
 import { Lab } from "../../model/Lab";
-
 import ExportConf from "../../lib/ExportConf";
 import { snackbarContext } from "../../context/SnackbarContext";
 import { keyBindContext } from "../../context/KeybindContext";
+import { LocalizationName } from '../../localization'
+import {localizationContext} from "../../context/LocalizationContext";
 
 type componentType = {
   lab?: Lab;
@@ -18,6 +19,7 @@ type componentType = {
 
 export const Playground = ({ lab, setCurrentLab }: componentType) => {
 
+  const { languageDico } = useContext(localizationContext);
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
   const color = useCssVar("--clr-device");
@@ -82,10 +84,9 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
   const handleExport = async (lab: Lab) => {
 
     try {
-      const exportConf = new ExportConf();
-      const labExported = exportConf.exportLabConf(lab);
-      const deviceExportedStartup = exportConf.exportStartupConf(lab);
-      const deviceExportedShutdown = exportConf.exportShutdownConf(lab);
+      const labExported = ExportConf.exportLabConf(lab);
+      const deviceExportedStartup = ExportConf.exportStartupConf(lab);
+      const deviceExportedShutdown = ExportConf.exportShutdownConf(lab);
 
       //Creating lab.conf and all device.startup
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -116,20 +117,20 @@ export const Playground = ({ lab, setCurrentLab }: componentType) => {
             }
             snackBar.updateContext({
               duration: 3000,
-              message: 'The lab has been successfully exported',
+              message: languageDico[LocalizationName.exportSuccessFully],
               icon: 'done'
             })
           } else {
             snackBar.updateContext({
               duration: 3000,
-              message: 'The lab can\'t be exported',
+              message: languageDico[LocalizationName.exportError],
               icon: 'warning'
             })
           }
         })
     } catch (err) {
       snackBar.updateContext({
-        duration: 3000,
+        duration: 5000,
         message: err,
         icon: 'warning'
       })

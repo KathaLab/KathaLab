@@ -17,7 +17,20 @@ export enum LocalizationName {
     titleGallery,
     titlePlayground,
     titleSettings,
-    exportlabNameError
+    exportlabNameError,
+    exportdeviceNameError,
+    exportInterfaceNameError,
+    exportCollisionDomainError,
+    exportlabParameterError32,
+    exportlabParameterError128,
+    exportlabParameterError256,
+    exportlabParameterIntergerError,
+    exportlabParameterIPError,
+    exportlabParameterCIDRError,
+    exportSuccessFully,
+    exportError,
+    importSuccessFully,
+    importDirectoryError,
 }
 
 // import is after because language files need localizationName

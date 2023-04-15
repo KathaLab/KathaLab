@@ -1,4 +1,5 @@
 import {LocalizationName} from "./index";
+import * as RegexConst from "../lib/RegexConst";
 
 export const en : Record<LocalizationName, string> = {
     [LocalizationName.action] : "Action",
@@ -22,5 +23,17 @@ export const en : Record<LocalizationName, string> = {
     [LocalizationName.titleSettings] : "Settings",
     [LocalizationName.themeDark2] : "Dark theme 2",
     [LocalizationName.exportlabNameError] : "Can't export lab, be sure lab name doesn't have more than 32 characters and specials characters, only '' and '-' are allowed",
-
+    [LocalizationName.exportdeviceNameError] : "Can't export lab, be sure devices name doesn't have more than 32 characters and specials characters",
+    [LocalizationName.exportInterfaceNameError] : "Can't export lab, be sure interfaces name doesn't have more than 32 characters and specials characters",
+    [LocalizationName.exportCollisionDomainError] : "Can't export lab, be sure collision domains doesn't have more than 32 characters and specials characters",
+    [LocalizationName.exportlabParameterError32] : " with more than 32 characters not allowed, can't export lab",
+    [LocalizationName.exportlabParameterError128] : " with more than 128 characters not allowed, can't export lab",
+    [LocalizationName.exportlabParameterError256] : " with more than 256 characters not allowed, can't export lab",
+    [LocalizationName.exportlabParameterIntergerError] : "must be an integer, can't export lab",
+    [LocalizationName.exportlabParameterIPError] : "Can't export lab, be sure IP are valid",
+    [LocalizationName.exportlabParameterCIDRError] : "Can't export lab, be sure CIDR are valid",
+    [LocalizationName.exportSuccessFully] : "The lab has been successfully exported",
+    [LocalizationName.exportError] : "An error occurred, the lab can't be exported",
+    [LocalizationName.importSuccessFully] : "The lab has been successfully imported",
+    [LocalizationName.importDirectoryError] : "No directory selected",
 }
